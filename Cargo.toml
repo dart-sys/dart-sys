@@ -1,0 +1,22 @@
+[package]
+name = "dart-sys"
+version = "0.1.0"
+authors = ["OptimisticPeach <optimistic.peach@outlook.com>"]
+edition = "2018"
+build = "build.rs"
+description = "Native bindings to the dart native extensions api"
+repository = ""
+readme = "readme.md"
+keywords = ["dart", "native", "extension", "extensions"]
+categories = ["no-std", "development-tools::ffi", "external-ffi-bindings"]
+license = "MIT"
+
+[dependencies]
+
+[dev-dependencies]
+rand = "0.7.2"
+libc = "0.2.62"
+lazy_static = "1.4.0"
+
+[build-dependencies]
+bindgen = "0.51.1"

@@ -57,14 +57,15 @@ fn main() {
     println!(r#"cargo:rustc-link-search=native={}"#, dart_path.join("bin").to_str().unwrap());
     println!(r"cargo:rustc-link-lib=dart");
 
-    let bindings = bindgen::Builder::default()
-        .header("./bindgen/wrapper.h")
-        .clang_arg(format!("--include-directory={}", dart_path.join("include").to_str().unwrap()))
-        .clang_arg("-DDART_SHARED_LIB")
-        .generate()
-        .expect("Unable to generate bindings.");
-    let out_path = PathBuf::from(env::var("OUT_DIR").expect("Could not find OUT_DIR"));
-    bindings
-        .write_to_file(out_path.join("bindings.rs"))
-        .expect("Couldn't write bindings!");
+    // We're using the precompiled ones instead of using bindgen each time
+//    let bindings = bindgen::Builder::default()
+//        .header("./bindgen/wrapper.h")
+//        .clang_arg(format!("--include-directory={}", dart_path.join("include").to_str().unwrap()))
+//        .clang_arg("-DDART_SHARED_LIB")
+//        .generate()
+//        .expect("Unable to generate bindings.");
+//    let out_path = PathBuf::from(env::var("OUT_DIR").expect("Could not find OUT_DIR"));
+//    bindings
+//        .write_to_file(out_path.join("bindings.rs"))
+//        .expect("Couldn't write bindings!");
 }

@@ -5,7 +5,7 @@ authors = ["OptimisticPeach <optimistic.peach@outlook.com>"]
 edition = "2018"
 build = "build.rs"
 description = "Native bindings to the dart native extensions api"
-repository = ""
+repository = "https://github.com/OptimisticPeach/dart-sys"
 readme = "readme.md"
 keywords = ["dart", "native", "extension", "extensions"]
 categories = ["no-std", "development-tools::ffi", "external-ffi-bindings"]
@@ -19,4 +19,4 @@ libc = "0.2.62"
 lazy_static = "1.4.0"
 
 [build-dependencies]
-bindgen = "0.51.1"
+#bindgen = "0.51.1"

@@ -1,6 +1,6 @@
 [package]
 name = "dart-sys"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["OptimisticPeach <optimistic.peach@outlook.com>"]
 edition = "2018"
 build = "build.rs"
@@ -20,3 +20,6 @@ lazy_static = "1.4.0"
 
 [build-dependencies]
 #bindgen = "0.51.1"
+
+[package.metadata.docs.rs]
+features = [ "docs-only" ]

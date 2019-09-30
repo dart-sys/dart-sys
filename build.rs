@@ -2,6 +2,7 @@ use std::env;
 use std::path::PathBuf;
 use std::cfg;
 
+#[cfg(not(feature = "docs-only"))]
 fn find_dart_sdk() -> Option<PathBuf> {
     if let Ok(path) = env::var("dart_sdk") {
         Some(path.into())
@@ -49,13 +50,21 @@ fn find_dart_sdk() -> Option<PathBuf> {
 }
 
 fn main() {
-    let dart_path = match find_dart_sdk() {
-        Some(x) => x,
-        None => panic!("Could not find dart sdk!")
-    };
-    let dart_path = PathBuf::from(dart_path);
-    println!(r#"cargo:rustc-link-search=native={}"#, dart_path.join("bin").to_str().unwrap());
-    println!(r"cargo:rustc-link-lib=dart");
+    #[cfg(not(feature = "docs-only"))]
+    fn _main() {
+        let dart_path = match find_dart_sdk() {
+            Some(x) => x,
+            None => panic!("Could not find dart sdk!")
+        };
+        let dart_path = PathBuf::from(dart_path);
+        println!(r#"cargo:rustc-link-search=native={}"#, dart_path.join("bin").to_str().unwrap());
+        println!(r"cargo:rustc-link-lib=dart");
+    }
+
+    #[cfg(feature = "docs-only")]
+    fn _main() {}
+
+    _main();
 
     // We're using the precompiled ones instead of using bindgen each time
 //    let bindings = bindgen::Builder::default()

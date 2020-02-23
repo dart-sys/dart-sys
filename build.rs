@@ -1,12 +1,14 @@
+#[cfg(windows)]
 use std::env;
+#[cfg(windows)]
 use std::path::PathBuf;
 use std::cfg;
 
-#[cfg(not(feature = "docs-only"))]
+#[cfg(all(not(feature = "docs-only"), windows))]
 fn find_dart_sdk() -> Option<PathBuf> {
     if let Ok(path) = env::var("dart_sdk") {
         Some(path.into())
-    } else if cfg!(windows) {
+    } else {
         //We'll look for either a flutter sdk _or_ a choco tool path.
         if let Ok(path) = env::var("ChocolateyToolsLocation") {
             let path = PathBuf::from(path).join("dart-sdk");
@@ -42,23 +44,27 @@ fn find_dart_sdk() -> Option<PathBuf> {
             }
         }
         None
-    } else if cfg!(unix) {
-        panic!("Linux/Mac is currently not supported!");
-    } else {
-        panic!("Unrecognized OS")
     }
 }
+
+#[cfg(windows)]
+fn emit_compiler_flags() {
+    let dart_path = match find_dart_sdk() {
+        Some(x) => x,
+        None => panic!("Could not find dart sdk!")
+    };
+    let dart_path = PathBuf::from(dart_path);
+    println!(r#"cargo:rustc-link-search=native={}"#, dart_path.join("bin").to_str().unwrap());
+    println!(r"cargo:rustc-link-lib=dart");
+}
+
+#[cfg(unix)]
+fn emit_compiler_flags() {}
 
 fn main() {
     #[cfg(not(feature = "docs-only"))]
     fn _main() {
-        let dart_path = match find_dart_sdk() {
-            Some(x) => x,
-            None => panic!("Could not find dart sdk!")
-        };
-        let dart_path = PathBuf::from(dart_path);
-        println!(r#"cargo:rustc-link-search=native={}"#, dart_path.join("bin").to_str().unwrap());
-        println!(r"cargo:rustc-link-lib=dart");
+        emit_compiler_flags();
     }
 
     #[cfg(feature = "docs-only")]

@@ -14,7 +14,7 @@ fn random_array(seed: u32, length: i32) -> Option<Vec<u8>> {
         return None;
     }
     let mut rng = StdRng::seed_from_u64(seed as _);
-    let mut values: Vec<u8> =
+    let values: Vec<u8> =
         (0..length)
             .map(move |_| rng.gen())
             .collect();
@@ -34,7 +34,7 @@ unsafe extern fn wrapped_random_array(reply_port_id: ffi::Dart_Port,
             let length = (*param0).value.as_int32;
             let seed = (*param1).value.as_int32;
             let values = random_array(seed as _, length);
-            if let Some(mut val) = values {
+            if let Some(val) = values {
                 let mut val: Vec<ffi::Dart_CObject> = val.into_iter().map(|x| {
                     let mut value = MaybeUninit::<ffi::Dart_CObject>::uninit();
                     (*value.as_mut_ptr()).value.as_int32 = x as i32;
@@ -63,11 +63,9 @@ unsafe extern fn wrapped_random_array(reply_port_id: ffi::Dart_Port,
 #[no_mangle]
 unsafe extern fn randomArrayServicePort(arguments: ffi::Dart_NativeArguments) {
     ffi::Dart_SetReturnValue(arguments, ffi::Dart_Null());
-    let mut service_port = ffi::Dart_NewNativePort(b"RandomArrayService\0".as_ptr() as *const _, Some(wrapped_random_array), true);
+    let service_port = ffi::Dart_NewNativePort(b"RandomArrayService\0".as_ptr() as *const _, Some(wrapped_random_array), true);
     if service_port != 0 { // https://github.com/dart-lang/sdk/blob/9a683de40dd5d0ab623b2a105295ea58964d6afc/runtime/include/dart_api.h#L1173
         let send_port = ffi::Dart_NewSendPort(service_port);
         ffi::Dart_SetReturnValue(arguments, send_port);
     }
 }
-
-fn main() {}

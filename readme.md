@@ -14,7 +14,6 @@ This crate exposes an api for [`dart_api.h`](https://github.com/dart-lang/sdk/bl
   This will fall back to the `flutter` sdk should it not find a dart sdk, but this
   is not recommended, as it is more difficult to compile using the flutter sdk
   and it appears it ships a non-standard dart sdk. 
-- Have `clang` installed and on your path. 
 
 ##### Usage
 Include the following in your `Cargo.toml`:

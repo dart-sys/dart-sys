@@ -19,6 +19,7 @@ lazy_static::lazy_static! {
     static ref RNG: Mutex<Option<Box<dyn RngCore + Send + Sync>>> = Mutex::new(None);
 }
 
+#[allow(non_snake_case)]
 #[no_mangle]
 unsafe extern fn dart_rust_ffi_Init(parent_library: ffi::Dart_Handle) -> ffi::Dart_Handle {
     if ffi::Dart_IsError(parent_library) {
@@ -34,6 +35,7 @@ unsafe extern fn dart_rust_ffi_Init(parent_library: ffi::Dart_Handle) -> ffi::Da
     }
 }
 
+#[allow(non_snake_case)]
 #[no_mangle]
 unsafe extern fn ResloveName(name: ffi::Dart_Handle, _argc: std::os::raw::c_int, _auto_setup_scope: *mut bool) -> ffi::Dart_NativeFunction {
     if !ffi::Dart_IsString(name) {
@@ -45,14 +47,15 @@ unsafe extern fn ResloveName(name: ffi::Dart_Handle, _argc: std::os::raw::c_int,
 
     let cname = CStr::from_ptr(cname.assume_init());
     if cname.to_bytes() == b"SystemRand" {
-        result = Some(SystemRand);
+        result = Some(system_rand);
     } else if cname.to_bytes() == b"SystemSrand" {
-        result = Some(SystemSRand)
+        result = Some(system_s_rand)
     }
     eprintln!("Error handle here: {:?}", &result);
     result
 }
 
+#[allow(non_snake_case)]
 #[no_mangle]
 unsafe extern fn HandleError(handle: ffi::Dart_Handle) -> ffi::Dart_Handle {
     if ffi::Dart_IsError(handle) {
@@ -61,7 +64,7 @@ unsafe extern fn HandleError(handle: ffi::Dart_Handle) -> ffi::Dart_Handle {
     handle
 }
 
-unsafe extern "C" fn SystemRand(arguments: ffi::Dart_NativeArguments) {
+unsafe extern "C" fn system_rand(arguments: ffi::Dart_NativeArguments) {
     let integer = if let Some(x) = &mut *RNG.lock().unwrap() {
         x.gen::<i64>()
     } else {
@@ -75,7 +78,7 @@ unsafe extern "C" fn SystemRand(arguments: ffi::Dart_NativeArguments) {
     ffi::Dart_SetReturnValue(arguments, result);
 }
 
-unsafe extern "C" fn SystemSRand(arguments: ffi::Dart_NativeArguments) {
+unsafe extern "C" fn system_s_rand(arguments: ffi::Dart_NativeArguments) {
     let mut success = false;
     let seed_object = HandleError(ffi::Dart_GetNativeArgument(arguments, 0));
     if ffi::Dart_IsInteger(seed_object) {
@@ -90,5 +93,3 @@ unsafe extern "C" fn SystemSRand(arguments: ffi::Dart_NativeArguments) {
     }
     ffi::Dart_SetReturnValue(arguments, HandleError(ffi::Dart_NewBoolean(success)));
 }
-
-fn main() {}

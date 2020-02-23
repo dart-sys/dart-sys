@@ -26,3 +26,11 @@ docs-only = []
 
 [package.metadata.docs.rs]
 features = ["docs-only"]
+
+[[example]]
+name = "async"
+crate-type = ["cdylib"]
+
+[[example]]
+name = "sync"
+crate-type = ["cdylib"]

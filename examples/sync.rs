@@ -51,7 +51,6 @@ unsafe extern fn ResloveName(name: ffi::Dart_Handle, _argc: std::os::raw::c_int,
     } else if cname.to_bytes() == b"SystemSrand" {
         result = Some(system_s_rand)
     }
-    eprintln!("Error handle here: {:?}", &result);
     result
 }
 

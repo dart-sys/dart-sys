@@ -36,3 +36,8 @@ page:
 - You should compile using an x64 compiler (eg., `[stable|nightly|beta]-x86_64-pc-windows-msvc`)
 - You should place the compiled library in the same directory as the root of your dart
 package (I.E. outside of your `lib` directory)
+- You should make sure these three coincide:
+  - The shared object/dynamic link library name.
+  - The NAME in `NAME_Init` function when writing a sync extension.
+  - The name of the import in `import 'dart-ext:NAME'`.
+- When compiling for Linux, name your shared object `libNAME.so`.

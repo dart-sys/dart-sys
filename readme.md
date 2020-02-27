@@ -41,3 +41,15 @@ package (I.E. outside of your `lib` directory)
   - The NAME in `NAME_Init` function when writing a sync extension.
   - The name of the import in `import 'dart-ext:NAME'`.
 - When compiling for Linux, name your shared object `libNAME.so`.
+
+>This crate does not generate bindings, and instead uses prebuilt ones. The code to build the bindings
+>can be found commented in `build.rs`. 
+>
+> To run, uncomment and from there, copy the contents of the `bindings.rs` file under
+>the directory which is reported in the panic into `lib.rs`.
+>
+> The bindings were last generated on the 26th of February 2020.
+
+I have manually edited the names under the generated bindings to avoid ugly bindgen names such as
+`_Dart_CObject__bindgen_ty_1__bindgen_ty_3`, and instead replaces them with a more appropriate name
+based on their usage in the api. (Such as `Dart_NativeString`). 

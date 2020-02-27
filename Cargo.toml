@@ -1,7 +1,7 @@
 [package]
 name = "dart-sys"
-version = "0.1.3"
-authors = ["OptimisticPeach <optimistic.peach@outlook.com>"]
+version = "2.0.0"
+authors = ["OptisticPeach <optimistic.peach@outlook.com>"]
 edition = "2018"
 build = "build.rs"
 description = "Native bindings to the dart native extensions api"

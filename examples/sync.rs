@@ -27,7 +27,7 @@ unsafe extern fn dart_rust_ffi_Init(parent_library: ffi::Dart_Handle) -> ffi::Da
     }
 
     let result_code =
-        ffi::Dart_SetNativeResolver(parent_library, Some(ResloveName), None);
+        ffi::Dart_SetNativeResolver(parent_library, Some(resolve_name), None);
     if ffi::Dart_IsError(result_code) {
         result_code
     } else {
@@ -35,15 +35,13 @@ unsafe extern fn dart_rust_ffi_Init(parent_library: ffi::Dart_Handle) -> ffi::Da
     }
 }
 
-#[allow(non_snake_case)]
-#[no_mangle]
-unsafe extern fn ResloveName(name: ffi::Dart_Handle, _argc: std::os::raw::c_int, _auto_setup_scope: *mut bool) -> ffi::Dart_NativeFunction {
+unsafe extern fn resolve_name(name: ffi::Dart_Handle, _argc: std::os::raw::c_int, _auto_setup_scope: *mut bool) -> ffi::Dart_NativeFunction {
     if !ffi::Dart_IsString(name) {
         return None;
     }
     let mut result: ffi::Dart_NativeFunction = None;
     let mut cname = MaybeUninit::<*const libc::c_char>::uninit();
-    HandleError(ffi::Dart_StringToCString(name, cname.as_mut_ptr()));
+    handle_error(ffi::Dart_StringToCString(name, cname.as_mut_ptr()));
 
     let cname = CStr::from_ptr(cname.assume_init());
     if cname.to_bytes() == b"SystemRand" {
@@ -54,9 +52,7 @@ unsafe extern fn ResloveName(name: ffi::Dart_Handle, _argc: std::os::raw::c_int,
     result
 }
 
-#[allow(non_snake_case)]
-#[no_mangle]
-unsafe extern fn HandleError(handle: ffi::Dart_Handle) -> ffi::Dart_Handle {
+unsafe fn handle_error(handle: ffi::Dart_Handle) -> ffi::Dart_Handle {
     if ffi::Dart_IsError(handle) {
         ffi::Dart_PropagateError(handle);
     }
@@ -73,22 +69,22 @@ unsafe extern "C" fn system_rand(arguments: ffi::Dart_NativeArguments) {
         *RNG.lock().unwrap() = rng;
         num
     };
-    let result = HandleError(ffi::Dart_NewInteger(integer));
+    let result = handle_error(ffi::Dart_NewInteger(integer));
     ffi::Dart_SetReturnValue(arguments, result);
 }
 
 unsafe extern "C" fn system_s_rand(arguments: ffi::Dart_NativeArguments) {
     let mut success = false;
-    let seed_object = HandleError(ffi::Dart_GetNativeArgument(arguments, 0));
+    let seed_object = handle_error(ffi::Dart_GetNativeArgument(arguments, 0));
     if ffi::Dart_IsInteger(seed_object) {
         let mut fits = false;
-        HandleError(ffi::Dart_IntegerFitsIntoInt64(seed_object, &mut fits));
+        handle_error(ffi::Dart_IntegerFitsIntoInt64(seed_object, &mut fits));
         if fits {
             let mut seed = 0;
-            HandleError(ffi::Dart_IntegerToInt64(seed_object, &mut seed));
+            handle_error(ffi::Dart_IntegerToInt64(seed_object, &mut seed));
             *RNG.lock().unwrap() = Some(Box::new(StdRng::seed_from_u64(seed as u64)));
             success = true;
         }
     }
-    ffi::Dart_SetReturnValue(arguments, HandleError(ffi::Dart_NewBoolean(success)));
+    ffi::Dart_SetReturnValue(arguments, handle_error(ffi::Dart_NewBoolean(success)));
 }

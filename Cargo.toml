@@ -1,10 +1,10 @@
 [package]
 name = "dart-sys"
-version = "2.0.0"
+version = "2.0.1"
 authors = ["Patrik Buhring <patrikbuhring@gmail.com>"]
 edition = "2018"
 build = "build.rs"
-description = "Native bindings to the dart native extensions api"
+description = "Bindings to the dart native extensions api"
 repository = "https://github.com/OptimisticPeach/dart-sys"
 readme = "readme.md"
 keywords = ["dart", "native", "extension", "extensions"]

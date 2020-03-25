@@ -7,7 +7,7 @@ This crate exposes an api for [`dart_api.h`](https://github.com/dart-lang/sdk/bl
  This crate used [`bindgen`](https://github.com/rust-lang/rust-bindgen)
  to generate the bindings to the header.
  
-##### Requirements
+##### Requirements when building bindings again (off by default)
 - Provide a path to the dart sdk using a `dart_sdk` environment variable.
   - If this variable is not available, will look for either a chocolatey install
   path, or an entry in the `PATH` variable which contains `dart-sdk` in it.

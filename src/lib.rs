@@ -3427,7 +3427,7 @@ extern "C" {
 extern "C" {
     #[doc = " Returns a flattened list of pairs. The first element in each pair is the"]
     #[doc = " importing library and and the second element is the imported library for each"]
-    #[doc = " import in the isolate of a library whose URI's scheme is [scheme]."]
+    #[doc = " import in the isolate of a library whose URI's scheme is scheme."]
     #[doc = ""]
     #[doc = " Requires there to be a current isolate."]
     #[doc = ""]
@@ -3914,7 +3914,6 @@ pub struct Dart_TypedData {
     pub values: *mut u8,
 }
 
-
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct Dart_ExternalTypedData {
@@ -3924,7 +3923,6 @@ pub struct Dart_ExternalTypedData {
     pub peer: *mut ::std::os::raw::c_void,
     pub callback: Dart_WeakPersistentHandleFinalizer,
 }
-
 
 extern "C" {
     #[doc = " Posts a message on some port. The message will contain the"]

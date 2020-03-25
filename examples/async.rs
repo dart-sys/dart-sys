@@ -117,7 +117,8 @@ unsafe extern fn wrapped_random_array(_dest_port_id: ffi::Dart_Port,
             }
         }
     }
-    panic!("Invalid message received, cannot proceed. Aborting the process.");
+    eprintln!("Invalid message received, cannot proceed. Aborting the process.");
+    std::process::abort();
 }
 
 #[no_mangle]

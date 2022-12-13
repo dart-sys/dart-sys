@@ -1,10 +1,8 @@
-#[cfg(windows)]
 use std::env;
-#[cfg(windows)]
 use std::path::PathBuf;
 use std::cfg;
 
-#[cfg(all(not(feature = "docs-only"), windows))]
+#[cfg(not(feature = "docs-only"))]
 fn find_dart_sdk() -> Option<PathBuf> {
     if let Ok(path) = env::var("dart_sdk") {
         Some(path.into())
@@ -47,15 +45,20 @@ fn find_dart_sdk() -> Option<PathBuf> {
     }
 }
 
-#[cfg(windows)]
 fn emit_compiler_flags() {
-    let dart_path = match find_dart_sdk() {
-        Some(x) => x,
-        None => panic!("Could not find dart sdk!")
-    };
-    let dart_path = PathBuf::from(dart_path);
-    println!(r#"cargo:rustc-link-search=native={}"#, dart_path.join("bin").to_str().unwrap());
-    println!(r"cargo:rustc-link-lib=dart");
+    let target_os = env::var("CARGO_CFG_TARGET_OS");
+    match target_os.as_ref().map(|x| &**x) {
+        Ok("windows") => {
+            let dart_path = match find_dart_sdk() {
+                Some(x) => x,
+                None => panic!("Could not find dart sdk!")
+            };
+            let dart_path = PathBuf::from(dart_path);
+            println!(r#"cargo:rustc-link-search=native={}"#, dart_path.join("bin").to_str().unwrap());
+            println!(r"cargo:rustc-link-lib=dart");
+        }
+        _ => println!("Target OS is not windows")
+    }
     // We're using the precompiled ones instead of using bindgen each time
    // let bindings = bindgen::Builder::default()
    //     .header("./bindgen/wrapper.h")
@@ -69,9 +72,6 @@ fn emit_compiler_flags() {
    //     .expect("Couldn't write bindings!");
    // panic!("OUT_DIR: {:?}", env::var("OUT_DIR").expect("Could not find OUT_DIR"));
 }
-
-#[cfg(unix)]
-fn emit_compiler_flags() {}
 
 fn main() {
     #[cfg(not(feature = "docs-only"))]

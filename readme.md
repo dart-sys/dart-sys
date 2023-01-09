@@ -1,6 +1,6 @@
 # :warning: Temporarily Out Of Production :warning:
 
-## :construction: If you are interested in helping get back into production quality, please refer to the [ticket list](https://tasksboard.com/app/?shareList=MG04OEFya0J3bl9uY1VIRg&u=3CG4vbGbqhXEFyMRLLNvPBxYfO22), hosted on [https://tasksboard.app](tasksboard.app).
+## :construction: If you are interested in helping get us back into production, please refer to the [ticket list](https://github.com/dart-sys/dart-sys/issues).
 
 ---
 

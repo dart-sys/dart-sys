@@ -1,17 +1,27 @@
 [package]
 name = "dart-sys"
 version = "2.0.1"
-authors = ["Patrik Buhring <patrikbuhring@gmail.com>"]
+authors = [
+	"Patrik Buhring <patrikbuhring@gmail.com>",
+	"Mark Gutenberger <gutenfries@gmail.com>",
+]
 edition = "2018"
 build = "build.rs"
 description = "Bindings to the dart native extensions api"
-repository = "https://github.com/OptimisticPeach/dart-sys"
+repository = "https://github.com/dart-sys/dart-sys"
 readme = "readme.md"
-keywords = ["dart", "native", "extension", "extensions"]
+keywords = [
+	"dart",
+	"native",
+	"extension",
+	"extensions",
+	"dart-sys",
+	"ffi",
+	"flutter",
+	"no-std",
+]
 categories = ["no-std", "development-tools::ffi", "external-ffi-bindings"]
 license = "MIT"
-
-[dependencies]
 
 [dev-dependencies]
 rand = "0.7.2"
@@ -19,7 +29,7 @@ libc = "0.2.62"
 lazy_static = "1.4.0"
 
 [build-dependencies]
-#bindgen = "0.51.1"
+bindgen = "0.51.1"
 
 [features]
 docs-only = []

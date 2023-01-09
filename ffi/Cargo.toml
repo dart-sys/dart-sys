@@ -21,19 +21,18 @@ lazy_static = "1.4.0"
 bindgen = "0.63.0"
 
 [features]
-no-std = []
-no-net = []
+default = ["std"]
 docs-only = []
-default = []
+std = []
 
 
 [package.metadata.docs.rs]
 features = ["docs-only"]
 
-[[example]]
-name = "async"
-crate-type = ["cdylib"]
+# [[example]]
+# name = "async"
+# crate-type = ["cdylib"]
 
-[[example]]
-name = "sync"
-crate-type = ["cdylib"]
+# [[example]]
+# name = "sync"
+# crate-type = ["cdylib"]

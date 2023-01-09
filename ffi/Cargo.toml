@@ -1,0 +1,39 @@
+[package]
+name = "dart-sys"
+version.workspace = true
+edition.workspace = true
+description.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+keywords.workspace = true
+categories.workspace = true
+build = "build.rs"
+readme = "../README.md"
+
+# TODO: move these to their respective examples crates
+[dev-dependencies]
+rand = "0.8.5"
+libc = "0.2.139"
+lazy_static = "1.4.0"
+
+[build-dependencies]
+bindgen = "0.63.0"
+
+[features]
+no-std = []
+no-net = []
+docs-only = []
+default = []
+
+
+[package.metadata.docs.rs]
+features = ["docs-only"]
+
+[[example]]
+name = "async"
+crate-type = ["cdylib"]
+
+[[example]]
+name = "sync"
+crate-type = ["cdylib"]

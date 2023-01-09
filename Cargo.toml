@@ -1,15 +1,12 @@
-[package]
-name = "dart-sys"
+[workspace]
+members = ["ffi", "examples/**/*"]
+
+[workspace.package]
 version = "2.0.1"
-authors = [
-	"Patrik Buhring <patrikbuhring@gmail.com>",
-	"Mark Gutenberger <gutenfries@gmail.com>",
-]
-edition = "2018"
-build = "build.rs"
+edition = "2021"
+license = "MIT"
 description = "Bindings to the dart native extensions api"
 repository = "https://github.com/dart-sys/dart-sys"
-readme = "readme.md"
 keywords = [
 	"dart",
 	"native",
@@ -19,28 +16,15 @@ keywords = [
 	"ffi",
 	"flutter",
 	"no-std",
+	"code-generation",
+	"bindings",
 ]
 categories = ["no-std", "development-tools::ffi", "external-ffi-bindings"]
-license = "MIT"
 
-[dev-dependencies]
-rand = "0.7.2"
-libc = "0.2.62"
-lazy_static = "1.4.0"
 
-[build-dependencies]
-bindgen = "0.51.1"
+[workspace.dependencies]
+dart-sys = { path = "ffi" }
 
-[features]
-docs-only = []
-
-[package.metadata.docs.rs]
-features = ["docs-only"]
-
-[[example]]
-name = "async"
-crate-type = ["cdylib"]
-
-[[example]]
-name = "sync"
-crate-type = ["cdylib"]
+[profile.release]
+strip = "debuginfo"
+lto = "thin"

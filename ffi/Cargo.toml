@@ -21,9 +21,9 @@ lazy_static = "1.4.0"
 bindgen = "0.63.0"
 
 [features]
-default = ["std"]
+# default = ["std"]
 docs-only = []
-std = []
+# std = []
 
 
 [package.metadata.docs.rs]

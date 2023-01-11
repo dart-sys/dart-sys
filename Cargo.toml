@@ -4,7 +4,7 @@ members = ["ffi", "examples/**/*"]
 [workspace.package]
 version = "2.0.1"
 edition = "2021"
-license = "MIT"
+license = "GPL-3.0-or-later AND MIT"
 description = "Bindings to the dart native extensions api"
 repository = "https://github.com/dart-sys/dart-sys"
 keywords = [
@@ -20,11 +20,34 @@ keywords = [
 	"bindings",
 ]
 categories = ["no-std", "development-tools::ffi", "external-ffi-bindings"]
+authors = [
+	"Patrik Buhring <patrikbuhring@gmail.com>",
+	"Mark Gutenberger <gutenfries@gmail.com>",
+]
 
 
 [workspace.dependencies]
 dart-sys = { path = "ffi" }
 
 [profile.release]
+codegen-units = 1
+debug = false
+lto = "fat"
+opt-level = 3
 strip = "debuginfo"
-lto = "thin"
+
+[profile.dev]
+debug = true
+opt-level = 0
+
+[profile.bench]
+codegen-units = 1
+debug = false
+lto = "fat"
+opt-level = 3
+
+[profile.test]
+codegen-units = 1
+debug = true
+lto = "fat"
+opt-level = 3

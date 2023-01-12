@@ -1,4 +1,4 @@
-# :warning: Temporarily Out Of Production :warning
+# :warning: Temporarily Out Of Production :warning:
 
 ## :construction: If you are interested in helping get us back into production, please refer to the [ticket list](https://github.com/dart-sys/dart-sys/issues)
 

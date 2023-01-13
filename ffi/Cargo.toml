@@ -19,6 +19,7 @@ lazy_static = "1.4.0"
 
 [build-dependencies]
 bindgen = "0.63.0"
+chrono = "0.4.23"
 
 [features]
 # default = ["std"]

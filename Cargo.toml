@@ -1,5 +1,5 @@
 [workspace]
-members = ["ffi", "examples/**/*"]
+members = ["dart-sys", "examples/**/*"]
 
 [workspace.package]
 version = "2.0.1"
@@ -19,7 +19,7 @@ keywords = [
 	"code-generation",
 	"bindings",
 ]
-categories = ["no-std", "development-tools::ffi", "external-ffi-bindings"]
+categories = ["development-tools::ffi", "external-ffi-bindings"]
 authors = [
 	"Patrik Buhring <patrikbuhring@gmail.com>",
 	"Mark Gutenberger <gutenfries@gmail.com>",
@@ -27,7 +27,7 @@ authors = [
 
 
 [workspace.dependencies]
-dart-sys = { path = "ffi" }
+dart-sys = { path = "dart-sys" }
 
 [profile.release]
 codegen-units = 1

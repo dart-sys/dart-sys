@@ -18,7 +18,7 @@ env:
 
 jobs:
   tests:
-    name: Rust tests on ${{ matrix.os }}
+    name: Rust tests on {${{ matrix.os }}} with Rust {${{ matrix.toolchain }}} toolchain
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -43,14 +43,6 @@ jobs:
           toolchain: ${{ matrix.toolchain }}
           override: true
 
-      # # Install necessary Rust components
-      # - name: Install Rust components
-      #   uses: actions-rs/toolchain@v1
-      #   with:
-      #     toolchain: ${{ matrix.toolchain }}
-      #     components: clippy, rustfmt
-
-      # NOTE: tests/builds must be run with root privileges
       # Run cargo test with no features enabled with ${{ matrix.toolchain }} toolchain
       - name: Cargo tests with no features enabled with ${{ matrix.toolchain }} toolchain
         uses: actions-rs/cargo@v1

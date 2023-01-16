@@ -53,7 +53,7 @@ jobs:
         with:
           toolchain: nightly
           command: test
-          args: --all-targets
+          args: --all-targets --features "ci"
 
       # Run Cargo tests on the rust stable toolchain
       - name: Run Cargo Tests
@@ -62,7 +62,7 @@ jobs:
         with:
           toolchain: stable
           command: test
-          args: --all-targets
+          args: --all-targets --features "ci"
 
       # Run Cargo tests on the rust nightly toolchina with the `--all-features` flag
       - name: Run Cargo Tests

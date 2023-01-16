@@ -11,6 +11,7 @@ categories.workspace = true
 build = "build.rs"
 readme = "../README.md"
 
+
 # TODO: move these to their respective examples crates
 [dev-dependencies]
 rand = "0.8.5"
@@ -18,16 +19,25 @@ libc = "0.2.139"
 lazy_static = "1.4.0"
 
 [build-dependencies]
-bindgen = "0.63.0"
+bindgen = { version = "0.63.0" }
+chrono = { version = "0.4.23" }
+reqwest = { version = "0.11.13", features = ["blocking"] }
+sha2 = { version = "0.10.6" }
+zip = { version = "0.6.3" }
 
 [features]
-# default = ["std"]
-docs-only = []
 # std = []
+default = []
+docs_only = []
+download_dart_sdk_stable = ["download_dart_sdk"]
+download_dart_sdk_dev = ["download_dart_sdk"]
+download_dart_sdk_beta = ["download_dart_sdk"]
+download_dart_sdk = []
 
 
 [package.metadata.docs.rs]
-features = ["docs-only"]
+features = ["docs_only"]
+
 
 # [[example]]
 # name = "async"

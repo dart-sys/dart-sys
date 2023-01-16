@@ -1,0 +1,16 @@
+{
+	"recommendations": [
+		"rust-lang.rust-analyzer",
+		"vadimcn.vscode-lldb",
+		"dart-code.dart-code",
+		"jeff-hykin.better-cpp-syntax"
+	],
+	"unwantedRecommendations": [
+		// makefile tools can cause issues
+		"ms-vscode.makefile-tools",
+		// microsfot c++ tools can cause issues with the C/C++ code in the project if
+		// you do not have certain dart apis in your include path
+		"ms-vscode.cpptools",
+		"ms-vscode.cpptools-extension-pack"
+	]
+}

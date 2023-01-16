@@ -13,12 +13,12 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  RUST_BACKTRACE: 1
+  RUST_BACKTRACE: full
   RUST_LOG: debug
 
 jobs:
   tests:
-    name: Rust tests on {${{ matrix.os }}} with Rust {${{ matrix.toolchain }}} toolchain
+    name: Rust tests on ${{ matrix.os }} with Rust ${{ matrix.toolchain }} toolchain
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:

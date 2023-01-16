@@ -232,6 +232,9 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 						// if the path exists, delete it
 						if e.kind() == IoErrorKind::AlreadyExists {
 							log(&format!("WARNING: \"{}\" already exists. Deleting", file_path));
+							// do NOT emit this warning if the `ci` feature is enabled
+							// because we run a strict CI, any warnings will cause the CI to fail
+							#[cfg(not(feature = "ci"))]
 							println!("cargo:warning=\"{}\" already exists. Deleting", file_path);
 
 							// delete the file/directory
@@ -445,6 +448,9 @@ fn get_dart_sdk_channel() -> DartSdkChannel {
 	{
 		const WARNING: &str = "WARNING: more than one `download_dart_sdk_*` feature is enabled, defaulting to stable";
 		log(WARNING);
+		// do NOT emit this warning if the `ci` feature is enabled
+		// because we run a strict CI, any warnings will cause the CI to fail
+		#[cfg(not(feature = "ci"))]
 		println!("cargo:warning={}", WARNING);
 		return DartSdkChannel::Stable;
 	}
@@ -548,6 +554,9 @@ fn emit_compiler_flags() {
 
 fn main() {
 	// emit cargo warning about where the build log file is located
+	// do NOT emit this warning if the `ci` feature is enabled
+	// because we run a strict CI, any warnings will cause the CI to fail
+	#[cfg(not(feature = "ci"))]
 	println!(
 		"cargo:warning=INFO: build log is located at: `{}`",
 		PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap())

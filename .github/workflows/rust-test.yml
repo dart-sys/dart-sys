@@ -1,0 +1,60 @@
+name: Rust Tests
+
+on:
+  push:
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
+  pull_request:
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: full
+  RUST_LOG: debug
+
+jobs:
+  tests:
+    name: Rust tests on ${{ matrix.os }} with Rust ${{ matrix.toolchain }} toolchain
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+        toolchain:
+          - stable
+          - beta
+          - nightly
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Sources
+        uses: actions/checkout@v2
+
+      # Install necessary Rust toolchains
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.toolchain }}
+          override: true
+
+      # Run cargo test with no features enabled with ${{ matrix.toolchain }} toolchain
+      - name: Cargo tests with no features enabled with ${{ matrix.toolchain }} toolchain
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --all --no-fail-fast --all-targets --features "ci" -- --nocapture
+          toolchain: ${{ matrix.toolchain }}
+
+      # Run cargo test with all features enabled with ${{ matrix.toolchain }} toolchain
+      - name: Cargo tests with all features enabled with ${{ matrix.toolchain }} toolchain
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --all --no-fail-fast --all-targets --all-features -- --nocapture
+          toolchain: ${{ matrix.toolchain }}

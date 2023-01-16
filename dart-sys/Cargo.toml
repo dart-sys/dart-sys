@@ -33,6 +33,7 @@ download_dart_sdk_stable = ["download_dart_sdk"]
 download_dart_sdk_dev = ["download_dart_sdk"]
 download_dart_sdk_beta = ["download_dart_sdk"]
 download_dart_sdk = []
+ci = []
 
 
 [package.metadata.docs.rs]

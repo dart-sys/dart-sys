@@ -218,27 +218,33 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 		// check if the response is successful
 		match response.status() {
 			StatusCode::OK => {
+				let cargo_home = env::var("CARGO_HOME").expect("Could not find $CARGO_HOME variable.");
+
 				// path to write the resource to
 				let file_path = if is_shasum {
-					"/dart-sdk.zip.sha256sum"
+					format!("{}/dart-sdk.zip.sha256sum", cargo_home)
 				} else {
-					"/dart-sdk.zip"
+					format!("{}/dart-sdk.zip", cargo_home)
 				};
+
 				// create a file to write the response to, if it doesn't exist
 				// if the path does exist, emit a warning and delete the file/directory.
-				let mut file = match File::create(file_path) {
+				let mut file = match File::create(&file_path) {
 					Ok(file) => file,
 					Err(e) => {
 						// if the path exists, delete it
 						if e.kind() == IoErrorKind::AlreadyExists {
-							log(&format!("WARNING: \"{}\" already exists. Deleting", file_path));
-							println!("cargo:warning=\"{}\" already exists. Deleting", file_path);
+							log(&format!("WARNING: \"{}\" already exists. Deleting", &file_path));
+							// do NOT emit this warning if the `ci` feature is enabled
+							// because we run a strict CI, any warnings will cause the CI to fail
+							#[cfg(not(feature = "ci"))]
+							println!("cargo:warning=\"{}\" already exists. Deleting", &file_path);
 
 							// delete the file/directory
-							fs::remove_file(file_path)?;
+							fs::remove_file(&file_path)?;
 
 							// try to create the file again
-							File::create(file_path)?
+							File::create(&file_path)?
 						} else {
 							return Err(Box::new(e));
 						}
@@ -349,6 +355,8 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 		Ok(log("INFO: successfully unzipped Dart SDK"))
 	}
 
+	let cargo_home = env::var("CARGO_HOME").expect("Could not find $CARGO_HOME variable.");
+
 	// attempt to download the sdk and shasum
 	let dart_sdk_download_res = download(dart_sdk_download_url);
 	let dart_sdk_shasum_download_res = download(dart_sdk_shasum_download_url);
@@ -358,21 +366,39 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 		// if the sdk was downloaded successfully, check if the shasum was downloaded successfully
 		if dart_sdk_shasum_download_res.is_ok() {
 			// if the shasum was downloaded successfully, check if the shasum is valid
-			if check_sha256_checksum("/dart-sdk.zip", "/dart-sdk.zip.sha256sum").is_ok() {
+			if check_sha256_checksum(
+				&format!("{}/dart-sdk.zip", cargo_home),
+				&format!("{}/dart-sdk.zip.sha256sum", cargo_home),
+			)
+			.is_ok()
+			{
 				// if the shasum is valid, return the path to the sdk
 				log("INFO: successfully downloaded Dart SDK");
-				if unzip_file("/dart-sdk.zip", "/dart-sdk").is_ok() {
+				if unzip_file(
+					&format!("{}/dart-sdk.zip", cargo_home),
+					&format!("{}/dart-sdk", cargo_home),
+				)
+				.is_ok()
+				{
 					log("INFO: successfully unzipped Dart SDK");
-					return Ok("/dart-sdk/dart-sdk".to_string());
+					return Ok(format!("{}/dart-sdk/dart-sdk", cargo_home));
 				} else {
 					// return the respective error
-					let error = unzip_file("/dart-sdk.zip", "/dart-sdk").unwrap_err();
+					let error = unzip_file(
+						&format!("{}/dart-sdk.zip", cargo_home),
+						&format!("{}/dart-sdk", cargo_home),
+					)
+					.unwrap_err();
 					log(&format!("ERROR: failed to unzip Dart SDK: {{{}}}", error));
 					return Err(error);
 				}
 			} else {
 				// return the respective error
-				let error = check_sha256_checksum("/dart-sdk.zip", "/dart-sdk.zip.sha256sum").unwrap_err();
+				let error = check_sha256_checksum(
+					&format!("{}/dart-sdk.zip", cargo_home),
+					&format!("{}/dart-sdk.zip.sha256sum", cargo_home),
+				)
+				.unwrap_err();
 				log(&format!("ERROR: failed to check shasum: {{{}}}", error));
 				return Err(error);
 			}
@@ -445,6 +471,9 @@ fn get_dart_sdk_channel() -> DartSdkChannel {
 	{
 		const WARNING: &str = "WARNING: more than one `download_dart_sdk_*` feature is enabled, defaulting to stable";
 		log(WARNING);
+		// do NOT emit this warning if the `ci` feature is enabled
+		// because we run a strict CI, any warnings will cause the CI to fail
+		#[cfg(not(feature = "ci"))]
 		println!("cargo:warning={}", WARNING);
 		return DartSdkChannel::Stable;
 	}
@@ -548,6 +577,9 @@ fn emit_compiler_flags() {
 
 fn main() {
 	// emit cargo warning about where the build log file is located
+	// do NOT emit this warning if the `ci` feature is enabled
+	// because we run a strict CI, any warnings will cause the CI to fail
+	#[cfg(not(feature = "ci"))]
 	println!(
 		"cargo:warning=INFO: build log is located at: `{}`",
 		PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap())

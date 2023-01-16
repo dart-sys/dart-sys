@@ -1,5 +1,3 @@
-#![cfg_attr(docs_only, allow(dead_code, unused_imports, unused_variables))]
-
 #[cfg(not(feature = "download_dart_sdk"))]
 use std::env::VarError;
 use std::{
@@ -560,8 +558,17 @@ fn main() {
 	log("------------------------------");
 	log("INFO: starting build script");
 
-	#[cfg(not(feature = "docs_only"))]
-	emit_compiler_flags();
+	// if the `docs_only` feature is not enabled, emit compiler flags
+	// if `--all-features` is passed, run anyway
+	// if `docs_only` is combined with any other feature, run anyway
+	if !cfg!(feature = "docs_only") ||
+		cfg!(all(feature = "docs_only", feature = "download_dart_sdk")) ||
+		cfg!(all(feature = "docs_only", feature = "download_dart_sdk_stable")) ||
+		cfg!(all(feature = "docs_only", feature = "download_dart_sdk_beta")) ||
+		cfg!(all(feature = "docs_only", feature = "download_dart_sdk_dev"))
+	{
+		emit_compiler_flags();
+	}
 
 	log("INFO: finished build script");
 	log("------------------------------");

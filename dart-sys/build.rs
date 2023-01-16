@@ -381,7 +381,7 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 				.is_ok()
 				{
 					log("INFO: successfully unzipped Dart SDK");
-					return Ok(format!("{}/dart-sdk", cargo_home));
+					return Ok(format!("{}/dart-sdk/dart-sdk", cargo_home));
 				} else {
 					// return the respective error
 					let error = unzip_file(

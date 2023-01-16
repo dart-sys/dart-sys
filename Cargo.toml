@@ -1,10 +1,10 @@
 [workspace]
-members = ["ffi", "examples/**/*"]
+members = ["ffi", "examples/**/*", "ffi/update-lib"]
 
 [workspace.package]
-version = "2.0.1"
+version = "2.1.0+2.0.0"
 edition = "2021"
-license = "GPL-3.0-or-later AND MIT"
+license = "GPL-3.0-or-later AND MIT AND Apache-2.0"
 description = "Bindings to the dart native extensions api"
 repository = "https://github.com/dart-sys/dart-sys"
 keywords = [

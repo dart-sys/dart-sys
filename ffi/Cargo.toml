@@ -13,16 +13,22 @@ readme = "../README.md"
 
 # TODO: move these to their respective examples crates
 [dev-dependencies]
+static_assertions = "1.1.0"
 rand = "0.8.5"
 libc = "0.2.139"
 lazy_static = "1.4.0"
 
+[dependencies]
+cfg-if = "1.0"
+
 [build-dependencies]
-bindgen = "0.63.0"
+bindgen = "0.60.1"
+cc = "1.0.73"
 
 [features]
 # default = ["std"]
 docs-only = []
+dart_api_dl = []
 # std = []
 
 

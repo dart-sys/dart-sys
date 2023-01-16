@@ -1,0 +1,17 @@
+dart_api_dl, update-lib
+Copyright 2021 Xayn AG
+
+This product includes software developed at
+Xayn AG (https://www.xayn.com).
+
+Except as otherwise noted (below and/or in individual files), this project is
+licensed under the Apache License, Version 2.0 <LICENSE>.
+
+The xayn_dart_api_dl project includes packages written by third parties.
+The following third party packages are included, and carry
+their own copyright notices and license terms:
+
+* Dart. Code of part of this package is found in dart-src.
+
+  The code licensed under the BSD 3-Clause. 
+  See dart-src/LICENSE for details.

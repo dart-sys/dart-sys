@@ -1,0 +1,83 @@
+name: Rust Tests
+
+on:
+  push:
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
+  pull_request:
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  raw_integration_tests:
+    name: Rust tests on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Sources
+        uses: actions/checkout@v2
+
+      # Install necessary Rust toolchains
+      # Install Rust nightly toolchain
+      - name: Install Rust Nightly Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+          default: true
+          components: clippy, rustfmt
+
+      # Install Rust stable toolchain
+      - name: Install Rust Stable Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          default: false
+          components: clippy, rustfmt
+
+      # Run Cargo tests on the rust nightly toolchain
+      - name: Run Cargo Tests
+        uses: actions-rs/cargo@v1
+        continue-on-error: false
+        with:
+          toolchain: nightly
+          command: test
+          args: --all-targets
+
+      # Run Cargo tests on the rust stable toolchain
+      - name: Run Cargo Tests
+        uses: actions-rs/cargo@v1
+        continue-on-error: false
+        with:
+          toolchain: stable
+          command: test
+          args: --all-targets
+
+      # Run Cargo tests on the rust nightly toolchina with the `--all-features` flag
+      - name: Run Cargo Tests
+        uses: actions-rs/cargo@v1
+        continue-on-error: false
+        with:
+          toolchain: nightly
+          command: test
+          args: --all-targets --all-features
+
+      # Run Cargo tests on the rust stable toolchina with the `--all-features` flag
+      - name: Run Cargo Tests
+        uses: actions-rs/cargo@v1
+        continue-on-error: false
+        with:
+          toolchain: stable
+          command: test
+          args: --all-targets --all-features

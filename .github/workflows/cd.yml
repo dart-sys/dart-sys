@@ -4,7 +4,7 @@ on:
   release:
     types: [published]
   workflow_run:
-    workflows: [CD]
+    workflows: [CI]
     types: [completed]
 
 env:
@@ -27,6 +27,7 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           override: true
+          toolchain: stable
 
       # Install cargo-release
       - name: Install cargo-release
@@ -34,6 +35,11 @@ jobs:
         with:
           command: install
           args: cargo-release
+
+      # If not on main, exit workflow without error
+      - name: Exit workflow if not on main
+        if: ${{ github.ref != 'refs/heads/main' }}
+        run: exit 0
 
       # Run cargo release
       - name: Run cargo release

@@ -2,27 +2,27 @@
 members = ["dart-sys", "examples/**/*"]
 
 [workspace.package]
-version = "2.0.1"
+version = "3.0.0"
 edition = "2021"
 license = "GPL-3.0-or-later AND MIT"
 description = "Bindings to the dart native extensions api"
 repository = "https://github.com/dart-sys/dart-sys"
 keywords = [
-	"dart",
-	"native",
-	"extension",
-	"extensions",
-	"dart-sys",
-	"ffi",
-	"flutter",
-	"no-std",
-	"code-generation",
-	"bindings",
+  "dart",
+  "native",
+  "extension",
+  "extensions",
+  "dart-sys",
+  "ffi",
+  "flutter",
+  "no-std",
+  "code-generation",
+  "bindings",
 ]
 categories = ["development-tools::ffi", "external-ffi-bindings"]
 authors = [
-	"Patrik Buhring <patrikbuhring@gmail.com>",
-	"Mark Gutenberger <gutenfries@gmail.com>",
+  "Patrik Buhring <patrikbuhring@gmail.com>",
+  "Mark Gutenberger <gutenfries@gmail.com>",
 ]
 
 

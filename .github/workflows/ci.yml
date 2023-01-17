@@ -1,4 +1,4 @@
-name: CI - Continuous Integration
+name: CI
 
 on:
   push:
@@ -18,7 +18,7 @@ env:
 
 jobs:
   tests:
-    name: Rust tests on ${{ matrix.os }} with Rust ${{ matrix.toolchain }} toolchain
+    name: Rust tests on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:

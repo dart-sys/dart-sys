@@ -22,7 +22,7 @@ jobs:
       - name: Checkout Sources
         uses: actions/checkout@v2
 
-      # Install rust toolchain
+      # Install Rust
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
         with:

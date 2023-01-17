@@ -39,7 +39,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: release
-          args: patch --no-confirm --execute
+          args: patch --no-confirm --execute --config .github/cargo-release.toml
 
   # Run if CI workflow was NOT successful
   ci-failure:

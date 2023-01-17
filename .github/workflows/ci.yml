@@ -37,6 +37,7 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           override: true
+          toolchain: stable
 
       # Run cargo test with no features enabled
       - name: Cargo tests with no features enabled

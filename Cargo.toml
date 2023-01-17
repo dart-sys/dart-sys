@@ -8,26 +8,27 @@ license = "GPL-3.0-or-later AND MIT"
 description = "Bindings to the dart native extensions api"
 repository = "https://github.com/dart-sys/dart-sys"
 keywords = [
-  "dart",
-  "native",
-  "extension",
-  "extensions",
-  "dart-sys",
-  "ffi",
-  "flutter",
-  "no-std",
-  "code-generation",
-  "bindings",
+	"dart",
+	"native",
+	"extension",
+	"extensions",
+	"dart-sys",
+	"ffi",
+	"flutter",
+	"no-std",
+	"code-generation",
+	"bindings",
 ]
 categories = ["development-tools::ffi", "external-ffi-bindings"]
 authors = [
-  "Patrik Buhring <patrikbuhring@gmail.com>",
-  "Mark Gutenberger <gutenfries@gmail.com>",
+	"Patrik Buhring <patrikbuhring@gmail.com>",
+	"Mark Gutenberger <gutenfries@gmail.com>",
 ]
 
 
 [workspace.dependencies]
 dart-sys = { path = "dart-sys" }
+predicates = "2.1.5"
 
 [profile.release]
 codegen-units = 1

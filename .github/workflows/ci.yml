@@ -1,4 +1,4 @@
-name: Rust Tests
+name: CI - Continuous Integration
 
 on:
   push:

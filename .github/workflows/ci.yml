@@ -26,35 +26,28 @@ jobs:
           - ubuntu-latest
           - windows-latest
           - macos-latest
-        toolchain:
-          - stable
-          - beta
-          - nightly
 
     steps:
       # Checkout the repository
       - name: Checkout Sources
         uses: actions/checkout@v2
 
-      # Install necessary Rust toolchains
+      # Install Rust
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: ${{ matrix.toolchain }}
           override: true
 
-      # Run cargo test with no features enabled with ${{ matrix.toolchain }} toolchain
-      - name: Cargo tests with no features enabled with ${{ matrix.toolchain }} toolchain
+      # Run cargo test with no features enabled
+      - name: Cargo tests with no features enabled
         uses: actions-rs/cargo@v1
         with:
           command: test
           args: --all --no-fail-fast --all-targets --features "ci" -- --nocapture
-          toolchain: ${{ matrix.toolchain }}
 
-      # Run cargo test with all features enabled with ${{ matrix.toolchain }} toolchain
-      - name: Cargo tests with all features enabled with ${{ matrix.toolchain }} toolchain
+      # Run cargo test with all features enabled
+      - name: Cargo tests with all features enabled
         uses: actions-rs/cargo@v1
         with:
           command: test
           args: --all --no-fail-fast --all-targets --all-features -- --nocapture
-          toolchain: ${{ matrix.toolchain }}

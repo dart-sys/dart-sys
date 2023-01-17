@@ -40,7 +40,7 @@ fn log(msg: &str) {
 	let mut file = OpenOptions::new()
 		.append(true)
 		.create(true)
-		.open(env::var("CARGO_MANIFEST_DIR").unwrap() + Path::new("/build.log").to_str().unwrap())
+		.open(env::var("CARGO_TARGET_DIR").unwrap() + Path::new("/build.log").to_str().unwrap())
 		.unwrap();
 	writeln!(file, "[{}] {}", now.to_rfc3339_opts(SecondsFormat::Secs, true), msg).unwrap();
 }
@@ -582,7 +582,7 @@ fn main() {
 	#[cfg(not(feature = "ci"))]
 	println!(
 		"cargo:warning=INFO: build log is located at: `{}`",
-		PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap())
+		PathBuf::from(env::var("CARGO_TARGET_DIR").unwrap())
 			.join("build.log")
 			.to_str()
 			.unwrap()

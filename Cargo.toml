@@ -2,7 +2,7 @@
 members = ["dart-sys", "examples/**/*"]
 
 [workspace.package]
-version = "3.0.0"
+version = "3.0.1"
 edition = "2021"
 license = "GPL-3.0-or-later AND MIT"
 description = "Bindings to the dart native extensions api"

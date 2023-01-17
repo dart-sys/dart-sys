@@ -1,10 +1,11 @@
-name: CD - Continuous Deployment
+name: CD
 
 on:
+  release:
+    types: [published]
   workflow_run:
-    workflows: [ci]
+    workflows: [CI]
     types: [completed]
-  workflow_dispatch:
 
 env:
   CARGO_TERM_COLOR: always
@@ -21,11 +22,12 @@ jobs:
       - name: Checkout Sources
         uses: actions/checkout@v2
 
-      # Install rust toolchain
+      # Install Rust
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
         with:
           override: true
+          toolchain: stable
 
       # Install cargo-release
       - name: Install cargo-release
@@ -34,16 +36,22 @@ jobs:
           command: install
           args: cargo-release
 
-      # # Run cargo release
-      # - name: Run cargo release
-      #   uses: actions-rs/cargo@v1
-      #   with:
-      #     command: release
-      #     # add git tag, push to git remote, publish to crates.io
+      # If not on main, exit workflow without error
+      - name: Exit workflow if not on main
+        if: ${{ github.ref != 'refs/heads/main' }}
+        run: exit 0
+
+      # Run cargo release
+      - name: Run cargo release
+        uses: actions-rs/cargo@v1
+        with:
+          command: release
+          args: patch --no-confirm --execute --config .github/cargo-release.toml
 
   # Run if CI workflow was NOT successful
   ci-failure:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     steps:
-      - run: echo 'you can remove this or do something with it like sending an email about why you are not releasing'
+      - name: Exit workflow without error
+        run: exit 0

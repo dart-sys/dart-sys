@@ -4,10 +4,10 @@ import 'dart:io' show Platform, Directory;
 import 'package:path/path.dart' as path;
 
 /// Return type of the _FFI_ function
-typedef HelloWorldFunction = ffi.Void Function();
+typedef RandomNumberFunction = ffi.Int64 Function();
 
 /// Return type of the _Dart_ function
-typedef HelloWorld = void Function();
+typedef RandomNumber = int Function();
 
 void main() {
   // Find the path to the dynamic library
@@ -25,10 +25,10 @@ void main() {
   switch (Platform.operatingSystem) {
     case 'macos':
       if (Directory(releaseDir).existsSync()) {
-        libPath = path.join(releaseDir, 'libhello_world.dylib');
+        libPath = path.join(releaseDir, 'librandom_number.dylib');
         break;
       } else if (Directory(debugDir).existsSync()) {
-        libPath = path.join(debugDir, 'libhello_world.dylib');
+        libPath = path.join(debugDir, 'librandom_number.dylib');
         break;
       } else {
         throw Exception(
@@ -36,10 +36,10 @@ void main() {
       }
     case 'linux':
       if (Directory(releaseDir).existsSync()) {
-        libPath = path.join(releaseDir, 'libhello_world.so');
+        libPath = path.join(releaseDir, 'librandom_number.so');
         break;
       } else if (Directory(debugDir).existsSync()) {
-        libPath = path.join(debugDir, 'libhello_world.so');
+        libPath = path.join(debugDir, 'librandom_number.so');
         break;
       } else {
         throw Exception(
@@ -47,10 +47,10 @@ void main() {
       }
     case 'windows':
       if (Directory(releaseDir).existsSync()) {
-        libPath = path.join(releaseDir, 'hello_world.dll');
+        libPath = path.join(releaseDir, 'random_number.dll');
         break;
       } else if (Directory(debugDir).existsSync()) {
-        libPath = path.join(debugDir, 'hello_world.dll');
+        libPath = path.join(debugDir, 'random_number.dll');
         break;
       } else {
         throw Exception(
@@ -64,10 +64,10 @@ void main() {
   // Load the library in memory
   final lib = ffi.DynamicLibrary.open(libPath);
 
-  // look for the Rust function named `hello_world` in the library
-  final HelloWorld helloWorld = lib
-      .lookup<ffi.NativeFunction<HelloWorldFunction>>('hello_world')
+  // look for the Rust function named `random_number` in the library
+  final RandomNumber randomNumber = lib
+      .lookup<ffi.NativeFunction<RandomNumberFunction>>('random_number')
       .asFunction();
 
-  helloWorld();
+  print(randomNumber());
 }

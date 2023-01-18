@@ -101,7 +101,12 @@ pub mod ffi_utils {
 pub use ffi_utils::dart_rust_dart_sys_Init;
 
 #[no_mangle]
-/// Prints "Hello, world!" to the standard output.
-pub extern "C" fn hello_world() {
-	println!("Hello, World!");
+/// Returns a random number between 0 and 255 as an unsigned 8-bit integer.
+///
+/// ## Returns:
+/// Rust: `u8`
+///
+/// Dart: `int`
+pub extern "C" fn random_number() -> u8 {
+	rand::random::<u8>()
 }

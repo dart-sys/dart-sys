@@ -1,6 +1,6 @@
-name: hello_world
+name: random_number
 version: 0.0.0
-description: Example dart application that uses Dart-sys to call a "Hello World!" Rust function from Dart.
+description: Example dart application that uses Dart-sys to generate a random number from Rust.
 publish_to: none
 
 environment:

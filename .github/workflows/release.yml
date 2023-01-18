@@ -1,11 +1,10 @@
-name: CD
+name: Release
 
 on:
-  release:
-    types: [published]
   workflow_run:
     workflows: [CI]
     types: [completed]
+  workflow_dispatch:
 
 env:
   CARGO_TERM_COLOR: always
@@ -13,11 +12,16 @@ env:
   RUST_LOG: debug
 
 jobs:
-  # Run if CI workflow was successful AND was triggered by a merge to main
+  # Run if there was a merge to main AND CI workflow was successful
   ci-success:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }} && ${{ github.event.workflow_run.event == 'push' }}
     steps:
+      # If not on main, exit workflow without error, otherwise continue
+      - name: Exit workflow if not on main
+        if: ${{ github.ref != 'refs/heads/main' }}
+        run: exit 0
+
       # Checkout sources
       - name: Checkout Sources
         uses: actions/checkout@v2
@@ -36,17 +40,12 @@ jobs:
           command: install
           args: cargo-release
 
-      # If not on main, exit workflow without error
-      - name: Exit workflow if not on main
-        if: ${{ github.ref != 'refs/heads/main' }}
-        run: exit 0
-
       # Run cargo release
-      - name: Run cargo release
+      - name: Cargo release
         uses: actions-rs/cargo@v1
         with:
           command: release
-          args: patch --no-confirm --execute --config .github/cargo-release.toml
+          args: patch --no-confirm --config .github/cargo-release.toml --features "ci" --no-verify --execute
 
   # Run if CI workflow was NOT successful
   ci-failure:

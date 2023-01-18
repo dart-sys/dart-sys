@@ -512,45 +512,49 @@ fn emit_compiler_flags() {
 		dart_sdk_path.to_str().unwrap()
 	));
 
-	// // if target OS is windows, add extra compile flags nessecary for linking
+	// if target OS is windows, add extra compile flags nessecary for linking
 	// AGAINST the Dart SDK binaries (gotta love windows)
-	// let target_os = env::var("CARGO_CFG_TARGET_OS");
-	// match target_os.as_ref().map(|x| &**x) {
-	// Ok("windows") => {
-	// log("INFO: target OS is windows, adding extra compile flags for linking against Dart SDK
-	// binaries"); let dart_sdk_bin_path: PathBuf = dart_sdk_path.join("bin");
-	// let dart_sdk_lib_path = dart_sdk_path.join("bin").join("dart.lib");
-	//
-	// Ensure that, on windows, the Dart SDK binaries are located at
-	// `dart_sdk_path\bin\dart.exe` and `dart_sdk_path\bin\dart.lib`
-	// and panic if they are not
-	// if !dart_sdk_lib_path.exists() {
-	// let error = &format!(
-	// "ERROR: Dart SDK binaries not found at \"{}\\.{{exe&lib}}\". Please ensure that the Dart SDK is \
-	// installed correctly.",
-	// dart_sdk_bin_path.to_str().unwrap()
-	// );
-	//
-	// log(error);
-	// panic!("{}", error);
-	// }
-	//
-	// add extra compile flags for linking against Dart SDK binaries
-	// println!("cargo:rustc-link-search=native={}", dart_sdk_bin_path.to_str().unwrap());
-	// println!("cargo:rustc-link-lib=static=dart");
-	// },
-	// _ => {
-	// log("INFO: target OS is not windows, skipping extra compile flags for linking against Dart SDK
-	// binaries") },
-	// }
+	let target_os = env::var("CARGO_CFG_TARGET_OS");
+	match target_os.as_ref().map(|x| &**x) {
+		Ok("windows") => {
+			log("INFO: target OS is windows, adding extra compile flags for linking against Dart SDK binaries");
+			let dart_sdk_bin_path: PathBuf = dart_sdk_path.join("bin");
+			let dart_sdk_lib_path = dart_sdk_path.join("bin").join("dart.lib");
+
+			// Ensure that, on windows, the Dart SDK binaries are located at
+			// `dart_sdk_path\bin\dart.exe` and `dart_sdk_path\bin\dart.lib`
+			// and panic if they are not
+			if !dart_sdk_lib_path.exists() {
+				let error = &format!(
+					"ERROR: Dart SDK binaries not found at \"{}\\.{{exe&lib}}\". Please ensure that the Dart SDK is \
+					 installed correctly.",
+					dart_sdk_bin_path.to_str().unwrap()
+				);
+
+				log(error);
+				panic!("{}", error);
+			}
+
+			// log success location of Dart SDK binaries
+			log(&format!(
+				"INFO: successfully found Dart SDK binaries at: \"{}\"",
+				dart_sdk_bin_path.to_str().unwrap()
+			));
+
+			// add extra compile flags for linking against Dart SDK binaries
+			println!("cargo:rustc-link-search=native={}", dart_sdk_bin_path.to_str().unwrap());
+			println!("cargo:rustc-link-lib=static=dart");
+		},
+		_ => log("INFO: target OS is not windows, skipping extra compile flags for linking against Dart SDK binaries"),
+	}
 
 	let dart_sdk_header_wrapper = PathBuf::from("./bindgen/dart_sdk_wrapper.h");
 
 	// Ensure that the Dart SDK header wrapper exists
 	if !dart_sdk_header_wrapper.exists() {
 		let error = &format!(
-			"ERROR: Dart SDK header wrapper not found at \"{}\".\n  Please ensure that Dart-sys is not corrupt\n  \
-			 Proceed with caution.",
+			"ERROR: Dart SDK header wrapper not found at \"{}\". Please ensure that Dart-sys is not corrupt. Proceed \
+			 with caution.",
 			dart_sdk_header_wrapper.to_str().unwrap()
 		);
 

@@ -1,5 +1,5 @@
 [workspace]
-members = ["dart-sys", "examples/**/*"]
+members = ["dart-sys"]
 
 [workspace.package]
 version = "3.0.3"

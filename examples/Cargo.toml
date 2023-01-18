@@ -1,0 +1,2 @@
+[workspace]
+members = ["random_number", "hello_world"]

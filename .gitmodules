@@ -1,3 +1,0 @@
-[submodule "dart-sdk"]
-	path = dart-sdk
-	url = https://github.com/dart-sys/dart-sdk.git

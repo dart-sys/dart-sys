@@ -2,7 +2,7 @@
 members = ["dart-sys", "examples/**/*"]
 
 [workspace.package]
-version = "3.0.2"
+version = "3.0.3"
 edition = "2021"
 license = "GPL-3.0-or-later AND MIT"
 description = "Bindings to the dart native extensions api"
@@ -16,7 +16,7 @@ authors = [
 
 
 [workspace.dependencies]
-dart-sys = { path = "dart-sys" }
+# for cargo-release:
 predicates = "2.1.5"
 
 [profile.release]

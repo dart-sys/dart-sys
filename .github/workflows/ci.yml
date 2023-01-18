@@ -39,16 +39,9 @@ jobs:
           override: true
           toolchain: stable
 
-      # Run cargo test with no features enabled
-      - name: Cargo tests with no features enabled
+      # Run cargo tests
+      - name: Cargo tests
         uses: actions-rs/cargo@v1
         with:
           command: test
           args: --all --no-fail-fast --all-targets --features "ci" -- --nocapture
-
-      # Run cargo test with all features enabled
-      - name: Cargo tests with all features enabled
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --all --no-fail-fast --all-targets --all-features -- --nocapture

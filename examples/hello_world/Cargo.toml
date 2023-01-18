@@ -1,0 +1,10 @@
+[package]
+name = "hello_world"
+version = "0.0.0"
+
+[dependencies]
+libc = "0.2.139"
+dart-sys = { path = "../../dart-sys" }
+
+[lib]
+crate-type = ["cdylib"]

@@ -1,3 +1,0 @@
-extend = [{ path = "../Makefile.toml" }]
-
-# TODO: add examples specific build rules here

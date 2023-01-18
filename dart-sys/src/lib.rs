@@ -6,3 +6,5 @@
 	dead_code
 )]
 pub mod bindings;
+
+pub use bindings::*;

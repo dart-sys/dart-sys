@@ -12,12 +12,6 @@ build = "build.rs"
 readme = "../README.md"
 
 
-# TODO: move these to their respective examples crates
-[dev-dependencies]
-rand = "0.8.5"
-libc = "0.2.139"
-lazy_static = "1.4.0"
-
 [build-dependencies]
 bindgen = { version = "0.63.0" }
 chrono = { version = "0.4.23" }

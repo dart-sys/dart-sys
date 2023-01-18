@@ -40,6 +40,12 @@ jobs:
           command: install
           args: cargo-release
 
+      # Configure git credentials
+      - name: Configure git credentials
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "gutenfries@gmail.com"
+
       # Run cargo release
       - name: Cargo release
         uses: actions-rs/cargo@v1

@@ -1,0 +1,12 @@
+[package]
+name = "random_number"
+version = "0.0.0"
+
+[dependencies]
+rand = "0.8.5"
+libc = "0.2.139"
+lazy_static = "1.4.0"
+dart-sys = { path = "../../dart-sys" }
+
+[lib]
+crate-type = ["cdylib"]

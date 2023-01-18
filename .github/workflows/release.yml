@@ -4,6 +4,8 @@ on:
   workflow_run:
     workflows: [CI]
     types: [completed]
+    branches: [main]
+
   workflow_dispatch:
 
 env:
@@ -17,11 +19,6 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }} && ${{ github.event.workflow_run.event == 'push' }}
     steps:
-      # If not on main, exit workflow without error, otherwise continue
-      - name: Exit workflow if not on main
-        if: ${{ github.ref != 'refs/heads/main' }}
-        run: exit 0
-
       # Checkout sources
       - name: Checkout Sources
         uses: actions/checkout@v2
@@ -45,6 +42,13 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "gutenfries@gmail.com"
+
+      # Configure Cargo credentials
+      - name: Configure Cargo credentials
+        uses: actions-rs/cargo@v1
+        with:
+          command: login
+          args: ${{ secrets.CARGO_TOKEN }}
 
       # Run cargo release
       - name: Cargo release

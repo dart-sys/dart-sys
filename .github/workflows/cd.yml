@@ -13,10 +13,10 @@ env:
   RUST_LOG: debug
 
 jobs:
-  # Run if CI workflow was successful
+  # Run if CI workflow was successful AND was triggered by a merge to main
   ci-success:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} && ${{ github.event.workflow_run.event == 'push' }}
     steps:
       # Checkout sources
       - name: Checkout Sources

@@ -41,11 +41,9 @@ jobs:
       # Log into cargo
       - name: Log into cargo
         uses: actions-rs/cargo@v1
-        env:
-          CARGO_TOKEN: ${{ secrets.CARGO_TOKEN }}
         with:
           command: login
-          args: ${CARGO_TOKEN}
+          args: ${{ secrets.CARGO_TOKEN }}
 
       # Run cargo release
       - name: Cargo release

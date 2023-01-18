@@ -3,7 +3,9 @@ name = "hello_world"
 version = "0.0.0"
 
 [dependencies]
-libc = "0.2.139"
+rand = "^0.8.5"
+libc = "^0.2.139"
+lazy_static = "^1.4.0"
 dart-sys = { path = "../../dart-sys" }
 
 [lib]

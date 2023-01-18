@@ -1,9 +1,6 @@
 name: Release
 
 on:
-  workflow_run:
-    workflows: [CI]
-    types: [completed]
   workflow_dispatch:
 
 env:
@@ -12,10 +9,10 @@ env:
   RUST_LOG: debug
 
 jobs:
-  # Run if on main branch and CI was successful.
+  # Run if on main branch
   release:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     steps:
       # Checkout sources
       - name: Checkout Sources
@@ -57,10 +54,10 @@ jobs:
           command: release
           args: patch --no-confirm --config .github/cargo-release.toml --features "ci" --no-verify --execute
 
-  # If not on main or if CI failed
+  # If not on main
   skip-release:
     runs-on: ubuntu-latest
-    if: ${{ github.ref != 'refs/heads/main' || github.event.workflow_run.conclusion != 'success' }}
+    if: ${{ github.ref != 'refs/heads/main' }}
     steps:
       - name: Exit workflow without error
         run: exit 0

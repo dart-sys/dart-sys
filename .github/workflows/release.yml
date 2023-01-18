@@ -4,8 +4,6 @@ on:
   workflow_run:
     workflows: [CI]
     types: [completed]
-    branches: [main]
-
   workflow_dispatch:
 
 env:
@@ -14,10 +12,10 @@ env:
   RUST_LOG: debug
 
 jobs:
-  # Run if there was a merge to main AND CI workflow was successful
-  ci-success:
+  # Run if on main branch and CI was successful.
+  release:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }} && ${{ github.event.workflow_run.event == 'push' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.ref == 'refs/heads/main' }}
     steps:
       # Checkout sources
       - name: Checkout Sources
@@ -43,12 +41,14 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "gutenfries@gmail.com"
 
-      # Configure Cargo credentials
-      - name: Configure Cargo credentials
+      # Log into cargo
+      - name: Log into cargo
         uses: actions-rs/cargo@v1
+        env:
+          CARGO_TOKEN: ${{ secrets.CARGO_TOKEN }}
         with:
           command: login
-          args: ${{ secrets.CARGO_TOKEN }}
+          args: ${CARGO_TOKEN}
 
       # Run cargo release
       - name: Cargo release
@@ -57,10 +57,10 @@ jobs:
           command: release
           args: patch --no-confirm --config .github/cargo-release.toml --features "ci" --no-verify --execute
 
-  # Run if CI workflow was NOT successful
-  ci-failure:
+  # If not on main or if CI failed
+  skip-release:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    if: ${{ github.ref != 'refs/heads/main' || github.event.workflow_run.conclusion != 'success' }}
     steps:
       - name: Exit workflow without error
         run: exit 0

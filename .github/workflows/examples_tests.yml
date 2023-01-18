@@ -1,0 +1,46 @@
+name: Examples tests
+
+on:
+  push:
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
+  pull_request:
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: full
+  RUST_LOG: debug
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout sources
+      - name: Checkout Sources
+        uses: actions/checkout@v2
+
+      # Install Dart
+      - uses: dart-lang/setup-dart@v1
+
+      # Install Rust
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          override: true
+          toolchain: stable
+
+      # Run dart tests for all examples in `/examples`
+      - name: Run dart tests for all examples in `/examples`
+        run: |
+          cd examples
+          for dir in */; do
+            cd $dir
+            dart pub get
+            dart test
+            cd ..
+          done

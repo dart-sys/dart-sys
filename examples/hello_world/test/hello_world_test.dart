@@ -1,4 +1,4 @@
-@Timeout(Duration(minutes: 2))
+@Timeout(Duration(hours: 1))
 
 import 'dart:io';
 

@@ -14,11 +14,6 @@ authors = [
 	"Mark Gutenberger <gutenfries@gmail.com>",
 ]
 
-
-[workspace.dependencies]
-# for cargo-release:
-predicates = "2.1.5"
-
 [profile.release]
 codegen-units = 1
 debug = false

@@ -7,9 +7,10 @@ pre-release-replacements = [
 	{ file = "../CHANGELOG.md", search = "<!-- next-url -->", replace = "<!-- next-url -->\n[Unreleased]: https://github.com/dart-sys/dart-sys/compare/{{tag_name}}...HEAD", exactly = 1 },
 
 	# Update README.md
-	{ file = "../README.md", search = "dart-sys = \"*\"", replace = "dart-sys = \"{{version}}\"" },
+	{ file = "../README.md", search = "dart-sys = \"*\"*", replace = "dart-sys = \"{{version}}\"" },
 
 ]
 tag-prefix = ""
 consolidate-commits = false
 allow-branch = ["main"]
+tag-meggage = "GitHub Actions: Release v{{version}}"

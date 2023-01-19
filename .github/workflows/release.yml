@@ -25,20 +25,31 @@ jobs:
           override: true
           toolchain: stable
 
-      # Install cargo-release
-      - name: Install cargo-release
+      # cache cargo release so we don't have to install it every time
+      - name: Cache cargo release and rust install steps
+        id: cache-release
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            ~/target/
+          key: ${{ runner.os }}-cargo-release
+
+      - name: install cargo-release
         uses: actions-rs/cargo@v1
+        if: steps.cache-release.outputs.cache-hit != 'true'
         with:
           command: install
           args: cargo-release
 
-      # Configure git credentials
       - name: Configure git credentials
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "gutenfries@gmail.com"
+          git config user.name "Github Actions: Release"
+          git config user.email "<>"
 
-      # Log into cargo
       - name: Log into cargo
         uses: actions-rs/cargo@v1
         with:

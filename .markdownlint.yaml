@@ -1,0 +1,20 @@
+# Example markdownlint YAML configuration with all properties set to their default value
+
+# Default state for all rules
+default: true
+
+# No-inline-html: Inline HTML
+MD033: false
+
+# first-line-heading/first-line-h1: First line in a file should be a top-level heading
+MD041: false
+
+#no-emphasis-as-heading/no-emphasis-as-header: Emphasis used instead of a heading
+MD036: false
+
+# no-trailing-punctuation: Trailing punctuation in heading
+MD026: false
+
+# Line length
+MD013:
+  line_length: 120

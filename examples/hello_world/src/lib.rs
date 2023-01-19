@@ -18,7 +18,7 @@ pub mod ffi_utils {
 	/// Initializer function for the library.
 	///
 	/// This function is called by the Dart VM when the library is loaded.
-	pub unsafe extern "C" fn dart_rust_dart_sys_Init(parent_library: dart_sys::Dart_Handle) -> dart_sys::Dart_Handle {
+	pub unsafe extern "C" fn hello_world_Init(parent_library: dart_sys::Dart_Handle) -> dart_sys::Dart_Handle {
 		if dart_sys::Dart_IsError(parent_library) {
 			return parent_library;
 		}
@@ -98,7 +98,7 @@ pub mod ffi_utils {
 	}
 }
 
-pub use ffi_utils::dart_rust_dart_sys_Init;
+pub use ffi_utils::hello_world_Init;
 
 #[no_mangle]
 /// Prints "Hello, world!" to the standard output.

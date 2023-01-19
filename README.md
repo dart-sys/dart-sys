@@ -19,9 +19,9 @@
 
 > _Rust bindings to the [Dart native extensions api](https://dart.dev/server/c-interop-native-extensions)_
 
-## Getting Started :rocket:
+## Getting Started 🚀
 
-### Prerequisites :wrench:
+### Prerequisites 🔧
 
 You will need the following tools available on your system:
 
@@ -30,7 +30,7 @@ You will need the following tools available on your system:
 - [Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
 - [Git](https://git-scm.com/downloads)
 
-### Installing :package:
+### Installing 📦
 
 Run the following Cargo command in your project directory:
 
@@ -47,9 +47,9 @@ dart-sys = "3.1.1"
 Source code releases for each SemVer tag are also available on the
 [GitHub releases page](https://github.com/dart-sys/dart-sys/releases).
 
-## Usage :computer:
+## Usage 💻
 
-### Examples :books:
+### Examples 📚
 
 An extremely straightforward example of using `dart-sys` would be like such:
 
@@ -105,7 +105,7 @@ While this example is certainly possible, you are not likely to ever use Dart-sy
 See the [examples](https://github.com/dart-sys/dart-sys/tree/main/examples) directory for more in-depth
 examples of how to use Dart-sys. All of the examples are tested using GitHub Actions and documented verbosely.
 
-## Built With :hammer_and_wrench:
+## Built With 🛠️
 
 - [Rust](https://www.rust-lang.org/) - A systems programming language that runs
  blazingly fast, prevents segfaults, and guarantees thread safety.
@@ -115,18 +115,18 @@ examples of how to use Dart-sys. All of the examples are tested using GitHub Act
 - [bindgen](https://crates.io/crates/bindgen) - A Rust library for generating
  bindings to C and C++ APIs.
 
-## Contributing :pencil:
+## Contributing ✏️
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct,
 and the process for submitting pull requests. If you have any questions, please
 open an issue, or contact admin <gutenfries@gmail.com> directly.
 
-## Versioning :bookmark_tabs:
+## Versioning 🪧
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available,
 see the [tags on this repository](https://github.com/your/project/tags).
 
-## License :page_facing_up:
+## License 📜
 
 Dart-sys is open-sourced and released under the terms and conditions of the following three licenses:
 
@@ -134,6 +134,6 @@ Dart-sys is open-sourced and released under the terms and conditions of the foll
 - [Apache License (Version 2.0)](LICENSE-APACHE-2.0.md)
 - [GNU General Public License (Version 3)](LICENSE-GPL-3.0.md)
 
-## Acknowledgments :pray:
+## Acknowledgments 🙏
 
 - [README starter](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2) by [@PurpleBooth](https://gist.github.com/PurpleBooth)

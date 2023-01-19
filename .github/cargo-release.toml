@@ -1,2 +1,5 @@
 consolidate-commits = false
 allow-branch = ["main"]
+pre-release-replacements = [
+	{ file = "README.md", search = "predicates = .*", replace = "{{crate_name}} = \"{{version}}\"" },
+]

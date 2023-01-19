@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v2
 
       # Cache cargo, rust, and dart
-      - name: Cache cargo, rust, and dart
+      - name: Cache cargo, rust, and dart binaries
         id: cache-release
         uses: actions/cache@v2
         with:
@@ -48,7 +48,7 @@ jobs:
 
       # Install dart
       - name: Install dart
-        if: steps.cache-release.outputs.cache-hit != 'true'
+        # if: steps.cache-release.outputs.cache-hit != 'true'
         uses: dart-lang/setup-dart@v1
 
       # Run dart tests for all examples in `/examples`

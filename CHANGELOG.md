@@ -6,7 +6,7 @@
 
 ## [3.1.4] - 2023-01-19
 
-## [3.1.3] - Initial Re-Release
+## [3.1.3] - initial crate rerelease
 
 <!-- next-url -->
 [Unreleased]: https://github.com/dart-sys/dart-sys/compare/v3.1.5...HEAD

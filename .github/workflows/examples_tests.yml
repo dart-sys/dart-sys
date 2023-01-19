@@ -48,10 +48,8 @@ jobs:
 
       # Install dart
       - name: Install dart
-        uses: actions/setup-dart@v2
         if: steps.cache-release.outputs.cache-hit != 'true'
-        with:
-          channel: stable
+        uses: dart-lang/setup-dart@v1
 
       # Run dart tests for all examples in `/examples`
       - name: Run dart tests for all examples in `/examples`

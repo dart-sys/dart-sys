@@ -13,4 +13,4 @@ pre-release-replacements = [
 tag-prefix = ""
 consolidate-commits = false
 allow-branch = ["main"]
-tag-meggage = "GitHub Actions: Release v{{version}}"
+tag-message = "GitHub Actions: Release v{{version}}"

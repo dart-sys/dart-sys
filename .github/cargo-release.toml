@@ -2,7 +2,7 @@ consolidate-commits = false
 allow-branch = ["main"]
 pre-release-replacements = [
 	# Replace the version number in the README
-	{ file = "README.md", search = "dart-sys = .*", replace = "dart-sys = \"${version}\"", exactly = 1 },
+	{ file = "../README.md", search = "dart-sys = *", replace = "dart-sys = \"${version}\"", exactly = 1 },
 
 	# Update the CHANGELOG
 	{ file = "../CHANGELOG.md", search = "Unreleased", replace = "{{version}}" },

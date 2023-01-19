@@ -4,7 +4,7 @@ members = ["dart-sys"]
 [workspace.package]
 version = "3.1.5"
 edition = "2021"
-license = "GPL-3.0-or-later AND MIT"
+license = "GPL-3.0-or-later AND MIT AND Apache-2.0"
 description = "Bindings to the dart native extensions api"
 repository = "https://github.com/dart-sys/dart-sys"
 keywords = ["dart", "ffi", "flutter", "bindings", "dart-native"]

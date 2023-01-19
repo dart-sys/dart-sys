@@ -36,7 +36,7 @@ jobs:
             ~/.cargo/git/db/
             ~/target/
             ~/.pub-cache/
-          key: ${{ runner.os }}-cargo-release
+          key: ${{ runner.os }}-cargo-dart
 
       # Install Rust toolchain
       - name: Install Rust toolchain

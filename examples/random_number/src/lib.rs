@@ -18,7 +18,7 @@ pub mod ffi_utils {
 	/// Initializer function for the library.
 	///
 	/// This function is called by the Dart VM when the library is loaded.
-	pub unsafe extern "C" fn dart_rust_dart_sys_Init(parent_library: dart_sys::Dart_Handle) -> dart_sys::Dart_Handle {
+	pub unsafe extern "C" fn random_number_Init(parent_library: dart_sys::Dart_Handle) -> dart_sys::Dart_Handle {
 		if dart_sys::Dart_IsError(parent_library) {
 			return parent_library;
 		}
@@ -98,7 +98,7 @@ pub mod ffi_utils {
 	}
 }
 
-pub use ffi_utils::dart_rust_dart_sys_Init;
+pub use ffi_utils::random_number_Init;
 
 #[no_mangle]
 /// Returns a random number between 0 and 255 as an unsigned 8-bit integer.

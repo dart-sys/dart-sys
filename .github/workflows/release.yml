@@ -16,16 +16,11 @@ jobs:
     steps:
       # Checkout sources
       - name: Checkout Sources
-        uses: actions/checkout@v2
-
-      # Install Rust
-      - name: Install Rust toolchain
-        uses: actions-rs/toolchain@v1
+        uses: actions/checkout@v3
         with:
-          override: true
-          toolchain: stable
+          fetch-depth: 0
 
-      # cache cargo release so we don't have to install it every time
+      # Cache cargo release and rust install steps
       - name: Cache cargo release and rust install steps
         id: cache-release
         uses: actions/cache@v2
@@ -37,6 +32,13 @@ jobs:
             ~/.cargo/git/db/
             ~/target/
           key: ${{ runner.os }}-cargo-release
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        if: steps.cache-release.outputs.cache-hit != 'true'
+        with:
+          override: true
+          toolchain: stable
 
       - name: install cargo-release
         uses: actions-rs/cargo@v1

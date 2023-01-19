@@ -24,15 +24,34 @@ jobs:
       - name: Checkout Sources
         uses: actions/checkout@v2
 
-      # Install Dart
-      - uses: dart-lang/setup-dart@v1
+      # Cache cargo, rust, and dart
+      - name: Cache cargo, rust, and dart
+        id: cache-release
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            ~/target/
+            ~/.pub-cache/
+          key: ${{ runner.os }}-cargo-release
 
-      # Install Rust
+      # Install Rust toolchain
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
+        if: steps.cache-release.outputs.cache-hit != 'true'
         with:
           override: true
           toolchain: stable
+
+      # Install dart
+      - name: Install dart
+        uses: actions/setup-dart@v2
+        if: steps.cache-release.outputs.cache-hit != 'true'
+        with:
+          channel: stable
 
       # Run dart tests for all examples in `/examples`
       - name: Run dart tests for all examples in `/examples`

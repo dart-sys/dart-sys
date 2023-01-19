@@ -30,11 +30,26 @@ jobs:
     steps:
       # Checkout the repository
       - name: Checkout Sources
-        uses: actions/checkout@v2
+        uses:
+          actions/checkout@v2
 
-      # Install Rust
+          # Cache cargo & rust
+      - name: Cache cargo & rust
+        id: cache-cargo
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            ~/target/
+          key: ${{ runner.os }}-cargo
+
+      # Install Rust toolchain
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
+        if: steps.cache-cargo.outputs.cache-hit != 'true'
         with:
           override: true
           toolchain: stable

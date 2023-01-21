@@ -54,7 +54,7 @@ fn find_local_dart_sdk() -> Option<String> {
 	let dart_sdk: Result<String, VarError> = env::var("dart_sdk");
 	if let Ok(dart_sdk) = dart_sdk {
 		// if 'dart_sdk' is set, return Some(dart_sdk)
-		return Some(dart_sdk);
+		Some(dart_sdk)
 	} else {
 		// if 'dart_sdk' is not set, check `PATH`
 
@@ -87,7 +87,7 @@ fn find_local_flutter_sdk() -> Option<String> {
 	let flutter_sdk: Result<String, VarError> = env::var("fluter_sdk");
 	if let Ok(flutter_sdk) = flutter_sdk {
 		// if 'flutter_sdk' is set, return Some(flutter_sdk)
-		return Some(flutter_sdk);
+		Some(flutter_sdk)
 	} else {
 		// if 'flutter_sdk' is not set, check `PATH`
 
@@ -117,6 +117,7 @@ fn find_local_flutter_sdk() -> Option<String> {
 
 /// Dart SDK channel
 /// Options are `stable`, `beta`, and `dev`.
+#[derive(Debug, Clone, Copy)]
 enum DartSdkChannel {
 	Stable,
 	Beta,
@@ -254,7 +255,8 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 				// write the response to the file
 				file.write_all(&response.bytes()?)?;
 
-				Ok(log("INFO: Successfully downloaded resource"))
+				log("INFO: Successfully downloaded resource");
+				Ok(())
 			},
 			// If response is not successful, return the respective error
 			_ => {
@@ -341,7 +343,7 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 			} else {
 				if let Some(p) = outpath.parent() {
 					if !p.exists() {
-						fs::create_dir_all(&p)?;
+						fs::create_dir_all(p)?;
 					}
 				}
 				if outpath.exists() {
@@ -352,7 +354,8 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 			}
 		}
 
-		Ok(log("INFO: successfully unzipped Dart SDK"))
+		log("INFO: successfully unzipped Dart SDK");
+		Ok(())
 	}
 
 	let cargo_home = env::var("CARGO_HOME").expect("Could not find $CARGO_HOME variable.");
@@ -381,7 +384,7 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 				.is_ok()
 				{
 					log("INFO: successfully unzipped Dart SDK");
-					return Ok(format!("{}/dart-sdk/dart-sdk", cargo_home));
+					Ok(format!("{}/dart-sdk/dart-sdk", cargo_home))
 				} else {
 					// return the respective error
 					let error = unzip_file(
@@ -390,7 +393,7 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 					)
 					.unwrap_err();
 					log(&format!("ERROR: failed to unzip Dart SDK: {{{}}}", error));
-					return Err(error);
+					Err(error)
 				}
 			} else {
 				// return the respective error
@@ -400,19 +403,19 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 				)
 				.unwrap_err();
 				log(&format!("ERROR: failed to check shasum: {{{}}}", error));
-				return Err(error);
+				Err(error)
 			}
 		} else {
 			// return the respective error
 			let error = dart_sdk_shasum_download_res.unwrap_err();
 			log(&format!("ERROR: failed to download Dart SDK shasum: {{{}}}", error));
-			return Err(error);
+			Err(error)
 		}
 	} else {
 		// return the respective error
 		let error = dart_sdk_download_res.unwrap_err();
 		log(&format!("ERROR: failed to download Dart SDK: {{{}}}", error));
-		return Err(error);
+		Err(error)
 	}
 }
 
@@ -577,6 +580,79 @@ fn emit_compiler_flags() {
 		.expect("ERROR: failed to write bindings to file");
 
 	log("INFO: finished emitting compiler flags");
+}
+
+mod gen_api_dl {
+	use std::{env, path::PathBuf};
+
+	use bindgen::EnumVariation;
+
+	static DL_ENABLED_FUNCTIONS: &[&str] = &["Dart_InitializeApiDL"];
+
+	static DL_ENABLED_TYPES: &[&str] = &[
+		"Dart_.+_DL",
+		"Dart_CObject",
+		"Dart_Handle",
+		"Dart_PersistentHandle",
+		"Dart_WeakPersistentHandle",
+		"Dart_HandleFinalizer",
+		"Dart_FinalizableHandle",
+		"Dart_CObject_Type",
+		"Dart_TypedData_Type",
+	];
+
+	static DL_ENABLED_VARS: &[&str] = &["Dart_.+_DL", "DART_API_DL_MAJOR_VERSION", "DART_API_DL_MINOR_VERSION"];
+
+	/// Generates bindings for the Dart API dynamic library.
+	pub fn codegen() {
+		print!("cargo:rerun-if-env-changed=CARGO_PKG_VERSION");
+		let dart_src_dir = PathBuf::from(env::var_os("CARGO_MANIFEST_DIR").unwrap()).join("dart-src");
+
+		let dl_header_path = dart_src_dir.join("dart_api_dl.h");
+		let dl_version_header_path = dart_src_dir.join("dart_version.h");
+
+		let mut builder = bindgen::Builder::default()
+			.header(
+				dl_header_path
+					.to_str()
+					.expect("ERROR: could not find path `dart_api_dl.h`"),
+			)
+			.header(
+				dl_version_header_path
+					.to_str()
+					.expect("ERROR: could not find path `dart_version.h`"),
+			)
+			.parse_callbacks(Box::new(bindgen::CargoCallbacks))
+			.default_enum_style(EnumVariation::NewType {
+				is_bitfield: false,
+				is_global: true,
+			});
+
+		for function in DL_ENABLED_FUNCTIONS {
+			builder = builder.allowlist_function(function);
+		}
+
+		for r#type in DL_ENABLED_TYPES {
+			builder = builder.allowlist_type(r#type);
+		}
+
+		for var in DL_ENABLED_VARS {
+			builder = builder.allowlist_var(var);
+		}
+
+		let bindings = builder.generate().expect("Failed to generate dart_api_dl binding");
+
+		let out_path = PathBuf::from(env::var("OUT_DIR").unwrap()).join("dart_api_dl_bindings.rs");
+		bindings
+			.write_to_file(out_path)
+			.expect("Failed to write dat_api_dl bindings.");
+
+		let dl_glue_path = dart_src_dir.join("dart_api_dl.c");
+		cc::Build::new()
+			.file(dl_glue_path)
+			.include(dart_src_dir)
+			.compile("dart_api_dl");
+	}
 }
 
 fn main() {

@@ -1,5 +1,5 @@
 [workspace]
-members = ["dart-sys"]
+members = ["dart-sys", "update-dart-sdk"]
 
 [workspace.package]
 version = "3.1.5"

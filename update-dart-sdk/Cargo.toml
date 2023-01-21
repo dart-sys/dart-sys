@@ -1,0 +1,13 @@
+[package]
+name = "update-dart-sdk"
+version = "0.0.0"
+authors.workspace = true
+license.workspace = true
+edition.workspace = true
+repository.workspace = true
+
+[dependencies]
+reqwest = { version = "^0.11.13", features = ["blocking"] }
+zip = "^0.6.3"
+sha2 = "^0.10.6"
+chrono = "0.4.23"

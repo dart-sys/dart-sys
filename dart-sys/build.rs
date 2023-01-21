@@ -1,18 +1,25 @@
 #[cfg(not(feature = "download_dart_sdk"))]
+#[cfg(not(feature = "dart_api_dl"))]
 use std::env::VarError;
+use std::{env, fmt, fs::OpenOptions, io::Write, path::PathBuf};
+#[cfg(not(feature = "dart_api_dl"))]
 use std::{
-	env,
 	// "Error" is a very generic name and oftehn conflicts with other crates
 	error::Error as StdError,
-	fs::{self, File, OpenOptions},
-	io::{self, Error as IoError, ErrorKind as IoErrorKind, Read, Write},
-	path::{Path, PathBuf},
+	fs::{self, File},
+	io::{self, Error as IoError, ErrorKind as IoErrorKind, Read},
+	path::Path,
 	time::Duration,
 };
 
+#[cfg(feature = "dart_api_dl")]
+use bindgen::EnumVariation;
 use chrono::{DateTime, SecondsFormat, Utc};
+#[cfg(not(feature = "dart_api_dl"))]
 use reqwest::StatusCode;
+#[cfg(not(feature = "dart_api_dl"))]
 use sha2::{Digest, Sha256};
+#[cfg(not(feature = "dart_api_dl"))]
 use zip::ZipArchive;
 
 /// Logger for the build script.
@@ -46,6 +53,7 @@ fn log(msg: &str) {
 }
 
 #[cfg(not(feature = "download_dart_sdk"))]
+#[cfg(not(feature = "dart_api_dl"))]
 /// Attempts to find an installed Dart SDK.
 fn find_local_dart_sdk() -> Option<String> {
 	log("INFO: searching for local Dart SDK");
@@ -54,7 +62,7 @@ fn find_local_dart_sdk() -> Option<String> {
 	let dart_sdk: Result<String, VarError> = env::var("dart_sdk");
 	if let Ok(dart_sdk) = dart_sdk {
 		// if 'dart_sdk' is set, return Some(dart_sdk)
-		return Some(dart_sdk);
+		Some(dart_sdk)
 	} else {
 		// if 'dart_sdk' is not set, check `PATH`
 
@@ -78,6 +86,7 @@ fn find_local_dart_sdk() -> Option<String> {
 	}
 }
 
+#[cfg(not(feature = "dart_api_dl"))]
 #[cfg(not(feature = "download_dart_sdk"))]
 /// Attempts to find an installed flutter sdk.
 fn find_local_flutter_sdk() -> Option<String> {
@@ -87,7 +96,7 @@ fn find_local_flutter_sdk() -> Option<String> {
 	let flutter_sdk: Result<String, VarError> = env::var("fluter_sdk");
 	if let Ok(flutter_sdk) = flutter_sdk {
 		// if 'flutter_sdk' is set, return Some(flutter_sdk)
-		return Some(flutter_sdk);
+		Some(flutter_sdk)
 	} else {
 		// if 'flutter_sdk' is not set, check `PATH`
 
@@ -117,28 +126,20 @@ fn find_local_flutter_sdk() -> Option<String> {
 
 /// Dart SDK channel
 /// Options are `stable`, `beta`, and `dev`.
+#[allow(dead_code)]
+#[derive(Debug, Clone, Copy)]
 enum DartSdkChannel {
 	Stable,
 	Beta,
 	Dev,
 }
 
-impl DartSdkChannel {
-	fn to_string(&self) -> String {
+impl fmt::Display for DartSdkChannel {
+	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
 		match self {
-			DartSdkChannel::Stable => "stable".to_string(),
-			DartSdkChannel::Beta => "beta".to_string(),
-			DartSdkChannel::Dev => "dev".to_string(),
-		}
-	}
-
-	#[allow(dead_code)]
-	fn from_string(s: &str) -> Option<DartSdkChannel> {
-		match s {
-			"stable" => Some(DartSdkChannel::Stable),
-			"beta" => Some(DartSdkChannel::Beta),
-			"dev" => Some(DartSdkChannel::Dev),
-			_ => None,
+			DartSdkChannel::Stable => write!(f, "stable"),
+			DartSdkChannel::Beta => write!(f, "beta"),
+			DartSdkChannel::Dev => write!(f, "dev"),
 		}
 	}
 }
@@ -150,6 +151,7 @@ impl DartSdkChannel {
 /// ## Argsuments:
 /// * `channel`: the channel to download the sdk from. Defaults to `stable`. Options are `stable`,
 ///   `beta`, and `dev`.
+#[cfg(not(feature = "dart_api_dl"))]
 fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError>> {
 	log("INFO: attempting to download dart-sdk");
 	// get the current platform name
@@ -182,7 +184,7 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 	// Official dart mirror url with platform and architecture
 	let dart_sdk_download_url: String = format!(
 		"https://storage.googleapis.com/dart-archive/channels/{_channel}/release/latest/sdk/dartsdk-{_platform}-{_arch}-release.zip",
-		_channel = channel.to_string(),
+		_channel = channel,
 		_platform = platform,
 		_arch = arch,
 	);
@@ -190,7 +192,7 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 	// SHA256 hash to check integrity of the sdk url
 	let dart_sdk_shasum_download_url: String = format!(
 		"https://storage.googleapis.com/dart-archive/channels/{_channel}/release/latest/sdk/dartsdk-{_platform}-{_arch}-release.zip.sha256sum",
-		_channel = channel.to_string(),
+		_channel = channel,
 		_platform = platform,
 		_arch = arch,
 	);
@@ -254,7 +256,8 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 				// write the response to the file
 				file.write_all(&response.bytes()?)?;
 
-				Ok(log("INFO: Successfully downloaded resource"))
+				log("INFO: Successfully downloaded resource");
+				Ok(())
 			},
 			// If response is not successful, return the respective error
 			_ => {
@@ -309,7 +312,8 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 		// ? the Dart SDK hash file includes the file name, so we have to check if the actual hash is
 		// ? included in the expected hash
 		if expected_hash.contains(&acutal_hash) {
-			Ok(log("INFO: integrity check successful"))
+			log("INFO: integrity check successful");
+			Ok(())
 		} else {
 			let error = format!(
 				"ERROR: integrity check failed. Expected hash: `{}`, Actual hash: `{}`",
@@ -341,7 +345,7 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 			} else {
 				if let Some(p) = outpath.parent() {
 					if !p.exists() {
-						fs::create_dir_all(&p)?;
+						fs::create_dir_all(p)?;
 					}
 				}
 				if outpath.exists() {
@@ -352,7 +356,8 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 			}
 		}
 
-		Ok(log("INFO: successfully unzipped Dart SDK"))
+		log("INFO: successfully unzipped Dart SDK");
+		Ok(())
 	}
 
 	let cargo_home = env::var("CARGO_HOME").expect("Could not find $CARGO_HOME variable.");
@@ -381,7 +386,7 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 				.is_ok()
 				{
 					log("INFO: successfully unzipped Dart SDK");
-					return Ok(format!("{}/dart-sdk/dart-sdk", cargo_home));
+					Ok(format!("{}/dart-sdk/dart-sdk", cargo_home))
 				} else {
 					// return the respective error
 					let error = unzip_file(
@@ -390,7 +395,7 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 					)
 					.unwrap_err();
 					log(&format!("ERROR: failed to unzip Dart SDK: {{{}}}", error));
-					return Err(error);
+					Err(error)
 				}
 			} else {
 				// return the respective error
@@ -400,19 +405,19 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 				)
 				.unwrap_err();
 				log(&format!("ERROR: failed to check shasum: {{{}}}", error));
-				return Err(error);
+				Err(error)
 			}
 		} else {
 			// return the respective error
 			let error = dart_sdk_shasum_download_res.unwrap_err();
 			log(&format!("ERROR: failed to download Dart SDK shasum: {{{}}}", error));
-			return Err(error);
+			Err(error)
 		}
 	} else {
 		// return the respective error
 		let error = dart_sdk_download_res.unwrap_err();
 		log(&format!("ERROR: failed to download Dart SDK: {{{}}}", error));
-		return Err(error);
+		Err(error)
 	}
 }
 
@@ -425,6 +430,7 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 /// ## Arguments:
 ///
 /// * `channel`: the channel to download the sdk from, if no sdk is found locally
+#[cfg(not(feature = "dart_api_dl"))]
 #[cfg(not(feature = "download_dart_sdk"))]
 fn get_dart_sdk(channel: DartSdkChannel) -> String {
 	// first, get path to Dart SDK
@@ -460,6 +466,7 @@ fn get_dart_sdk(channel: DartSdkChannel) -> String {
 ///
 /// If one is not specified, defaults to the stable channel
 #[allow(unreachable_code)]
+#[cfg(not(feature = "dart_api_dl"))]
 fn get_dart_sdk_channel() -> DartSdkChannel {
 	// if all of the download_dart_sdk_* features are enabled (caused by `--all-features`), log error
 	// and return stable
@@ -495,8 +502,9 @@ fn get_dart_sdk_channel() -> DartSdkChannel {
 	return DartSdkChannel::Stable;
 }
 
-/// Emits the compiler flags for `cargo build`
-fn emit_compiler_flags() {
+/// Generates bindings for the Dart API dynamic library.
+#[cfg(not(feature = "dart_api_dl"))]
+pub fn codegen() {
 	log("INFO: emitting compiler flags");
 	// get Dart SDK path for linking
 	#[cfg(not(feature = "download_dart_sdk"))]
@@ -579,6 +587,77 @@ fn emit_compiler_flags() {
 	log("INFO: finished emitting compiler flags");
 }
 
+/// Generates bindings for the Dart API dynamic library.
+#[cfg(feature = "dart_api_dl")]
+pub fn codegen() {
+	static DL_ENABLED_FUNCTIONS: &[&str] = &["Dart_InitializeApiDL"];
+
+	static DL_ENABLED_TYPES: &[&str] = &[
+		"Dart_.+_DL",
+		"Dart_CObject",
+		"Dart_Handle",
+		"Dart_PersistentHandle",
+		"Dart_WeakPersistentHandle",
+		"Dart_HandleFinalizer",
+		"Dart_FinalizableHandle",
+		"Dart_CObject_Type",
+		"Dart_TypedData_Type",
+	];
+	static DL_ENABLED_VARS: &[&str] = &["Dart_.+_DL", "DART_API_DL_MAJOR_VERSION", "DART_API_DL_MINOR_VERSION"];
+
+	let dart_src_dir = PathBuf::from(env::var_os("CARGO_MANIFEST_DIR").unwrap())
+		.join("..")
+		.join("dart-sdk")
+		.join("include");
+
+	let dart_dl_header_path = dart_src_dir.join("dart_api_dl.h");
+	let dart_dl_version_header_path = dart_src_dir.join("dart_version.h");
+
+	let mut builder = bindgen::Builder::default()
+		.header(
+			dart_dl_header_path
+				.to_str()
+				.expect("ERROR: could not find path `dart_api_dl.h`"),
+		)
+		.header(
+			dart_dl_version_header_path
+				.to_str()
+				.expect("ERROR: could not find path `dart_version.h`"),
+		)
+		.parse_callbacks(Box::new(bindgen::CargoCallbacks))
+		.default_enum_style(EnumVariation::NewType {
+			is_bitfield: false,
+			is_global: true,
+		});
+
+	for function_ in DL_ENABLED_FUNCTIONS {
+		builder = builder.allowlist_function(function_);
+	}
+
+	for type_ in DL_ENABLED_TYPES {
+		builder = builder.allowlist_type(type_);
+	}
+
+	for variable_ in DL_ENABLED_VARS {
+		builder = builder.allowlist_var(variable_);
+	}
+
+	let bindings = builder
+		.generate()
+		.expect("ERROR: Failed to generate dart_api_dl binding");
+
+	let out_path = PathBuf::from(env::var("CARGO_MANIFEST_DIR").expect("ERROR: Could not find $CARGO_MANIFEST_DIR"));
+	bindings
+		.write_to_file(out_path.join("src/bindings_api_dl/mod.rs"))
+		.expect("ERROR: failed to write dart_api_dl bindings to file");
+
+	let dart_dl_glue_path = dart_src_dir.join("dart_api_dl.c");
+	cc::Build::new()
+		.file(dart_dl_glue_path)
+		.include(dart_src_dir)
+		.compile("dart_api_dl");
+}
+
 fn main() {
 	// emit cargo warning about where the build log file is located
 	// do NOT emit this warning if the `ci` feature is enabled
@@ -603,7 +682,7 @@ fn main() {
 		cfg!(all(feature = "docs_only", feature = "download_dart_sdk_beta")) ||
 		cfg!(all(feature = "docs_only", feature = "download_dart_sdk_dev"))
 	{
-		emit_compiler_flags();
+		codegen();
 	}
 
 	log("INFO: finished build script");

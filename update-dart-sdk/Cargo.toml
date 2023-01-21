@@ -1,6 +1,6 @@
 [package]
 name = "update-dart-sdk"
-version = "0.0.0"
+version = "0.0.1"
 authors.workspace = true
 license.workspace = true
 edition.workspace = true

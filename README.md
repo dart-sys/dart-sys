@@ -41,7 +41,7 @@ cargo add dart-sys
 Or add the following line to your Cargo.toml:
 
 ```toml
-dart-sys = "3.1.6"
+dart-sys = "0.0.2"
 ```
 
 Source code releases for each SemVer tag are also available on the

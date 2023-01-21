@@ -22,8 +22,9 @@ cc = "1.0.78"
 
 [features]
 # std = []
-default = []
+default = ["dart_api_dl"]
 docs_only = []
+dart_api_dl = []
 download_dart_sdk_stable = ["download_dart_sdk"]
 download_dart_sdk_dev = ["download_dart_sdk"]
 download_dart_sdk_beta = ["download_dart_sdk"]

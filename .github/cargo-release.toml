@@ -6,8 +6,8 @@ pre-release-replacements = [
 	{ file = "../CHANGELOG.md", search = "<!-- next-header -->", replace = "<!-- next-header -->\n\n## [Unreleased] - ReleaseDate", exactly = 1 },
 	{ file = "../CHANGELOG.md", search = "<!-- next-url -->", replace = "<!-- next-url -->\n[Unreleased]: https://github.com/dart-sys/dart-sys/compare/{{tag_name}}...HEAD", exactly = 1 },
 
-	# Update README.md
-	{ file = "../README.md", search = "dart-sys = \"*\"*", replace = "dart-sys = \"{{version}}\"" },
+	# Update the `dart-sys = "x.x.x"` line in the README
+	{ file = "../README.md", search = "dart-sys = \"[0-9]+\\.[0-9]+\\.[0-9]+\"", replace = "dart-sys = \"{{version}}\"" },
 
 ]
 tag-prefix = ""

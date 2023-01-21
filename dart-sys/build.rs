@@ -1,18 +1,16 @@
 #[cfg(not(feature = "download_dart_sdk"))]
 #[cfg(not(feature = "dart_api_dl"))]
 use std::env::VarError;
+use std::{env, fmt, fs::OpenOptions, io::Write, path::PathBuf};
 #[cfg(not(feature = "dart_api_dl"))]
 use std::{
-	env,
 	// "Error" is a very generic name and oftehn conflicts with other crates
 	error::Error as StdError,
-	fmt,
-	fs::{self, File, OpenOptions},
-	io::{self, Error as IoError, ErrorKind as IoErrorKind, Read, Write},
-	path::{Path, PathBuf},
+	fs::{self, File},
+	io::{self, Error as IoError, ErrorKind as IoErrorKind, Read},
+	path::Path,
 	time::Duration,
 };
-use std::{env, fmt, fs::OpenOptions, io::Write, path::PathBuf};
 
 #[cfg(feature = "dart_api_dl")]
 use bindgen::EnumVariation;

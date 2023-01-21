@@ -21,8 +21,8 @@ zip = "0.6.3"
 cc = "1.0.78"
 
 [features]
+default = []
 # std = []
-default = ["dart_api_dl"]
 docs_only = []
 dart_api_dl = []
 download_dart_sdk_stable = ["download_dart_sdk"]

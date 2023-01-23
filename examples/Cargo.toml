@@ -1,2 +1,2 @@
 [workspace]
-members = ["random_number", "hello_world"]
+members = ["primitives", "hello_world"]

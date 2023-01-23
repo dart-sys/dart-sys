@@ -1,4 +1,4 @@
-name: random_number
+name: primitives
 version: 0.0.0
 description: Example dart application that uses Dart-sys to generate a random number from Rust.
 publish_to: none
@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   path: ^1.8.0
+  ffi: ^2.0.1
 
 dev_dependencies:
   lints: ^2.0.0

@@ -1,5 +1,5 @@
 [package]
-name = "random_number"
+name = "primitives"
 version = "0.0.0"
 
 [dependencies]

@@ -10,6 +10,7 @@ keywords.workspace = true
 categories.workspace = true
 build = "build.rs"
 readme = "../README.md"
+include = ["../README.md", "../LICENSE", "../CHANGELOG.md", "../dart-sdk/"]
 
 
 [build-dependencies]
@@ -34,12 +35,3 @@ ci = []
 
 [package.metadata.docs.rs]
 features = ["docs_only"]
-
-
-# [[example]]
-# name = "async"
-# crate-type = ["cdylib"]
-
-# [[example]]
-# name = "sync"
-# crate-type = ["cdylib"]

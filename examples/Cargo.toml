@@ -1,2 +1,2 @@
 [workspace]
-members = ["primitives", "hello_world"]
+members = ["primitives", "hello_world", "structs"]

@@ -208,6 +208,8 @@ pub const kVmSnapshotBssAsmSymbol: &[u8; 20usize] = b"_kDartVmSnapshotBss\0";
 pub const kIsolateSnapshotDataAsmSymbol: &[u8; 26usize] = b"_kDartIsolateSnapshotData\0";
 pub const kIsolateSnapshotInstructionsAsmSymbol: &[u8; 34usize] = b"_kDartIsolateSnapshotInstructions\0";
 pub const kIsolateSnapshotBssAsmSymbol: &[u8; 25usize] = b"_kDartIsolateSnapshotBss\0";
+pub const DART_API_DL_MAJOR_VERSION: u32 = 2;
+pub const DART_API_DL_MINOR_VERSION: u32 = 0;
 pub const DART_EMBEDDER_INFORMATION_CURRENT_VERSION: u32 = 1;
 pub type va_list = *mut ::std::os::raw::c_char;
 extern "C" {

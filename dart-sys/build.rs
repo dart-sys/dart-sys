@@ -409,12 +409,14 @@ fn download_dart_sdk(channel: DartSdkChannel) -> Result<String, Box<dyn StdError
 			}
 		} else {
 			// return the respective error
+			#[allow(clippy::unnecessary_unwrap)]
 			let error = dart_sdk_shasum_download_res.unwrap_err();
 			log(&format!("ERROR: failed to download Dart SDK shasum: {{{}}}", error));
 			Err(error)
 		}
 	} else {
 		// return the respective error
+		#[allow(clippy::unnecessary_unwrap)]
 		let error = dart_sdk_download_res.unwrap_err();
 		log(&format!("ERROR: failed to download Dart SDK: {{{}}}", error));
 		Err(error)
@@ -556,26 +558,33 @@ pub fn codegen() {
 		_ => log("INFO: target OS is not windows, skipping extra compile flags for linking against Dart SDK binaries"),
 	}
 
-	let dart_sdk_header_wrapper = PathBuf::from("./bindgen/dart_sdk_wrapper.h");
-
-	// Ensure that the Dart SDK header wrapper exists
-	if !dart_sdk_header_wrapper.exists() {
-		let error = &format!(
-			"ERROR: Dart SDK header wrapper not found at \"{}\". Please ensure that Dart-sys is not corrupt. Proceed \
-			 with caution.",
-			dart_sdk_header_wrapper.to_str().unwrap()
-		);
-
-		log(error);
-		panic!("{}", error);
-	}
+	let dart_sdk_src_dir = dart_sdk_path.join("include");
 
 	let bindings = bindgen::Builder::default()
-		.header("./bindgen/dart_sdk_wrapper.h")
-		.clang_arg(format!(
-			"--include-directory={}",
-			dart_sdk_path.join("include").to_str().unwrap()
-		))
+		.header(
+			dart_sdk_src_dir
+				.join("dart_api.h")
+				.to_str()
+				.expect("ERROR: could not find path `dart_api_dl.h`"),
+		)
+		.header(
+			dart_sdk_src_dir
+				.join("dart_version.h")
+				.to_str()
+				.expect("ERROR: could not find path `dart_version.h`"),
+		)
+		.header(
+			dart_sdk_src_dir
+				.join("dart_native_api.h")
+				.to_str()
+				.expect("ERROR: could not find path `dart_native_api.h`"),
+		)
+		.header(
+			dart_sdk_src_dir
+				.join("dart_tools_api.h")
+				.to_str()
+				.expect("ERROR: could not find path `dart_tools_api.h`"),
+		)
 		.clang_arg("-DDART_SHARED_LIB")
 		.generate()
 		.expect("ERROR: bindgen failed to generate bindings");
@@ -605,24 +614,35 @@ pub fn codegen() {
 	];
 	static DL_ENABLED_VARS: &[&str] = &["Dart_.+_DL", "DART_API_DL_MAJOR_VERSION", "DART_API_DL_MINOR_VERSION"];
 
-	let dart_src_dir = PathBuf::from(env::var_os("CARGO_MANIFEST_DIR").unwrap())
+	let dart_sdk_src_dir = PathBuf::from(env::var_os("CARGO_MANIFEST_DIR").unwrap())
 		.join("..")
 		.join("dart-sdk")
 		.join("include");
 
-	let dart_dl_header_path = dart_src_dir.join("dart_api_dl.h");
-	let dart_dl_version_header_path = dart_src_dir.join("dart_version.h");
-
 	let mut builder = bindgen::Builder::default()
 		.header(
-			dart_dl_header_path
+			dart_sdk_src_dir
+				.join("dart_api_dl.h")
 				.to_str()
 				.expect("ERROR: could not find path `dart_api_dl.h`"),
 		)
 		.header(
-			dart_dl_version_header_path
+			dart_sdk_src_dir
+				.join("dart_version.h")
 				.to_str()
 				.expect("ERROR: could not find path `dart_version.h`"),
+		)
+		.header(
+			dart_sdk_src_dir
+				.join("dart_native_api.h")
+				.to_str()
+				.expect("ERROR: could not find path `dart_native_api.h`"),
+		)
+		.header(
+			dart_sdk_src_dir
+				.join("dart_tools_api.h")
+				.to_str()
+				.expect("ERROR: could not find path `dart_tools_api.h`"),
 		)
 		.parse_callbacks(Box::new(bindgen::CargoCallbacks))
 		.default_enum_style(EnumVariation::NewType {
@@ -647,14 +667,15 @@ pub fn codegen() {
 		.expect("ERROR: Failed to generate dart_api_dl binding");
 
 	let out_path = PathBuf::from(env::var("CARGO_MANIFEST_DIR").expect("ERROR: Could not find $CARGO_MANIFEST_DIR"));
+
 	bindings
 		.write_to_file(out_path.join("src/bindings_api_dl/mod.rs"))
 		.expect("ERROR: failed to write dart_api_dl bindings to file");
 
-	let dart_dl_glue_path = dart_src_dir.join("dart_api_dl.c");
+	let dart_dl_glue_path = dart_sdk_src_dir.join("dart_api_dl.c");
 	cc::Build::new()
 		.file(dart_dl_glue_path)
-		.include(dart_src_dir)
+		.include(dart_sdk_src_dir)
 		.compile("dart_api_dl");
 }
 

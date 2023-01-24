@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 import 'package:path/path.dart' as path;
 
 void main() async {
-  group('random_number', () {
+  group('primitives', () {
     test('Build rust library & test dart program', () async {
       // Build the library
       var buildProcess = await Process.run('cargo', ['build']);
@@ -18,19 +18,19 @@ void main() async {
       switch (Platform.operatingSystem) {
         case 'macos':
           expect(
-            File('$binDir/librandom_number.dylib').existsSync(),
+            File('$binDir/libprimitives.dylib').existsSync(),
             isTrue,
           );
           break;
         case 'linux':
           expect(
-            File('$binDir/librandom_number.so').existsSync(),
+            File('$binDir/libprimitives.so').existsSync(),
             isTrue,
           );
           break;
         case 'windows':
           expect(
-            File('$binDir/random_number.dll').existsSync(),
+            File('$binDir/primitives.dll').existsSync(),
             isTrue,
           );
           break;
@@ -39,12 +39,20 @@ void main() async {
       }
 
       // Run the dart program
-      var dartProcess = await Process.run('dart', ['bin/random_number.dart']);
+      var dartProcess = await Process.run('dart', ['bin/primitives.dart']);
 
       // Verify program did not throw error
       expect(dartProcess.stderr, isEmpty);
-      // Verify that output is a positive integer between 0 and 255
-      expect(int.parse(dartProcess.stdout), inInclusiveRange(0, 255));
+
+      // expected output:
+      //
+      // {0-255}
+      // 3 + 5 = 8
+      // 3 - 5 = -2
+      // 3 * 5 = 15
+      expect(dartProcess.stdout, contains('3 + 5 = 8'));
+      expect(dartProcess.stdout, contains('3 - 5 = -2'));
+      expect(dartProcess.stdout, contains('3 * 5 = 15'));
       // Verify that the program exited successfully
       expect(dartProcess.exitCode, equals(0));
     });

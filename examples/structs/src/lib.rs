@@ -21,7 +21,7 @@ pub mod ffi_utils {
 	/// ...
 	///
 	/// This function is called by the Dart VM when the library is loaded.
-	pub unsafe extern "C" fn primitives_Init(parent_library: dart_sys::Dart_Handle) -> dart_sys::Dart_Handle {
+	pub unsafe extern "C" fn structs_Init(parent_library: dart_sys::Dart_Handle) -> dart_sys::Dart_Handle {
 		if dart_sys::Dart_IsError(parent_library) {
 			return parent_library;
 		}
@@ -101,200 +101,81 @@ pub mod ffi_utils {
 	}
 }
 
-pub use ffi_utils::primitives_Init;
+pub use ffi_utils::structs_Init;
 
-/// Uses pointer arithmetic to reverse a string.
+/// defines a planaer cartesian coordinate
 ///
-/// # Arguments
+/// # Fields
 ///
-/// * `string` - A pointer to an `&str` string.
-/// * `length` - The `usize` length of the string.
-///
-/// ## Safety
-///
-/// This function is unsafe because it dereferences raw pointers.
-/// The caller must ensure that the pointer is valid.
-///
-///
-/// ## way to reverse a string by pointer manipulation in C:
-/// ```c
-/// char *reverse_string(char *string, int length) {
-///     // Allocates native memory in C.
-///     char *reversed_str = (char *)malloc((length + 1) * sizeof(char));
-///     for (int i = 0; i < length; i++) {
-///         reversed_str[length - i - 1] = string[i];
-///     }
-///     reversed_str[length] = '\0';
-///     return reversed_str;
-/// }
-/// ```
-#[no_mangle]
-pub unsafe extern "C" fn reverse_string(string: *const &str) -> *mut &str {
-	let string = &*string;
-	let length = string.len();
-	// opt to use String type for buffer allocation
-	let mut buf = String::with_capacity(length);
-	for i in 0..length {
-		buf.push(string.chars().nth(length - i - 1).unwrap());
-	}
-
-	let reversed_str = buf.as_str();
-	let reversed_str = Box::new(&reversed_str);
-	let reversed_str = Box::into_raw(reversed_str);
-
-	reversed_str as *mut &str
-}
-
-/// Returns 'Hello, World!' by pointer.
-///
-/// ## Safety
-/// This function is unsafe because it dereferences raw pointers.
-/// The caller must ensure that the pointer is valid.
-///
-/// ## C equivilant:
-/// ```c
-/// char *hello_world() {
-///     return "Hello World";
-/// }
-/// ```
-#[no_mangle]
-pub unsafe extern "C" fn hello_world() -> *mut &'static str {
-	let hello_world = "Hello, World!";
-	let hello_world = Box::new(&hello_world);
-	let hello_world = Box::into_raw(hello_world);
-
-	hello_world as *mut &str
-}
-
-/// Frees a string from memory.
-///
-/// ## Arguments
-///
-/// * `str` - A pointer to a `&str` string.
-///
-/// ## Safety
-///
-/// This function is unsafe because it dereferences raw pointers.
-/// The caller must ensure that the pointer is valid.
-///
-/// ## C equivilant:
-/// ```c
-/// void free_string(char *str) {
-///    // Free native memory in C which was allocated in C.
-///   free(str);
-/// }
-/// ```
-#[no_mangle]
-pub unsafe extern "C" fn free_str(str: *mut &str) {
-	// drop the string from memory
-	drop(Box::from_raw(str));
-}
-
-/// Struct representation of a planar cartesian coordinate.
-///
-/// ## Fields
-///
-/// * `latitude` - The `f64` latitude of the coordinate.
-/// * `longitude` - The `f64` longitude of the coordinate.
-///
-/// ## C equivilant:
-/// ```c
-/// struct Coordinate {
-///     double latitude;
-///     double longitude;
-/// };
-/// ```
+/// * `latitude` - x coordinate
+/// * `longitude` - y coordinate
 #[repr(C)]
+#[derive(Debug, Copy, Clone)]
 pub struct Coordinate {
 	pub latitude: f64,
 	pub longitude: f64,
 }
 
-/// Creates a coordinate `Coordinate` on a cartesian plane.
+/// defines a place in the world
 ///
-/// ## Arguments
+/// # Fields
 ///
-/// * `latitude` - The `f64` latitude of the coordinate.
-/// * `longitude` - The `f64` longitude of the coordinate.
+/// * `name` - name of the place
+/// * `coordinate` - coordinate of the place
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct Place {
+	pub name: *const libc::c_char,
+	pub coordinate: Coordinate,
+}
 
-/// ##C equivilant:
-/// ```c
-/// struct Coordinate create_coordinate(double latitude, double longitude) {
-///     struct Coordinate coordinate;
-///     coordinate.latitude = latitude;
-///     coordinate.longitude = longitude;
-///     return coordinate;
-/// }
-/// ```
+/// creates a new coordinate
+///
+/// # Arguments
+///
+/// * `latitude` - x coordinate
+/// * `longitude` - y coordinate
+///
+/// # Returns
+///
+/// * `Coordinate` - the new coordinate
 #[no_mangle]
 pub extern "C" fn create_coordinate(latitude: f64, longitude: f64) -> Coordinate {
 	Coordinate { latitude, longitude }
 }
 
-/// Struct representation of a place.
+/// creates a new place
 ///
-/// ## Fields
+/// # Arguments
 ///
-/// * `name` - The `&str` name of the place.
-/// * `coordinate` - The `Coordinate` coordinate of the place.
+/// * `name` - name of the place
+/// * `latitude` - latitude of the place
+/// * `longitude` - longitude of the place
 ///
-/// ## C equivilant:
-/// ```c
-/// struct Place {
-///     char *name;
-///     struct Coordinate coordinate;
-/// };
-/// ```
-#[repr(C)]
-pub struct Place<'a> {
-	pub name: *const &'a str,
-	pub coordinate: Coordinate,
-}
-
-/// Creates a place `Place` on a cartesian plane.
+/// # Returns
 ///
-/// ## Arguments
-///
-/// * `name` - The `&str` name of the place.
-/// * `latitude` - The `f64` latitude of the coordinate.
-/// * `longitude` - The `f64` longitude of the coordinate.
-///
-///
-/// ## C equivilant:
-/// ```c
-/// struct Place create_place(char *name, double latitude, double longitude) {
-///     struct Place place;
-///     place.name = name;
-///     place.coordinate = create_coordinate(latitude, longitude);
-///     return place;
-/// }
-/// ```
+/// * `Place` - the new place
 #[no_mangle]
-pub extern "C" fn create_place(name: *const &str, latitude: f64, longitude: f64) -> Place {
+pub extern "C" fn create_place(name: *const libc::c_char, latitude: f64, longitude: f64) -> Place {
 	Place {
 		name,
 		coordinate: create_coordinate(latitude, longitude),
 	}
 }
 
-/// Calculates the distance between two coordinates.
+/// Calculates the distance between two places
 ///
-/// ## Arguments
+/// # Arguments
 ///
-/// * `c1` - The `Coordinate` coordinate of the first place.
-/// * `c2` - The `Coordinate` coordinate of the second place.
-
-/// ## C equivilant:
-/// ```c
-/// double distance(struct Coordinate c1, struct Coordinate c2) {
-///     double xd = c2.latitude - c1.latitude;
-///     double yd = c2.longitude - c1.longitude;
-///     return sqrt(xd*xd + yd*yd);
-/// }
-/// ```
+/// * `c1` - the first coordinate
+/// * `c2` - the second coordinate
+///
+/// # Returns
+///
+/// * `f64` - the distance between the two coordinates
 #[no_mangle]
 pub extern "C" fn distance(c1: Coordinate, c2: Coordinate) -> f64 {
-	let xd = c2.latitude - c1.latitude;
-	let yd = c2.longitude - c1.longitude;
-	(xd * xd + yd * yd).sqrt()
+	let x = c1.latitude - c2.latitude;
+	let y = c1.longitude - c2.longitude;
+	(x * x + y * y).sqrt()
 }

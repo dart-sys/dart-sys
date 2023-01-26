@@ -1,3 +1,5 @@
+# CHANGELOG
+
 <!-- next-header -->
 
 ## [Unreleased] - ReleaseDate
@@ -24,7 +26,7 @@
 
 ## [3.1.4] - 2023-01-19
 
-## [3.1.3] - initial crate rerelease
+## [3.1.3] - Initial Crate Re-Release
 
 <!-- next-url -->
 [Unreleased]: https://github.com/dart-sys/dart-sys/compare/v3.1.12...HEAD

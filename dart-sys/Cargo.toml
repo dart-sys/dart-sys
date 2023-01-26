@@ -10,8 +10,6 @@ keywords.workspace = true
 categories.workspace = true
 build = "build.rs"
 readme = "../README.md"
-include = ["../README.md", "../LICENSE", "../CHANGELOG.md", "../dart-sdk/"]
-
 
 [build-dependencies]
 bindgen = "0.63.0"

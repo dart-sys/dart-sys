@@ -3,10 +3,10 @@ name = "primitives"
 version = "0.0.0"
 
 [dependencies]
-rand = "^0.8.5"
-libc = "^0.2.139"
-lazy_static = "^1.4.0"
-dart-sys = { path = "../../dart-sys" }
+rand = { workspace = true }
+libc = { workspace = true }
+lazy_static = { workspace = true }
+dart-sys = { workspace = true }
 
 [lib]
 crate-type = ["cdylib"]

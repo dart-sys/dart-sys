@@ -1,11 +1,13 @@
 [workspace]
-members = ["primitives", "hello_world", "structs"]
+members = ["hello_local", "hello_cargo", "hello_git"]
 
 [workspace.dependencies]
 rand = "^0.8.5"
 libc = "^0.2.139"
 lazy_static = "^1.4.0"
-dart-sys = { path = "../dart-sys" }
+dart-sys-local = { path = "../dart-sys", package = "dart-sys" }
+dart-sys-cargo = { version = "*", package = "dart-sys" }
+dart-sys-git = { git = "https://github.com/dart-sys/dart-sys.git", package = "dart-sys" }
 
 [profile.release]
 codegen-units = 1

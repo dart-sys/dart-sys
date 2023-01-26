@@ -558,29 +558,29 @@ pub fn codegen() {
 		_ => log("INFO: target OS is not windows, skipping extra compile flags for linking against Dart SDK binaries"),
 	}
 
-	let dart_sdk_src_dir = dart_sdk_path.join("include");
+	let dart_sdk_include_dir = dart_sdk_path.join("include");
 
 	let bindings = bindgen::Builder::default()
 		.header(
-			dart_sdk_src_dir
+			dart_sdk_include_dir
 				.join("dart_api.h")
 				.to_str()
 				.expect("ERROR: could not find path `dart_api_dl.h`"),
 		)
 		.header(
-			dart_sdk_src_dir
+			dart_sdk_include_dir
 				.join("dart_version.h")
 				.to_str()
 				.expect("ERROR: could not find path `dart_version.h`"),
 		)
 		.header(
-			dart_sdk_src_dir
+			dart_sdk_include_dir
 				.join("dart_native_api.h")
 				.to_str()
 				.expect("ERROR: could not find path `dart_native_api.h`"),
 		)
 		.header(
-			dart_sdk_src_dir
+			dart_sdk_include_dir
 				.join("dart_tools_api.h")
 				.to_str()
 				.expect("ERROR: could not find path `dart_tools_api.h`"),
@@ -614,32 +614,31 @@ pub fn codegen() {
 	];
 	static DL_ENABLED_VARS: &[&str] = &["Dart_.+_DL", "DART_API_DL_MAJOR_VERSION", "DART_API_DL_MINOR_VERSION"];
 
-	let dart_sdk_src_dir = PathBuf::from(env::var_os("CARGO_MANIFEST_DIR").unwrap())
-		.join("..")
+	let dart_sdk_include_dir = PathBuf::from(env::var_os("CARGO_MANIFEST_DIR").unwrap())
 		.join("dart-sdk")
 		.join("include");
 
 	let mut builder = bindgen::Builder::default()
 		.header(
-			dart_sdk_src_dir
+			dart_sdk_include_dir
 				.join("dart_api_dl.h")
 				.to_str()
 				.expect("ERROR: could not find path `dart_api_dl.h`"),
 		)
 		.header(
-			dart_sdk_src_dir
+			dart_sdk_include_dir
 				.join("dart_version.h")
 				.to_str()
 				.expect("ERROR: could not find path `dart_version.h`"),
 		)
 		.header(
-			dart_sdk_src_dir
+			dart_sdk_include_dir
 				.join("dart_native_api.h")
 				.to_str()
 				.expect("ERROR: could not find path `dart_native_api.h`"),
 		)
 		.header(
-			dart_sdk_src_dir
+			dart_sdk_include_dir
 				.join("dart_tools_api.h")
 				.to_str()
 				.expect("ERROR: could not find path `dart_tools_api.h`"),
@@ -672,10 +671,10 @@ pub fn codegen() {
 		.write_to_file(out_path.join("src/bindings_api_dl/mod.rs"))
 		.expect("ERROR: failed to write dart_api_dl bindings to file");
 
-	let dart_dl_glue_path = dart_sdk_src_dir.join("dart_api_dl.c");
+	let dart_dl_glue_path = dart_sdk_include_dir.join("dart_api_dl.c");
 	cc::Build::new()
 		.file(dart_dl_glue_path)
-		.include(dart_sdk_src_dir)
+		.include(dart_sdk_include_dir)
 		.compile("dart_api_dl");
 }
 

@@ -44,7 +44,7 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
             ~/target/
-          key: ${{ runner.os }}-cargo
+          key: ${{ runner.os }}-rust-cache
 
       # Install Rust toolchain
       - name: Install Rust toolchain
@@ -59,4 +59,4 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --all --no-fail-fast --all-targets --features "ci" -- --nocapture
+          args: --all --fail-fast --all-targets --features "ci" -- --nocapture

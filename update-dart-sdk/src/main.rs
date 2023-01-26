@@ -54,6 +54,7 @@ fn main() {
 
 	let dart_sdk_dir = Path::new(&env::var("CARGO_MANIFEST_DIR").unwrap())
 		.join("..")
+		.join("dart-sys")
 		.join("dart-sdk");
 	let temp_dir = Path::new(&env::var("CARGO_MANIFEST_DIR").unwrap()).join("temp");
 
@@ -330,21 +331,19 @@ fn main() {
 		Err(e) => panic!("ERROR: Failed to unzip Dart SDK zip archive: {}", e),
 	}
 
-	log!("INFO: Moving Dart SDK to repository root");
-
 	log!("INFO: Removing unused Dart SDK files");
 
-	match fs::remove_dir_all(Path::new("..").join("dart-sdk").join("bin")) {
+	match fs::remove_dir_all(dart_sdk_dir.join("bin")) {
 		Ok(_) => log!("INFO: Successfully removed unused Dart SDK files"),
 		Err(e) => panic!("ERROR: Failed to remove unused Dart SDK files: {}", e),
 	};
 
-	match fs::remove_dir_all(Path::new("..").join("dart-sdk").join("lib")) {
+	match fs::remove_dir_all(dart_sdk_dir.join("lib")) {
 		Ok(_) => log!("INFO: Successfully removed unused Dart SDK files"),
 		Err(e) => panic!("ERROR: Failed to remove unused Dart SDK files: {}", e),
 	};
 
-	match fs::remove_file(Path::new("..").join("dart-sdk").join("dartdoc_options.yaml")) {
+	match fs::remove_file(dart_sdk_dir.join("dartdoc_options.yaml")) {
 		Ok(_) => log!("INFO: Successfully removed unused Dart SDK files"),
 		Err(e) => panic!("ERROR: Failed to remove unused Dart SDK files: {}", e),
 	};

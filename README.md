@@ -9,19 +9,19 @@
 
 # Dart-sys
 
+[![Stars](https://img.shields.io/github/stars/dart-sys/dart-sys)](https://github.com/dart-sys/dart-sys/stargazers)
+[![Forks](https://img.shields.io/github/forks/dart-sys/dart-sys)](https://github.com/dart-sys/dart-sys/network/members)
 [![Crates.io](https://img.shields.io/crates/v/dart-sys.svg)](https://crates.io/crates/dart-sys)
-[![Docs.rs](https://docs.rs/dart-sys/badge.svg)](https://docs.rs/dart-sys)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![License: GNU GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Docs.rs](https://docs.rs/dart-sys/badge.svg)](https://docs.rs/dart-sys)
 [![Examples tests](https://github.com/dart-sys/dart-sys/actions/workflows/examples_tests.yml/badge.svg)](https://github.com/dart-sys/dart-sys/actions/workflows/examples_tests.yml)
-[![Rust Tests](https://github.com/dart-sys/dart-sys/actions/workflows/rust_tests.yml/badge.svg)](https://github.com/dart-sys/dart-sys/actions/workflows/rust_tests.yml)
+[![CI](https://github.com/dart-sys/dart-sys/actions/workflows/ci.yml/badge.svg)](https://github.com/dart-sys/dart-sys/actions/workflows/ci.yml)
 
 > _Rust bindings to the [Dart native extensions api](https://dart.dev/server/c-interop-native-extensions)_
 
-## Getting Started 🚀
-
-### Prerequisites 🔧
+## Prerequisites 🔧
 
 You will need the following tools available on your system:
 
@@ -30,7 +30,25 @@ You will need the following tools available on your system:
 - [Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
 - [Git](https://git-scm.com/downloads)
 
-### Installing 📦
+### Unix/Linux 🐧
+
+No additional requirements :)
+
+### MacOS 🍎
+
+No additional requirements :)
+
+### Windows 🪟
+
+On Windows platforms, dynamic libraries are linked _against_ the executable, not _into_ the executable as is the case o
+Unix platforms.
+
+⚠️ Important ⚠️
+
+This means that (on Windows) you will **_Need_** to have the Dart SDK installed and available on your system path to
+be able to compile Dart-sys.
+
+## Installing 📦
 
 Run the following Cargo command in your project directory:
 
@@ -43,9 +61,6 @@ Or add the following line to your Cargo.toml:
 ```toml
 dart-sys = "3.1.12"
 ```
-
-Source code releases for each SemVer tag are also available on the
-[GitHub releases page](https://github.com/dart-sys/dart-sys/releases).
 
 ## Usage 💻
 
@@ -102,8 +117,8 @@ void main() {
 ```
 
 While this example is certainly possible, you are not likely to ever use Dart-sys for this purpose.
-See the [examples](https://github.com/dart-sys/dart-sys/tree/main/examples) directory for more in-depth
-examples of how to use Dart-sys. All of the examples are tested using GitHub Actions and documented verbosely.
+See the [examples](examples/) directory for more in-depth
+examples of how to use Dart-sys. All examples are tested using GitHub Actions and documented verbosely.
 
 ## Built With 🛠️
 
@@ -124,7 +139,7 @@ open an issue, or contact admin <gutenfries@gmail.com> directly.
 ## Versioning 🪧
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available,
-see the [tags on this repository](https://github.com/your/project/tags).
+see the [tags on this repository](https://github.com/dart-sys/dart-sys/tags).
 
 ## License 📜
 

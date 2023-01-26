@@ -1,7 +1,6 @@
 import 'dart:ffi' as ffi;
 import 'dart:io' show Platform, Directory;
 
-import 'package:ffi/ffi.dart' as native;
 import 'package:ffi/ffi.dart';
 import 'package:path/path.dart' as path;
 
@@ -62,34 +61,31 @@ void main() {
   // Load the library in memory
   final lib = ffi.DynamicLibrary.open(libPath);
 
-  final reverse_str = lib.lookupFunction<ReverseNative, Reverse>('reverse_str');
-  final backwards = 'backwards';
-  final backwardsUtf8 = backwards.toNativeUtf8();
-  final reversedMessageUtf8 = reverse_str(backwardsUtf8, backwards.length);
-  final reversedMessage = reversedMessageUtf8.toDartString();
-  calloc.free(backwardsUtf8);
-  print('$backwards reversed is $reversedMessage');
-
-  final freeStr = lib.lookupFunction<FreeStrNative, FreeStr>('free_str');
-  freeStr(reversedMessageUtf8);
-
-  final createCoordinate =
+  // create two coordinates
+  final create_coordinate =
       lib.lookupFunction<CreateCoordinateNative, CreateCoordinate>(
           'create_coordinate');
-  final coordinate = createCoordinate(3.5, 4.6);
-  print(
-      'Coordinate is lat ${coordinate.latitude}, long ${coordinate.longitude}');
 
-  final myHomeUtf8 = 'My Home'.toNativeUtf8();
-  final createPlace =
+  final coordinate_1 = create_coordinate(1.0, 2.0);
+  final coordinate_2 = create_coordinate(3.0, 4.0);
+
+  // create a place with the first coordinate called "Home"
+
+  final create_place =
       lib.lookupFunction<CreatePlaceNative, CreatePlace>('create_place');
-  final place = createPlace(myHomeUtf8, 42.0, 24.0);
-  final name = place.name.toDartString();
-  calloc.free(myHomeUtf8);
-  final coord = place.coordinate;
-  print(
-      'The name of my place is $name at ${coord.latitude}, ${coord.longitude}');
+
+  final homeUtf8 = 'Home'.toNativeUtf8();
+
+  final home =
+      create_place(homeUtf8, coordinate_1.latitude, coordinate_1.longitude);
+
+  // calculate the distance between home and the second coordinate
+
   final distance = lib.lookupFunction<DistanceNative, Distance>('distance');
-  final dist = distance(createCoordinate(2.0, 2.0), createCoordinate(5.0, 6.0));
-  print("distance between (2,2) and (5,6) = $dist");
+
+  final distance_between = distance(coordinate_2, home.coordinate);
+
+  print('Distance between place "${home.name.toDartString()}" and '
+      '(${coordinate_2.latitude}, ${coordinate_2.longitude}) is '
+      '${distance_between}');
 }

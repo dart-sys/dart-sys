@@ -1,4 +1,4 @@
-name: CI
+name: Sanity tests
 
 on:
   push:
@@ -18,14 +18,8 @@ env:
 
 jobs:
   tests:
-    name: Rust tests on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os:
-          - ubuntu-latest
-          - windows-latest
-          - macos-latest
+    name: Sanity tests
+    runs-on: ubuntu-latest
 
     steps:
       # Checkout the repository
@@ -54,25 +48,21 @@ jobs:
           override: true
           toolchain: stable
 
-      # Install dart
-      - name: Install dart
-        # if: steps.cache-release.outputs.cache-hit != 'true'
-        uses: dart-lang/setup-dart@v1
-
-      # Run dart tests for all examples in `/examples`
-      - name: Run dart tests for all examples in `/examples`
-        run: |
-          cd examples
-          for dir in */; do
-            cd $dir
-            dart pub get
-            dart test
-            cd ..
-          done
-
-      # Run cargo tests for all examples in `/examples`
-      - name: Run cargo tests for all examples in `/examples`
+      # Run sanity tests
+      - name: Cargo tests
         uses: actions-rs/cargo@v1
         with:
           command: test
           args: --all --all-targets --features "ci" -- --nocapture
+
+      # If on windows, install dart SDK
+      - name: Install dart
+        if: runner.os == 'Windows'
+        uses: dart-lang/setup-dart@v1
+
+      # Run sanity tests with dart_api_dl feature
+      - name: Cargo tests with dart_api_dl feature
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --all --all-targets --features "ci", "dart_api_dl" -- --nocapture

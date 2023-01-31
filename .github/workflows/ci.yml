@@ -66,8 +66,8 @@ jobs:
           cd examples
           for /d %%d in (*) do (
             cd %%d
-            pub get
-            pub run test
+            dart pub get
+            dart pub run test
             cd ..
           )
 
@@ -78,8 +78,8 @@ jobs:
           cd examples
           for d in */ ; do
             cd "$d"
-            pub get
-            pub run test
+            dart pub get
+            dart pub run test
             cd ..
           done
 

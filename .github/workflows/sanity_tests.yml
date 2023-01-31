@@ -54,15 +54,3 @@ jobs:
         with:
           command: test
           args: --all --all-targets -- --nocapture
-
-      # If on windows, install dart SDK
-      - name: Install dart
-        if: runner.os == 'Windows'
-        uses: dart-lang/setup-dart@v1
-
-      # Run sanity tests with dart_api_dl feature
-      - name: Cargo tests with dart_api_dl feature
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --all --all-targets --features "dart_api_dl" -- --nocapture

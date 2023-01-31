@@ -1,0 +1,22 @@
+[package]
+name = "codegen"
+description = "Code generation for the Dart FFI"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+keywords.workspace = true
+categories.workspace = true
+publish = false
+
+[dependencies]
+bindgen = "0.63.0"
+chrono = "0.4.23"
+cc = "1.0.78"
+reqwest = { version = "^0.11.13", features = ["blocking"] }
+zip = "^0.6.3"
+sha2 = "^0.10.6"
+
+[build-dependencies]
+cc = "1.0.78"

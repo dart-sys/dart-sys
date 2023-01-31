@@ -1,6 +1,5 @@
 [workspace]
-members = ["dart-sys"]
-exclude = ["update-dart-sdk"]
+members = ["codegen", "dart-sys"]
 
 [workspace.package]
 version = "3.1.12"

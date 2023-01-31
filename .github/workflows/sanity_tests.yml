@@ -53,7 +53,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --all --all-targets --features "ci" -- --nocapture
+          args: --all --all-targets -- --nocapture
 
       # If on windows, install dart SDK
       - name: Install dart
@@ -65,4 +65,4 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --all --all-targets --features "ci", "dart_api_dl" -- --nocapture
+          args: --all --all-targets --features "dart_api_dl" -- --nocapture

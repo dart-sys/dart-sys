@@ -18,7 +18,7 @@ env:
 
 jobs:
   tests:
-    name: Rust tests on ${{ matrix.os }}
+    name: CI (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -56,17 +56,30 @@ jobs:
 
       # Install dart
       - name: Install dart
-        # if: steps.cache-release.outputs.cache-hit != 'true'
         uses: dart-lang/setup-dart@v1
 
-      # Run dart tests for all examples in `/examples`
-      - name: Run dart tests for all examples in `/examples`
+      # Run dart tests for all examples in `/examples` (windows)
+      - name: Run dart tests for all examples in `/examples` (windows)
+        # Windows:
+        if: runner.os == 'Windows'
         run: |
           cd examples
-          for dir in */; do
-            cd $dir
-            dart pub get
-            dart test
+          for /d %%d in (*) do (
+            cd %%d
+            pub get
+            pub run test
+            cd ..
+          )
+
+      # Run dart tests for all examples in `/examples` (unix)
+      - name: Run dart tests for all examples in `/examples` (unix)
+        if: runner.os != 'Windows'
+        run: |
+          cd examples
+          for d in */ ; do
+            cd "$d"
+            pub get
+            pub run test
             cd ..
           done
 
@@ -75,4 +88,4 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --all --all-targets --features "ci" -- --nocapture
+          args: --all --all-targets -- --nocapture

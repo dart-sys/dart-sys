@@ -1,4 +1,10 @@
-use std::{env, env::VarError, fs::OpenOptions, io::Write, path::PathBuf};
+use std::{
+	env,
+	env::VarError,
+	fs::OpenOptions,
+	io::Write,
+	path::{Path, PathBuf},
+};
 
 use chrono::{DateTime, SecondsFormat, Utc};
 
@@ -135,12 +141,13 @@ fn get_dart_sdk() -> String {
 	dart_sdk
 }
 
+#[cfg(not(feature = "dart_api_dl"))]
+pub fn compile(_dart_sdk_path: &Path) {}
+
 /// Generates bindings for the Dart API dynamic library.
 #[cfg(not(feature = "dart_api_dl"))]
-pub fn codegen() {
+pub fn codegen(dart_sdk_path: &Path) {
 	log("INFO: emitting compiler flags");
-	// get Dart SDK path for linking
-	let dart_sdk_path = PathBuf::from(&get_dart_sdk());
 
 	// log location of Dart SDK
 	log(&format!(
@@ -222,9 +229,19 @@ pub fn codegen() {
 	log("INFO: finished emitting compiler flags");
 }
 
+#[cfg(feature = "dart_api_dl")]
+pub fn compile(dart_sdk_path: &Path) {
+	let dart_sdk_include_dir = dart_sdk_path.join("include");
+	let dart_dl_glue_path = dart_sdk_include_dir.join("dart_api_dl.c");
+	cc::Build::new()
+		.file(dart_dl_glue_path)
+		.include(dart_sdk_include_dir)
+		.compile("dart_api_dl");
+}
+
 /// Generates bindings for the Dart API dynamic library.
 #[cfg(feature = "dart_api_dl")]
-pub fn codegen() {
+pub fn codegen(dart_sdk_path: &Path) {
 	static DL_ENABLED_FUNCTIONS: &[&str] = &["Dart_InitializeApiDL"];
 
 	static DL_ENABLED_TYPES: &[&str] = &[
@@ -241,8 +258,6 @@ pub fn codegen() {
 	static DL_ENABLED_VARS: &[&str] = &["Dart_.+_DL", "DART_API_DL_MAJOR_VERSION", "DART_API_DL_MINOR_VERSION"];
 
 	log("INFO: emitting compiler flags");
-	// get Dart SDK path for linking
-	let dart_sdk_path = PathBuf::from(&get_dart_sdk());
 
 	// log location of Dart SDK
 	log(&format!(
@@ -340,12 +355,6 @@ pub fn codegen() {
 	bindings
 		.write_to_file(out_path.join("src/bindings_api_dl/mod.rs"))
 		.expect("ERROR: failed to write dart_api_dl bindings to file");
-
-	let dart_dl_glue_path = dart_sdk_include_dir.join("dart_api_dl.c");
-	cc::Build::new()
-		.file(dart_dl_glue_path)
-		.include(dart_sdk_include_dir)
-		.compile("dart_api_dl");
 }
 
 fn main() {
@@ -364,7 +373,17 @@ fn main() {
 	log("INFO: starting build script");
 
 	#[cfg(not(feature = "docs_only"))]
-	codegen();
+	{
+		// get Dart SDK path for linking
+		let dart_sdk_path = PathBuf::from(&get_dart_sdk());
+
+		// regen bindings
+		if env::var("REGEN_DART_API").map_or(false, |var| var == "1") {
+			codegen(&dart_sdk_path);
+		}
+
+		compile(&dart_sdk_path);
+	}
 
 	log("INFO: finished build script");
 	log("------------------------------");

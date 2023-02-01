@@ -53,7 +53,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: run
-          args: +nightly --package codegen
+          args: --package codegen
 
       # Make sure output is the same
       - name: Check output

@@ -71,8 +71,9 @@ pub fn generate_bindings() -> Result<Bindings, String> {
 			is_global: true,
 		})
 		.use_core()
-		.layout_tests(true)
-		.rustfmt_bindings(true);
+		.layout_tests(false)
+		.rustfmt_bindings(true)
+		.sort_semantically(true);
 
 	log!(LogLevel::Info, "Generating bindings...");
 	let bindings = builder.generate().expect("ERROR: Failed to generate dart_api binding");

@@ -21,6 +21,7 @@ pub const LIB_RS_HEADER_STUB: &str = "//! Opt-in style bindings to the Dart SDK
 //!
 //! Bindings are generated statically, meaning that the Dart SDK headers are
 //! included in the crate and no external dependencies are required.
+#![no_std]
 #![allow(
 	non_upper_case_globals,
 	non_camel_case_types,

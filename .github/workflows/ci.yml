@@ -64,7 +64,7 @@ jobs:
         run: |
           cd examples
           for d in */ ; do
-            echo ${ls target}
+            ls target
             if [ "$d" == "target/" ]; then
               continue
             fi
@@ -72,7 +72,7 @@ jobs:
             dart pub get
             dart test
             cd ..
-            echo ${ls target}
+            ls target
           done
 
       # Run cargo tests for all examples in `/examples`

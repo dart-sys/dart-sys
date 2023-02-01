@@ -64,6 +64,9 @@ jobs:
         run: |
           cd examples
           for d in */ ; do
+            if [ "$d" == "target/" ]; then
+              continue
+            fi
             cd $d
             dart pub get
             dart test

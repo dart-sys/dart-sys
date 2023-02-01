@@ -22,10 +22,10 @@ void main() {
   switch (Platform.operatingSystem) {
     case 'macos':
       if (Directory(releaseDir).existsSync()) {
-        libPath = path.join(releaseDir, 'libprimitives.lib');
+        libPath = path.join(releaseDir, 'libprimitives.dylib');
         break;
       } else if (Directory(debugDir).existsSync()) {
-        libPath = path.join(debugDir, 'libprimitives.lib');
+        libPath = path.join(debugDir, 'libprimitives.dylib');
         break;
       } else {
         throw Exception(

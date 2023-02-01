@@ -63,7 +63,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: release
-          args: patch --no-confirm --config .github/cargo-release.toml --features "ci" --no-verify --execute
+          args: patch --no-confirm --config .github/cargo-release.toml --no-verify --execute
 
   # If not on main
   skip-release:

@@ -9,6 +9,7 @@ void main() async {
   group('structs', () {
     test('Build rust library & test dart program', () async {
       // Build the library
+      await Process.run('cargo', ['clean']);
       var buildProcess = await Process.run('cargo', ['build']);
       expect(buildProcess.exitCode, equals(0));
 

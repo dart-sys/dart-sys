@@ -1,28 +1,11 @@
 [package]
 name = "dart-sys"
+description = "Statically generated, Opt-in style bindings to the Dart SDK"
 version.workspace = true
 edition.workspace = true
-description.workspace = true
 license.workspace = true
 authors.workspace = true
 repository.workspace = true
 keywords.workspace = true
 categories.workspace = true
-build = "build.rs"
 readme = "../README.md"
-
-[build-dependencies]
-bindgen = "0.63.0"
-chrono = "0.4.23"
-cc = "1.0.78"
-
-[features]
-default = []
-docs_only = []
-dart_api_dl = []
-ci = []
-# std = []
-
-
-[package.metadata.docs.rs]
-features = ["docs_only"]

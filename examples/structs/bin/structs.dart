@@ -22,10 +22,10 @@ void main() {
   switch (Platform.operatingSystem) {
     case 'macos':
       if (Directory(releaseDir).existsSync()) {
-        libPath = path.join(releaseDir, 'libstructs.lib');
+        libPath = path.join(releaseDir, 'libstructs.dylib');
         break;
       } else if (Directory(debugDir).existsSync()) {
-        libPath = path.join(debugDir, 'libstructs.lib');
+        libPath = path.join(debugDir, 'libstructs.dylib');
         break;
       } else {
         throw Exception(

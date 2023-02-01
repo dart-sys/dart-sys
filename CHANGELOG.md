@@ -4,6 +4,10 @@
 
 ## [Unreleased] - ReleaseDate
 
+## [4.0.1] - 2023-02-01
+
+## [4.0.1] - 2023-02-01
+
 ## [3.1.12] - 2023-01-26
 
 ## [3.1.11] - 2023-01-26
@@ -29,7 +33,9 @@
 ## [3.1.3] - Initial Crate Re-Release
 
 <!-- next-url -->
-[Unreleased]: https://github.com/dart-sys/dart-sys/compare/v3.1.12...HEAD
+[Unreleased]: https://github.com/dart-sys/dart-sys/compare/v4.0.1...HEAD
+[4.0.1]: https://github.com/dart-sys/dart-sys/compare/v4.0.1...v4.0.1
+[4.0.1]: https://github.com/dart-sys/dart-sys/compare/v3.1.12...v4.0.1
 [3.1.12]: https://github.com/dart-sys/dart-sys/compare/v3.1.11...v3.1.12
 [3.1.11]: https://github.com/dart-sys/dart-sys/compare/v3.1.10...v3.1.11
 [3.1.10]: https://github.com/dart-sys/dart-sys/compare/v3.1.9...v3.1.10

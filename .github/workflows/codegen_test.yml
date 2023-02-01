@@ -46,14 +46,14 @@ jobs:
         if: steps.cache-cargo.outputs.cache-hit != 'true'
         with:
           override: true
-          toolchain: stable
+          toolchain: nightly
 
       # Run codegen
       - name: Run codegen
         uses: actions-rs/cargo@v1
         with:
           command: run
-          args: --package codegen
+          args: +nightly --package codegen
 
       # Make sure output is the same
       - name: Check output

@@ -19,7 +19,7 @@ env:
 jobs:
   tests:
     name: codegen test
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       # Checkout the repository

@@ -38,15 +38,16 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
             ~/target/
-          key: ${{ runner.os }}-rust-cache
+          key: ${{ runner.os }}-rust-nightly-cache
 
-      # Install Rust toolchain
-      - name: Install Rust toolchain
+      # Install Rust nightly toolchain
+      - name: Install Rust nightly toolchain
         uses: actions-rs/toolchain@v1
         if: steps.cache-cargo.outputs.cache-hit != 'true'
         with:
           override: true
           toolchain: nightly
+          components: rustfmt
 
       # Run codegen
       - name: Run codegen

@@ -64,3 +64,12 @@ pub fn dart_sdk_include_path() -> std::path::PathBuf {
 pub fn dart_sys_crate_path() -> std::path::PathBuf {
 	repo_root().join("dart-sys")
 }
+
+/// returns the path to the repo-wide .rustfmt.toml file
+///
+/// ## Panics
+///
+/// Panics if the `CARGO_MANIFEST_DIR` environment variable is not set.
+pub fn rustfmt_toml_path() -> std::path::PathBuf {
+	repo_root().join(".rustfmt.toml")
+}

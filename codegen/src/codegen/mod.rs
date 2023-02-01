@@ -4,7 +4,7 @@ use bindgen::Bindings;
 
 use crate::{
 	log::LogLevel,
-	utils::path_helpers::{dart_sdk_bin_path, dart_sdk_include_path},
+	utils::path_helpers::{self, dart_sdk_bin_path, dart_sdk_include_path},
 };
 
 pub fn generate_bindings() -> Result<Bindings, String> {
@@ -72,6 +72,7 @@ pub fn generate_bindings() -> Result<Bindings, String> {
 		})
 		.use_core()
 		.layout_tests(false)
+		.rustfmt_configuration_file(Some(path_helpers::rustfmt_toml_path()))
 		.rustfmt_bindings(true)
 		.sort_semantically(true);
 

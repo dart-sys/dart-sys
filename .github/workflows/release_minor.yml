@@ -1,0 +1,74 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: full
+  RUST_LOG: debug
+
+jobs:
+  # Run if on main branch
+  release:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
+    steps:
+      # Checkout sources
+      - name: Checkout Sources
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # Cache cargo release and rust install steps
+      - name: Cache cargo release and rust install steps
+        id: cache-release
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            ~/target/
+          key: ${{ runner.os }}-cargo-release
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        if: steps.cache-release.outputs.cache-hit != 'true'
+        with:
+          override: true
+          toolchain: stable
+
+      - name: install cargo-release
+        uses: actions-rs/cargo@v1
+        if: steps.cache-release.outputs.cache-hit != 'true'
+        with:
+          command: install
+          args: cargo-release
+
+      - name: Configure git credentials
+        run: |
+          git config user.name "Github Actions: Release"
+          git config user.email "<>"
+
+      - name: Log into cargo
+        uses: actions-rs/cargo@v1
+        with:
+          command: login
+          args: ${{ secrets.CARGO_TOKEN }}
+
+      # Run cargo release
+      - name: Cargo release
+        uses: actions-rs/cargo@v1
+        with:
+          command: release
+          args: minor --no-confirm --config .github/cargo-release.toml --no-verify --execute
+
+  # If not on main
+  skip-release:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref != 'refs/heads/main' }}
+    steps:
+      - name: Exit workflow without error
+        run: exit 0

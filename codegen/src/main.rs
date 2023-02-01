@@ -97,6 +97,24 @@ fn main() {
 		},
 	}
 
+	log!("formatting bindings crate");
+	// format bindings crate
+	match std::process::Command::new("cargo")
+		.arg("fmt")
+		.arg("--")
+		.arg("--emit")
+		.arg("files")
+		.current_dir(dart_sys_crate_path())
+		.output()
+	{
+		Ok(_) => (),
+		Err(e) => {
+			log!(LogLevel::Error, format!("{}", e));
+			panic!("ERROR: {}", e);
+		},
+	}
+	log!(LogLevel::Success, "Successfully formatted bindings crate");
+
 	// write cargo.toml to file
 	match std::fs::write(
 		dart_sys_crate_path().join("Cargo.toml"),

@@ -87,8 +87,7 @@ pub fn update_dart_sdk() -> Result<(), String> {
 		);
 		match fs::remove_dir_all(&dart_sdk_path()) {
 			Ok(_) => {
-				log!(LogLevel::Info, "Found old Dart SDK, removed it");
-
+				log!(LogLevel::Success, "Successfully removed current Dart SDK");
 				log!(
 					LogLevel::Info,
 					format!(
@@ -112,7 +111,6 @@ pub fn update_dart_sdk() -> Result<(), String> {
 				panic!("ERROR: Failed to remove current Dart SDK");
 			},
 		};
-		log!(LogLevel::Success, "Successfully removed current Dart SDK");
 	} else {
 		match fs::create_dir(&dart_sdk_path()) {
 			Ok(_) => {

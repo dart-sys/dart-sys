@@ -64,6 +64,7 @@ jobs:
         run: |
           cd examples
           for d in */ ; do
+            mkdir -p target
             ls target
             if [ "$d" == "target/" ]; then
               continue

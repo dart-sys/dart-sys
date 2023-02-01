@@ -65,7 +65,9 @@ jobs:
           cd examples
           for d in */ ; do
             mkdir -p target
-            ls target
+            mkdir -p target/debug
+            echo ":: ls target/debug (before test) ::"
+            ls target/debug
             if [ "$d" == "target/" ]; then
               continue
             fi
@@ -73,7 +75,8 @@ jobs:
             dart pub get
             dart test
             cd ..
-            ls target
+            echo ":: ls target/debug (after test) ::"
+            ls target/debug
           done
 
       # Run cargo tests for all examples in `/examples`

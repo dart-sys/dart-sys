@@ -38,7 +38,7 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
             ~/target/
-          key: ${{ runner.os }}-rust-nightly-cache
+          key: ${{ runner.os }}-rust--cache
 
       # Install Rust nightly toolchain
       - name: Install Rust nightly toolchain

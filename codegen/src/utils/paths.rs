@@ -16,7 +16,7 @@ pub fn repo_root() -> std::path::PathBuf {
 ///
 /// Panics if the `CARGO_MANIFEST_DIR` environment variable is not set.
 pub fn dart_sdk_path() -> std::path::PathBuf {
-	repo_root().join("dart-sdk")
+	dart_sys_crate_path().join("dart-sdk")
 }
 
 /// returns the path to the prefered temp directory to use

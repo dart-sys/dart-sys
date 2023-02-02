@@ -4,7 +4,7 @@ use bindgen::Bindings;
 
 use crate::{
 	log::LogLevel,
-	utils::path_helpers::{dart_sdk_bin_path, dart_sdk_include_path},
+	utils::paths::{dart_sdk_bin_path, dart_sdk_include_path},
 };
 
 pub fn generate_bindings() -> Result<Bindings, String> {

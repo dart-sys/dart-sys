@@ -10,7 +10,7 @@ use sha2::{Digest, Sha256};
 
 use crate::{
 	log::LogLevel,
-	utils::path_helpers::{dart_sdk_path, repo_root, temp_dir},
+	utils::paths::{dart_sdk_path, temp_dir},
 };
 
 /// files to remove after downloading and unzipping the Dart SDK
@@ -19,7 +19,7 @@ const REMOVE_FILES: [&str; 1] = ["dartdoc_options.yaml"];
 /// directories to remove after downloading and unzipping the Dart SDK
 const REMOVE_DIRS: [&str; 3] = ["bin/snapshots", "bin/resources", "lib"];
 
-/// Downloads the Dart SDK and unzips it to {repo_root}/dart-sdk
+/// Downloads the Dart SDK and unzips it to `dart_sdk_path()`
 ///
 /// # Returns
 ///
@@ -218,7 +218,7 @@ pub fn update_dart_sdk() -> Result<(), String> {
 
 	log!("Unzipping Dart SDK zip archive");
 
-	match unzip_file(dart_sdk_zip_path, repo_root().to_str().unwrap()) {
+	match unzip_file(dart_sdk_zip_path, dart_sdk_path().parent().unwrap().to_str().unwrap()) {
 		Ok(_) => log!(LogLevel::Success, "Successfully unzipped Dart SDK zip archive"),
 		Err(e) => {
 			log!(LogLevel::Error, format!("Failed to unzip Dart SDK zip archive: {}", e));

@@ -6,51 +6,49 @@
 
 ## [4.0.2] - 2023-02-02
 
-## [4.0.2] - 2023-02-02
+- fixed inconsumable build.rs which caused build failure
 
 ## [4.0.1] - 2023-02-01
 
-## [4.0.1] - 2023-02-01
+⚠️ unstable ⚠️
 
-## [3.1.12] - 2023-01-26
+- Removed download option for Dart SDK
+- opted for use of static bindings
+- added `dart_api_dl` apis without explicit linking
 
 ## [3.1.11] - 2023-01-26
 
+- fixed crates.io Cargo.toml inlcude paths
+
 ## [3.1.10] - 2023-01-26
+
+⚠️ unstable ⚠️
+
+- moved dart SDK to `dart-sys/dart-sdk` folder
 
 ## [3.1.9] - 2023-01-24
 
-## [3.1.8] - 2023-01-21
+⚠️ unstable ⚠️
 
-## [0.0.2] - 2023-01-21
-
-## [3.1.7] - 2023-01-21
-
-## [0.0.1] - 2023-01-21
+- added examples for `dart_api` apis
+- fixed docs.rs bug
 
 ## [3.1.6] - 2023-01-21
 
+- included Dart SDK as part of the Dart-sys source code
+- added support for `dart_api_dl` apis
+- added APACHE 2.0 license
+
 ## [3.1.5] - 2023-01-19
 
-## [3.1.4] - 2023-01-19
-
-## [3.1.3] - Initial Crate Re-Release
+- earliest available release of Dart-sys
 
 <!-- next-url -->
 [Unreleased]: https://github.com/dart-sys/dart-sys/compare/v4.0.2...HEAD
-[4.0.2]: https://github.com/dart-sys/dart-sys/compare/v4.0.2...v4.0.2
 [4.0.2]: https://github.com/dart-sys/dart-sys/compare/v4.0.1...v4.0.2
-[4.0.1]: https://github.com/dart-sys/dart-sys/compare/v4.0.1...v4.0.1
-[4.0.1]: https://github.com/dart-sys/dart-sys/compare/v3.1.12...v4.0.1
-[3.1.12]: https://github.com/dart-sys/dart-sys/compare/v3.1.11...v3.1.12
+[4.0.1]: https://github.com/dart-sys/dart-sys/compare/v3.1.11...v4.0.1
 [3.1.11]: https://github.com/dart-sys/dart-sys/compare/v3.1.10...v3.1.11
 [3.1.10]: https://github.com/dart-sys/dart-sys/compare/v3.1.9...v3.1.10
-[3.1.9]: https://github.com/dart-sys/dart-sys/compare/v3.1.8...v3.1.9
-[3.1.8]: https://github.com/dart-sys/dart-sys/compare/v0.0.2...v3.1.8
-[0.0.2]: https://github.com/dart-sys/dart-sys/compare/v3.1.7...v0.0.2
-[3.1.7]: https://github.com/dart-sys/dart-sys/compare/v0.0.1...v3.1.7
-[0.0.1]: https://github.com/dart-sys/dart-sys/compare/v3.1.6...v0.0.1
+[3.1.9]: https://github.com/dart-sys/dart-sys/compare/v3.1.6...v3.1.9
 [3.1.6]: https://github.com/dart-sys/dart-sys/compare/v3.1.5...v3.1.6
 [3.1.5]: https://github.com/dart-sys/dart-sys/compare/v3.1.4...v3.1.5
-[3.1.4]: https://github.com/dart-sys/dart-sys/compare/v3.1.3...v3.1.4
-[3.1.3]: https://github.com/dart-sys/dart-sys/compare/v3.0.2...v3.1.3

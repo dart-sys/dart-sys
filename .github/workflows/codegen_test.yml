@@ -56,6 +56,13 @@ jobs:
           command: run
           args: --package codegen
 
+      # format bindings
+      - name: Format bindings
+        uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: --all -- --emit files
+
       # Make sure output is the same
       - name: Check output
         run: git diff --exit-code

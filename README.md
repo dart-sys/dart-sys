@@ -18,7 +18,7 @@
 [![Docs.rs](https://docs.rs/dart-sys/badge.svg)](https://docs.rs/dart-sys)
 [![CI](https://github.com/dart-sys/dart-sys/actions/workflows/ci.yml/badge.svg)](https://github.com/dart-sys/dart-sys/actions/workflows/ci.yml)
 
-> _Rust bindings to the [Dart native extensions api](https://dart.dev/server/c-interop-native-extensions)_
+> _Rust bindings to the [Dart ffi api](https://dart.dev/guides/libraries/c-interop)_
 
 ## Prerequisites 🔧
 

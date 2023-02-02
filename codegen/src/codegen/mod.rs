@@ -71,7 +71,7 @@ pub fn generate_bindings() -> Result<Bindings, String> {
 			is_global: true,
 		})
 		.use_core()
-		.layout_tests(true)
+		.layout_tests(false)
 		.rustfmt_bindings(false)
 		.sort_semantically(true);
 

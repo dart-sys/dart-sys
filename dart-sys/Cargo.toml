@@ -9,3 +9,6 @@ repository.workspace = true
 keywords.workspace = true
 categories.workspace = true
 readme = "../README.md"
+
+[build-dependencies]
+cc = "^1.0.67"

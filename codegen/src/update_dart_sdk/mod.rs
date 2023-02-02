@@ -10,7 +10,7 @@ use sha2::{Digest, Sha256};
 
 use crate::{
 	log::LogLevel,
-	utils::path_helpers::{dart_sdk_path, repo_root, temp_dir},
+	utils::paths::{dart_sdk_path, temp_dir},
 };
 
 /// files to remove after downloading and unzipping the Dart SDK
@@ -19,7 +19,7 @@ const REMOVE_FILES: [&str; 1] = ["dartdoc_options.yaml"];
 /// directories to remove after downloading and unzipping the Dart SDK
 const REMOVE_DIRS: [&str; 3] = ["bin/snapshots", "bin/resources", "lib"];
 
-/// Downloads the Dart SDK and unzips it to {repo_root}/dart-sdk
+/// Downloads the Dart SDK and unzips it to `dart_sdk_path()`
 ///
 /// # Returns
 ///
@@ -35,7 +35,7 @@ const REMOVE_DIRS: [&str; 3] = ["bin/snapshots", "bin/resources", "lib"];
 /// }
 /// ```
 pub fn update_dart_sdk() -> Result<(), String> {
-	log!(LogLevel::Info, "updating Dart SDK");
+	log!("updating Dart SDK");
 	let dart_sdk_zip_path = temp_dir().join("dart-sdk.zip");
 	let dart_sdk_zip_path = dart_sdk_zip_path.to_str().unwrap();
 
@@ -75,7 +75,7 @@ pub fn update_dart_sdk() -> Result<(), String> {
 	// SHA256 hash to check integrity of the sdk url
 	let dart_sdk_shasum_download_url: String = format!("{}.sha256sum", dart_sdk_download_url);
 
-	log!(LogLevel::Info, "Creating Dart SDK directory");
+	log!("Creating Dart SDK directory");
 
 	if dart_sdk_path().exists() {
 		log!(
@@ -87,15 +87,11 @@ pub fn update_dart_sdk() -> Result<(), String> {
 		);
 		match fs::remove_dir_all(&dart_sdk_path()) {
 			Ok(_) => {
-				log!(LogLevel::Info, "Found old Dart SDK, removed it");
-
-				log!(
-					LogLevel::Info,
-					format!(
-						"Attempting to create Dart SDK directory: {:?}",
-						dart_sdk_path().to_str().unwrap()
-					)
-				);
+				log!(LogLevel::Success, "Successfully removed current Dart SDK");
+				log!(format!(
+					"Attempting to create Dart SDK directory: {:?}",
+					dart_sdk_path().to_str().unwrap()
+				));
 
 				match fs::create_dir(&dart_sdk_path()) {
 					Ok(_) => {
@@ -112,11 +108,16 @@ pub fn update_dart_sdk() -> Result<(), String> {
 				panic!("ERROR: Failed to remove current Dart SDK");
 			},
 		};
-		log!(LogLevel::Success, "Successfully removed current Dart SDK");
 	} else {
 		match fs::create_dir(&dart_sdk_path()) {
 			Ok(_) => {
-				log!(LogLevel::Success, "Successfully created Dart SDK directory");
+				log!(
+					LogLevel::Success,
+					format!(
+						"Successfully created Dart SDK directory: {:?}",
+						dart_sdk_path().to_str().unwrap()
+					)
+				);
 			},
 			Err(e) => {
 				log!(LogLevel::Error, format!("Failed to create Dart SDK directory: {:?}", e));
@@ -125,7 +126,7 @@ pub fn update_dart_sdk() -> Result<(), String> {
 		};
 	}
 
-	log!(LogLevel::Info, "Creating temp directory");
+	log!("Creating temp directory");
 
 	if temp_dir().exists() {
 		log!(
@@ -139,13 +140,10 @@ pub fn update_dart_sdk() -> Result<(), String> {
 			Ok(_) => {
 				log!(LogLevel::Success, "Found old temp directory, removed it");
 
-				log!(
-					LogLevel::Info,
-					format!(
-						"Attempting to create temp directory: {:?}",
-						temp_dir().to_str().unwrap()
-					)
-				);
+				log!(format!(
+					"Attempting to create temp directory: {:?}",
+					temp_dir().to_str().unwrap()
+				));
 
 				match fs::create_dir(&temp_dir()) {
 					Ok(_) => {
@@ -174,7 +172,7 @@ pub fn update_dart_sdk() -> Result<(), String> {
 		};
 	}
 
-	log!(LogLevel::Info, "Downloading Dart SDK zip archive");
+	log!("Downloading Dart SDK zip archive");
 
 	match download(dart_sdk_download_url, dart_sdk_zip_path) {
 		Ok(_) => log!(LogLevel::Success, "Successfully downloaded Dart SDK zip archive"),
@@ -187,7 +185,7 @@ pub fn update_dart_sdk() -> Result<(), String> {
 		},
 	}
 
-	log!(LogLevel::Info, "Downloading Dart SDK SHA-256 hash");
+	log!("Downloading Dart SDK SHA-256 hash");
 
 	match download(dart_sdk_shasum_download_url, dart_sdk_shasum_path) {
 		Ok(_) => log!(LogLevel::Success, "Successfully downloaded Dart SDK SHA-256 hash"),
@@ -200,7 +198,7 @@ pub fn update_dart_sdk() -> Result<(), String> {
 		},
 	}
 
-	log!(LogLevel::Info, "Checking integrity of Dart SDK zip archive");
+	log!("Checking integrity of Dart SDK zip archive");
 
 	match check_sha256_checksum(dart_sdk_zip_path, dart_sdk_shasum_path) {
 		Ok(_) => {
@@ -218,9 +216,9 @@ pub fn update_dart_sdk() -> Result<(), String> {
 		},
 	}
 
-	log!(LogLevel::Info, "Unzipping Dart SDK zip archive");
+	log!("Unzipping Dart SDK zip archive");
 
-	match unzip_file(dart_sdk_zip_path, repo_root().to_str().unwrap()) {
+	match unzip_file(dart_sdk_zip_path, dart_sdk_path().parent().unwrap().to_str().unwrap()) {
 		Ok(_) => log!(LogLevel::Success, "Successfully unzipped Dart SDK zip archive"),
 		Err(e) => {
 			log!(LogLevel::Error, format!("Failed to unzip Dart SDK zip archive: {}", e));
@@ -228,7 +226,7 @@ pub fn update_dart_sdk() -> Result<(), String> {
 		},
 	}
 
-	log!(LogLevel::Info, "Removing unused Dart SDK files");
+	log!("Removing unused Dart SDK files");
 
 	for entry in REMOVE_FILES {
 		let path = dart_sdk_path().join(entry);
@@ -266,10 +264,10 @@ pub fn update_dart_sdk() -> Result<(), String> {
 
 	log!(LogLevel::Success, "Successfully removed unused Dart SDK files");
 
-	log!(LogLevel::Info, "Removing temporary files");
+	log!("Removing temporary files");
 
 	match fs::remove_dir_all(temp_dir()) {
-		Ok(_) => log!(LogLevel::Info, "Successfully removed temporary files"),
+		Ok(_) => log!("Successfully removed temporary files"),
 		Err(e) => {
 			log!(LogLevel::Error, format!("Failed to remove temporary files: {}", e));
 			panic!("ERROR: Failed to remove temporary files: {}", e);
@@ -298,13 +296,10 @@ fn download<T, U>(url: T, dest: &U) -> Result<(), Box<dyn StdError>>
 where
 	T: reqwest::IntoUrl,
 	U: AsRef<Path>+std::fmt::Display+?Sized, {
-	log!(
-		LogLevel::Info,
-		format!(
-			"Downloading url: \"{}\" (this may take a while, this is normal.)",
-			url.as_str()
-		)
-	);
+	log!(format!(
+		"Downloading url: \"{}\" (this may take a while, this is normal.)",
+		url.as_str()
+	));
 	// Download the file
 	let mut resp = reqwest::blocking::get(url)?;
 
@@ -315,7 +310,7 @@ where
 	// Read the response into the buffer
 	resp.copy_to(&mut buffer)?;
 
-	log!(LogLevel::Info, format!("Writing file to: \"{}\"", dest));
+	log!(format!("Writing file to: \"{}\"", dest));
 
 	// Create a file to write the buffer to
 	let mut file = File::create(dest)?;
@@ -334,7 +329,7 @@ where
 /// * `file_path`: path to the the file to check the integrity of
 /// * `hash_path`: the path to the SHA-256 hash file to check the integrity of the file against
 fn check_sha256_checksum(file_path: &str, hash_path: &str) -> Result<(), Box<dyn StdError>> {
-	log!(LogLevel::Info, format!("checking integrity of \"{}\"", file_path));
+	log!(format!("checking integrity of \"{}\"", file_path));
 	// Open file to check the integrity of
 	let mut file = File::open(file_path)?;
 	// Open file containing the SHA-256 hash
@@ -361,7 +356,7 @@ fn check_sha256_checksum(file_path: &str, hash_path: &str) -> Result<(), Box<dyn
 	// ? the Dart SDK hash file includes the file name, so we have to check if the actual hash is
 	// ? included in the expected hash
 	if expected_hash.contains(&acutal_hash) {
-		log!(LogLevel::Info, "integrity check successful");
+		log!("integrity check successful");
 		Ok(())
 	} else {
 		let error = format!(
@@ -382,28 +377,77 @@ fn check_sha256_checksum(file_path: &str, hash_path: &str) -> Result<(), Box<dyn
 /// * `file_path`: path to the file to unzip
 /// * `destination`: path to the destination to unzip the file/directory to
 fn unzip_file(file_path: &str, destination: &str) -> Result<(), Box<dyn StdError>> {
-	log!(
-		LogLevel::Info,
-		format!("attempting to unzip file \"{}\" to \"{}\"", file_path, destination)
-	);
-	let file = File::open(file_path)?;
-	let mut archive = zip::ZipArchive::new(file)?;
+	log!(format!(
+		"attempting to unzip file \"{}\" to \"{}\"",
+		file_path, destination
+	));
+	let file = match File::open(file_path) {
+		Ok(file) => file,
+		Err(e) => {
+			log!(LogLevel::Error, format!("Failed to open zip file: {}", e));
+			panic!("ERROR: Failed to open zip file: {}", e);
+		},
+	};
+	let mut archive = match zip::ZipArchive::new(file) {
+		Ok(archive) => archive,
+		Err(e) => {
+			log!(LogLevel::Error, format!("Failed to read zip file: {}", e));
+			panic!("ERROR: Failed to read zip file: {}", e);
+		},
+	};
 	for i in 0..archive.len() {
-		let mut file = archive.by_index(i)?;
+		let mut file = match archive.by_index(i) {
+			Ok(file) => file,
+			Err(e) => {
+				log!(LogLevel::Error, format!("Failed to read file: {}", e));
+				panic!("ERROR: Failed to read file: {}", e);
+			},
+		};
 		let outpath = Path::new(destination).join(file.name());
 		if file.name().ends_with('/') {
-			fs::create_dir_all(&outpath)?;
+			match fs::create_dir_all(&outpath) {
+				Ok(_) => (),
+				Err(e) => {
+					log!(LogLevel::Error, format!("Failed to create directory: {}", e));
+					panic!("ERROR: Failed to create directory: {}", e);
+				},
+			}
 		} else {
 			if let Some(p) = outpath.parent() {
 				if !p.exists() {
-					fs::create_dir_all(p)?;
+					match fs::create_dir_all(p) {
+						Ok(_) => (),
+						Err(e) => {
+							log!(LogLevel::Error, format!("Failed to create directory: {}", e));
+							panic!("ERROR: Failed to create directory: {}", e);
+						},
+					}
 				}
 			}
 			if outpath.exists() {
-				fs::remove_file(&outpath)?;
+				match fs::remove_file(&outpath) {
+					Ok(_) => (),
+					Err(e) => {
+						log!(LogLevel::Error, format!("Failed to remove file: {}", e));
+						panic!("ERROR: Failed to remove file: {}", e);
+					},
+				}
 			}
-			let mut outfile = File::create(&outpath)?;
-			io::copy(&mut file, &mut outfile)?;
+			let mut outfile = match File::create(&outpath) {
+				Ok(f) => f,
+				Err(e) => {
+					log!(LogLevel::Error, format!("Failed to create file: {}", e));
+					panic!("ERROR: Failed to create file: {}", e);
+				},
+			};
+
+			match io::copy(&mut file, &mut outfile) {
+				Ok(_) => (),
+				Err(e) => {
+					log!(LogLevel::Error, format!("Failed to copy file: {}", e));
+					panic!("ERROR: Failed to copy file: {}", e);
+				},
+			}
 		}
 	}
 	Ok(())

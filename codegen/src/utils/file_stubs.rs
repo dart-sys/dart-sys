@@ -10,6 +10,9 @@ repository.workspace = true
 keywords.workspace = true
 categories.workspace = true
 readme = \"../README.md\"
+
+[build-dependencies]
+cc = \"^1.0.67\"
 ";
 
 /// Header stub for lib.rs
@@ -29,4 +32,23 @@ pub const LIB_RS_HEADER_STUB: &str = "//! Opt-in style bindings to the Dart SDK
 	unused_variables,
 	dead_code
 )]
+";
+
+/// build.rs stub
+pub const BUILD_RS_STUB: &str = "use std::{env, path::PathBuf};
+fn main() {
+	cc::Build::new()
+		.file(
+			PathBuf::from(env::var(\"CARGO_MANIFEST_DIR\").unwrap())
+				.join(\"dart-sdk\")
+				.join(\"include\")
+				.join(\"dart_api_dl.c\"),
+		)
+		.include(
+			PathBuf::from(env::var(\"CARGO_MANIFEST_DIR\").unwrap())
+				.join(\"dart-sdk\")
+				.join(\"include\"),
+		)
+		.compile(\"dart_api_dl\");
+}
 ";

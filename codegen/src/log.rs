@@ -45,7 +45,7 @@ pub enum LogLevel {
 /// WARN:    10
 /// ```
 /// ```bash
-///
+/// 
 /// cat build.log
 /// ```
 ///
@@ -103,7 +103,7 @@ where T: std::fmt::Display {
 	);
 	let log_message_c = format!("{} {}", log_level_c, message);
 	let log_message = format!("[{}] {} {}", now.format("%Y-%m-%dT%H:%M:%SZ"), log_level, message);
-	println!("{}", log_message_c);
+	println!("    {}", log_message_c);
 	let log_file = std::path::PathBuf::from(std::env::var("CARGO_MANIFEST_DIR").unwrap()).join("build.log");
 	let mut log_file = std::fs::OpenOptions::new()
 		.append(true)

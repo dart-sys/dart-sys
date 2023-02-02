@@ -1,0 +1,69 @@
+name: codegen test
+
+on:
+  push:
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
+  pull_request:
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: full
+  RUST_LOG: debug
+
+jobs:
+  tests:
+    name: codegen test
+    runs-on: windows-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Sources
+        uses:
+          actions/checkout@v2
+
+          # Cache cargo & rust
+      - name: Cache cargo & rust
+        id: cache-cargo
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            ~/target/
+          key: ${{ runner.os }}-rust--cache
+
+      # Install Rust nightly toolchain
+      - name: Install Rust nightly toolchain
+        uses: actions-rs/toolchain@v1
+        if: steps.cache-cargo.outputs.cache-hit != 'true'
+        with:
+          override: true
+          toolchain: nightly
+          components: rustfmt
+
+      # Run codegen
+      - name: Run codegen
+        uses: actions-rs/cargo@v1
+        with:
+          command: run
+          args: --package codegen
+
+      # format bindings
+      - name: Format bindings
+        uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: --all -- --emit files
+          toolchain: nightly
+
+      # Make sure output is the same
+      - name: Check output
+        run: git diff --exit-code

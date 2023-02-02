@@ -4,7 +4,7 @@ use crate::{
 	log::LogLevel,
 	utils::{
 		file_stubs,
-		path_helpers::{dart_sys_crate_path, log_file_path},
+		paths::{dart_sys_crate_path, log_file_path},
 	},
 };
 
@@ -54,8 +54,9 @@ fn main() {
 		},
 	}
 
-	// delete old bindings crate
-	match std::fs::remove_dir_all(dart_sys_crate_path()) {
+	// remove  Cargo.toml, build.rs, and src/ directory in bindings crate, keeping dart-sdk/ directory,
+	// if they exist
+	match std::fs::remove_file(dart_sys_crate_path().join("build.rs")) {
 		Ok(_) => (),
 		Err(e) => {
 			log!(LogLevel::Error, format!("{}", e));
@@ -63,17 +64,7 @@ fn main() {
 		},
 	}
 
-	// create new bindings crate
-	match std::fs::create_dir(dart_sys_crate_path()) {
-		Ok(_) => (),
-		Err(e) => {
-			log!(LogLevel::Error, format!("{}", e));
-			panic!("ERROR: {}", e);
-		},
-	}
-
-	// create src directory
-	match std::fs::create_dir(dart_sys_crate_path().join("src")) {
+	match std::fs::remove_file(dart_sys_crate_path().join("Cargo.toml")) {
 		Ok(_) => (),
 		Err(e) => {
 			log!(LogLevel::Error, format!("{}", e));
@@ -96,6 +87,30 @@ fn main() {
 			panic!("ERROR: {}", e);
 		},
 	}
+
+	// write build.rs to file
+	match std::fs::write(dart_sys_crate_path().join("build.rs"), file_stubs::BUILD_RS_STUB) {
+		Ok(_) => (),
+		Err(e) => {
+			log!(LogLevel::Error, format!("{}", e));
+			panic!("ERROR: {}", e);
+		},
+	}
+
+	// log!("formatting bindings crate");
+	// // format bindings crate with rustfmt
+	// match std::process::Command::new("rustfmt")
+	// 	.arg(dart_sys_crate_path().join("src").join("lib.rs"))
+	// 	.output()
+	// {
+	// 	Ok(_) => {
+	// 		log!(LogLevel::Success, "Successfully formatted bindings crate");
+	// 	},
+	// 	Err(e) => {
+	// 		log!(LogLevel::Error, format!("{}", e));
+	// 		panic!("ERROR: {}", e);
+	// 	},
+	// }
 
 	// write cargo.toml to file
 	match std::fs::write(

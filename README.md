@@ -16,10 +16,9 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![License: GNU GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Docs.rs](https://docs.rs/dart-sys/badge.svg)](https://docs.rs/dart-sys)
-[![Examples tests](https://github.com/dart-sys/dart-sys/actions/workflows/examples_tests.yml/badge.svg)](https://github.com/dart-sys/dart-sys/actions/workflows/examples_tests.yml)
 [![CI](https://github.com/dart-sys/dart-sys/actions/workflows/ci.yml/badge.svg)](https://github.com/dart-sys/dart-sys/actions/workflows/ci.yml)
 
-> _Rust bindings to the [Dart native extensions api](https://dart.dev/server/c-interop-native-extensions)_
+> _Rust bindings to the [Dart ffi api](https://dart.dev/guides/libraries/c-interop)_
 
 ## Prerequisites 🔧
 
@@ -59,7 +58,7 @@ cargo add dart-sys
 Or add the following line to your Cargo.toml:
 
 ```toml
-dart-sys = "3.1.12"
+dart-sys = "4.0.2"
 ```
 
 ## Usage 💻

@@ -62,6 +62,7 @@ jobs:
         with:
           command: fmt
           args: --all -- --emit files
+          toolchain: nightly
 
       # Make sure output is the same
       - name: Check output

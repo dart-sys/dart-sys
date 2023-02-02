@@ -28,22 +28,22 @@ jobs:
           actions/checkout@v2
 
           # Cache cargo & rust
-      - name: Cache cargo & rust
-        id: cache-cargo
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            ~/target/
-          key: ${{ runner.os }}-rust--cache
+          # - name: Cache cargo & rust
+          # id: cache-cargo
+          # uses: actions/cache@v2
+          # with:
+            # path: |
+              # ~/.cargo/bin/
+              # ~/.cargo/registry/index/
+              # ~/.cargo/registry/cache/
+              # ~/.cargo/git/db/
+              # ~/target/
+            # key: ${{ runner.os }}-rust-nightly-cache
 
       # Install Rust nightly toolchain
       - name: Install Rust nightly toolchain
         uses: actions-rs/toolchain@v1
-        if: steps.cache-cargo.outputs.cache-hit != 'true'
+        # if: steps.cache-cargo.outputs.cache-hit != 'true'
         with:
           override: true
           toolchain: nightly

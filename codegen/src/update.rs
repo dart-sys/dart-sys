@@ -10,7 +10,7 @@ use sha2::{Digest, Sha256};
 
 use crate::{
 	log::LogLevel,
-	utils::paths::{dart_sdk_path, temp_dir},
+	paths::{dart_sdk_path, temp_dir},
 };
 
 /// files to remove after downloading and unzipping the Dart SDK

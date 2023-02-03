@@ -32,13 +32,13 @@ jobs:
           # id: cache-cargo
           # uses: actions/cache@v2
           # with:
-            # path: |
-              # ~/.cargo/bin/
-              # ~/.cargo/registry/index/
-              # ~/.cargo/registry/cache/
-              # ~/.cargo/git/db/
-              # ~/target/
-            # key: ${{ runner.os }}-rust-nightly-cache
+          # path: |
+          # ~/.cargo/bin/
+          # ~/.cargo/registry/index/
+          # ~/.cargo/registry/cache/
+          # ~/.cargo/git/db/
+          # ~/target/
+          # key: ${{ runner.os }}-rust-nightly-cache
 
       # Install Rust nightly toolchain
       - name: Install Rust nightly toolchain
@@ -55,14 +55,6 @@ jobs:
         with:
           command: run
           args: --package codegen
-
-      # format bindings
-      - name: Format bindings
-        uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --all -- --emit files
-          toolchain: nightly
 
       # Make sure output is the same
       - name: Check output

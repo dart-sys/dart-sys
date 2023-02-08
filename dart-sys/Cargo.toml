@@ -12,3 +12,215 @@ readme = "../README.md"
 
 [build-dependencies]
 cc = "^1.0.67"
+
+[features]
+Dart_Isolate = []
+Dart_IsolateGroup = []
+Dart_Handle = []
+Dart_PersistentHandle = []
+Dart_WeakPersistentHandle = []
+Dart_FinalizableHandle = []
+Dart_HandleFinalizer = []
+Dart_IsolateGroupCreateCallback = []
+Dart_InitializeIsolateCallback = []
+Dart_IsolateShutdownCallback = []
+Dart_IsolateCleanupCallback = []
+Dart_IsolateGroupCleanupCallback = []
+Dart_ThreadStartCallback = []
+Dart_ThreadExitCallback = []
+Dart_FileOpenCallback = []
+Dart_FileReadCallback = []
+Dart_FileWriteCallback = []
+Dart_FileCloseCallback = []
+Dart_EntropySource = []
+Dart_GetVMServiceAssetsArchive = []
+Dart_OnNewCodeCallback = []
+Dart_RegisterKernelBlobCallback = []
+Dart_UnregisterKernelBlobCallback = []
+Dart_IsolateGroupId = []
+Dart_HeapSamplingCallback = []
+Dart_Port = []
+Dart_MessageNotifyCallback = []
+Dart_NativeArguments = []
+Dart_NativeArgument_Descriptor = []
+Dart_NativeArgument_Value = []
+Dart_NativeFunction = []
+Dart_NativeEntryResolver = []
+Dart_NativeEntrySymbol = []
+Dart_FfiNativeResolver = []
+Dart_EnvironmentCallback = []
+Dart_LibraryTagHandler = []
+Dart_DeferredLoadHandler = []
+Dart_CreateLoadingUnitCallback = []
+Dart_StreamingWriteCallback = []
+Dart_StreamingCloseCallback = []
+Dart_CObject = []
+Dart_NativeMessageHandler = []
+Dart_Port_DL = []
+Dart_NativeMessageHandler_DL = []
+Dart_PostCObject_Type = []
+Dart_PostInteger_Type = []
+Dart_NewNativePort_Type = []
+Dart_CloseNativePort_Type = []
+Dart_IsError_Type = []
+Dart_IsApiError_Type = []
+Dart_IsUnhandledExceptionError_Type = []
+Dart_IsCompilationError_Type = []
+Dart_IsFatalError_Type = []
+Dart_GetError_Type = []
+Dart_ErrorHasException_Type = []
+Dart_ErrorGetException_Type = []
+Dart_ErrorGetStackTrace_Type = []
+Dart_NewApiError_Type = []
+Dart_NewCompilationError_Type = []
+Dart_NewUnhandledExceptionError_Type = []
+Dart_PropagateError_Type = []
+Dart_HandleFromPersistent_Type = []
+Dart_HandleFromWeakPersistent_Type = []
+Dart_NewPersistentHandle_Type = []
+Dart_SetPersistentHandle_Type = []
+Dart_DeletePersistentHandle_Type = []
+Dart_NewWeakPersistentHandle_Type = []
+Dart_DeleteWeakPersistentHandle_Type = []
+Dart_UpdateExternalSize_Type = []
+Dart_NewFinalizableHandle_Type = []
+Dart_DeleteFinalizableHandle_Type = []
+Dart_UpdateFinalizableExternalSize_Type = []
+Dart_Post_Type = []
+Dart_NewSendPort_Type = []
+Dart_SendPortGetId_Type = []
+Dart_EnterScope_Type = []
+Dart_ExitScope_Type = []
+Dart_IsNull_Type = []
+Dart_ServiceRequestCallback = []
+Dart_EmbedderInformationCallback = []
+Dart_ServiceStreamListenCallback = []
+Dart_ServiceStreamCancelCallback = []
+Dart_GCEventCallback = []
+Dart_FileModifiedCallback = []
+Dart_TimelineRecorderCallback = []
+Dart_IsolateFlags = []
+Dart_CodeObserver = []
+Dart_InitializeParams = []
+Dart_PerformanceMode = []
+Dart_CoreType_Id = []
+Dart_TypedData_Type = []
+Dart_NativeArgument_Type = []
+Dart_LibraryTag = []
+Dart_KernelCompilationStatus = []
+Dart_KernelCompilationResult = []
+Dart_KernelCompilationVerbosityLevel = []
+Dart_SourceFile = []
+Dart_CObject_Type = []
+Dart_EmbedderInformation = []
+Dart_GCStats = []
+Dart_GCEvent = []
+Dart_Timeline_Event_Type = []
+Dart_TimelineRecorderEvent_Argument = []
+Dart_TimelineRecorderEvent = []
+all = [
+	"Dart_Isolate",
+	"Dart_IsolateGroup",
+	"Dart_Handle",
+	"Dart_PersistentHandle",
+	"Dart_WeakPersistentHandle",
+	"Dart_FinalizableHandle",
+	"Dart_HandleFinalizer",
+	"Dart_IsolateGroupCreateCallback",
+	"Dart_InitializeIsolateCallback",
+	"Dart_IsolateShutdownCallback",
+	"Dart_IsolateCleanupCallback",
+	"Dart_IsolateGroupCleanupCallback",
+	"Dart_ThreadStartCallback",
+	"Dart_ThreadExitCallback",
+	"Dart_FileOpenCallback",
+	"Dart_FileReadCallback",
+	"Dart_FileWriteCallback",
+	"Dart_FileCloseCallback",
+	"Dart_EntropySource",
+	"Dart_GetVMServiceAssetsArchive",
+	"Dart_OnNewCodeCallback",
+	"Dart_RegisterKernelBlobCallback",
+	"Dart_UnregisterKernelBlobCallback",
+	"Dart_IsolateGroupId",
+	"Dart_HeapSamplingCallback",
+	"Dart_Port",
+	"Dart_MessageNotifyCallback",
+	"Dart_NativeArguments",
+	"Dart_NativeArgument_Descriptor",
+	"Dart_NativeArgument_Value",
+	"Dart_NativeFunction",
+	"Dart_NativeEntryResolver",
+	"Dart_NativeEntrySymbol",
+	"Dart_FfiNativeResolver",
+	"Dart_EnvironmentCallback",
+	"Dart_LibraryTagHandler",
+	"Dart_DeferredLoadHandler",
+	"Dart_CreateLoadingUnitCallback",
+	"Dart_StreamingWriteCallback",
+	"Dart_StreamingCloseCallback",
+	"Dart_CObject",
+	"Dart_NativeMessageHandler",
+	"Dart_Port_DL",
+	"Dart_NativeMessageHandler_DL",
+	"Dart_PostCObject_Type",
+	"Dart_PostInteger_Type",
+	"Dart_NewNativePort_Type",
+	"Dart_CloseNativePort_Type",
+	"Dart_IsError_Type",
+	"Dart_IsApiError_Type",
+	"Dart_IsUnhandledExceptionError_Type",
+	"Dart_IsCompilationError_Type",
+	"Dart_IsFatalError_Type",
+	"Dart_GetError_Type",
+	"Dart_ErrorHasException_Type",
+	"Dart_ErrorGetException_Type",
+	"Dart_ErrorGetStackTrace_Type",
+	"Dart_NewApiError_Type",
+	"Dart_NewCompilationError_Type",
+	"Dart_NewUnhandledExceptionError_Type",
+	"Dart_PropagateError_Type",
+	"Dart_HandleFromPersistent_Type",
+	"Dart_HandleFromWeakPersistent_Type",
+	"Dart_NewPersistentHandle_Type",
+	"Dart_SetPersistentHandle_Type",
+	"Dart_DeletePersistentHandle_Type",
+	"Dart_NewWeakPersistentHandle_Type",
+	"Dart_DeleteWeakPersistentHandle_Type",
+	"Dart_UpdateExternalSize_Type",
+	"Dart_NewFinalizableHandle_Type",
+	"Dart_DeleteFinalizableHandle_Type",
+	"Dart_UpdateFinalizableExternalSize_Type",
+	"Dart_Post_Type",
+	"Dart_NewSendPort_Type",
+	"Dart_SendPortGetId_Type",
+	"Dart_EnterScope_Type",
+	"Dart_ExitScope_Type",
+	"Dart_IsNull_Type",
+	"Dart_ServiceRequestCallback",
+	"Dart_EmbedderInformationCallback",
+	"Dart_ServiceStreamListenCallback",
+	"Dart_ServiceStreamCancelCallback",
+	"Dart_GCEventCallback",
+	"Dart_FileModifiedCallback",
+	"Dart_TimelineRecorderCallback",
+	"Dart_IsolateFlags",
+	"Dart_CodeObserver",
+	"Dart_InitializeParams",
+	"Dart_PerformanceMode",
+	"Dart_CoreType_Id",
+	"Dart_TypedData_Type",
+	"Dart_NativeArgument_Type",
+	"Dart_LibraryTag",
+	"Dart_KernelCompilationStatus",
+	"Dart_KernelCompilationResult",
+	"Dart_KernelCompilationVerbosityLevel",
+	"Dart_SourceFile",
+	"Dart_CObject_Type",
+	"Dart_EmbedderInformation",
+	"Dart_GCStats",
+	"Dart_GCEvent",
+	"Dart_Timeline_Event_Type",
+	"Dart_TimelineRecorderEvent_Argument",
+	"Dart_TimelineRecorderEvent"
+]

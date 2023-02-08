@@ -7,8 +7,14 @@ use crate::{
 	paths::{dart_sdk_bin_path, dart_sdk_include_path},
 };
 
+/// Generates rust bindings to Dart API
+///
+/// ## Returns
+///
+/// * `Ok(Bindings)` - bindings to Dart API
+/// * `Err(String)` - error message
 pub fn generate_bindings() -> Result<Bindings, String> {
-	log!(LogLevel::Info, "Generating rust bindings to Dart API...");
+	log!("Generating rust bindings to Dart API...");
 
 	// if target OS is windows, add extra compile flags nessecary for linking
 	// AGAINST the Dart SDK binaries (gotta love windows)
@@ -72,10 +78,10 @@ pub fn generate_bindings() -> Result<Bindings, String> {
 		})
 		.use_core()
 		.layout_tests(false)
-		.rustfmt_bindings(false)
+		.rustfmt_bindings(true)
 		.sort_semantically(true);
 
-	log!(LogLevel::Info, "Generating bindings...");
+	log!("Generating bindings...");
 	let bindings = builder.generate().expect("ERROR: Failed to generate dart_api binding");
 	log!(LogLevel::Success, "Successfully generated bindings!");
 

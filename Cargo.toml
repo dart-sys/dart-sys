@@ -1,5 +1,5 @@
 [workspace]
-members = ["codegen", "dart-sys"]
+members = ["codegen", "dart-sys", "sdk-version"]
 
 [workspace.package]
 version = "4.0.2"

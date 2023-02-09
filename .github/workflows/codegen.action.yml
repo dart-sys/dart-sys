@@ -19,6 +19,7 @@ env:
 jobs:
   tests:
     name: codegen test
+    # perfer to run on windows, because windows presents the most complications due to library linking
     runs-on: windows-latest
 
     steps:

@@ -79,9 +79,23 @@ jobs:
             ls target/debug
           done
 
-      # Run cargo tests for all examples in `/examples`
-      - name: Run cargo tests for all examples in `/examples`
+      # Run cargo tests for all targets in the `/examples` workspace
+      - name: Run cargo tests for all targets in the `/examples` workspace
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --all --all-targets -- --nocapture
+          args: --manifest-path .\examples\Cargo.toml --all-targets --all-features
+
+      # Run cargo tests for all targets in the `/tests` workspace
+      - name: Run cargo tests for all targets in the `/tests` workspace
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --manifest-path .\tests\Cargo.toml --all-targets --all-features
+
+      # Run cargo tests for all targets in the root workspace
+      - name: Run cargo tests for all targets in the root workspace
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --all-targets --all-features

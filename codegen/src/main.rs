@@ -133,13 +133,25 @@ fn main() {
 		.current_dir(repo_root())
 		.output()
 	{
-		Ok(_) => (),
+		Ok(_) => {
+			log!(LogLevel::Success, "successfully formatted generated code");
+		},
 		Err(e) => {
 			log!(LogLevel::Error, format!("{}", e));
 			panic!("ERROR: {}", e);
 		},
 	}
 
+	log!("storing Dart SDK hash in system environment variable...");
+	let sdk_version = std::fs::read_to_string(paths::dart_sdk_path().join("revision")).unwrap();
+
+	std::env::set_var("DART_SYS_DART_SDK_VERSION", sdk_version.clone());
+
+	assert_eq!(std::env::var("DART_SYS_DART_SDK_VERSION").unwrap(), sdk_version);
+
 	log!(LogLevel::Success, "build successful");
 	log!("------------------------------");
+
+	// exit with success
+	std::process::exit(0);
 }

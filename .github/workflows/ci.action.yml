@@ -84,14 +84,14 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --manifest-path .\examples\Cargo.toml --all-targets --all-features
+          args: --manifest-path ./examples/Cargo.toml --all-targets --all-features
 
       # Run cargo tests for all targets in the `/tests` workspace
       - name: Run cargo tests for all targets in the `/tests` workspace
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --manifest-path .\tests\Cargo.toml --all-targets --all-features
+          args: --manifest-path ./tests/Cargo.toml --all-targets --all-features
 
       # Run cargo tests for all targets in the root workspace
       - name: Run cargo tests for all targets in the root workspace

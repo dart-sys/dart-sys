@@ -11,12 +11,12 @@ categories.workspace = true
 publish = false
 
 [dependencies]
-bindgen = "0.69.1"
-chrono = "0.4.31"
-cc = "1.0.83"
+bindgen = "0.63.0"
+chrono = "0.4.23"
+cc = "1.0.78"
 reqwest = { version = "^0.11.13", features = ["blocking"] }
-zip = "0.6.6"
-sha2 = "0.10.8"
+zip = "^0.6.3"
+sha2 = "^0.10.6"
 
 [build-dependencies]
-cc = "1.0.83"
+cc = "1.0.78"

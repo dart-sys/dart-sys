@@ -4,7 +4,7 @@ members = ["codegen", "dart-sys"]
 [workspace.package]
 version = "4.0.2"
 edition = "2021"
-license = "MIT OR Apache-2.0"
+license = "GPL-3.0-or-later AND MIT AND Apache-2.0"
 description = "Bindings to the dart native extensions api"
 repository = "https://github.com/dart-sys/dart-sys"
 keywords = ["dart", "ffi", "flutter", "bindings", "dart-native"]

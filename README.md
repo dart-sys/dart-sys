@@ -14,6 +14,7 @@
 [![Crates.io](https://img.shields.io/crates/v/dart-sys.svg)](https://crates.io/crates/dart-sys)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License: GNU GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Docs.rs](https://docs.rs/dart-sys/badge.svg)](https://docs.rs/dart-sys)
 [![CI](https://github.com/dart-sys/dart-sys/actions/workflows/ci.yml/badge.svg)](https://github.com/dart-sys/dart-sys/actions/workflows/ci.yml)
 
@@ -141,10 +142,11 @@ see the [tags on this repository](https://github.com/dart-sys/dart-sys/tags).
 
 ## License 📜
 
-Dart-sys is open-sourced and released under the terms and conditions of the following licenses:
+Dart-sys is open-sourced and released under the terms and conditions of the following three licenses:
 
 - [MIT License](LICENSE-MIT.md)
 - [Apache License (Version 2.0)](LICENSE-APACHE-2.0.md)
+- [GNU General Public License (Version 3)](LICENSE-GPL-3.0.md)
 
 ## Acknowledgments 🙏
 

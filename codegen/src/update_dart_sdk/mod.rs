@@ -306,9 +306,15 @@ where
 	log!(LogLevel::Success, "Downloaded successfully");
 
 	// Create a buffer to read the file into
-	let mut buffer = Vec::new();
+	let mut buffer: Vec<u8> = Vec::new();
+
 	// Read the response into the buffer
-	resp.copy_to(&mut buffer)?;
+	{
+		log!("Creating writer");
+		let w: &mut dyn Write = &mut buffer;
+		log!("Writing file to buffer");
+		io::copy(&mut { resp }, w)
+	}?;
 
 	log!(format!("Writing file to: \"{}\"", dest));
 

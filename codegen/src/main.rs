@@ -97,20 +97,20 @@ fn main() {
 		},
 	}
 
-	// log!("formatting bindings crate");
-	// // format bindings crate with rustfmt
-	// match std::process::Command::new("rustfmt")
-	// 	.arg(dart_sys_crate_path().join("src").join("lib.rs"))
-	// 	.output()
-	// {
-	// 	Ok(_) => {
-	// 		log!(LogLevel::Success, "Successfully formatted bindings crate");
-	// 	},
-	// 	Err(e) => {
-	// 		log!(LogLevel::Error, format!("{}", e));
-	// 		panic!("ERROR: {}", e);
-	// 	},
-	// }
+	log!("formatting bindings crate");
+	// format bindings crate with rustfmt
+	match std::process::Command::new("rustfmt")
+		.arg(dart_sys_crate_path().join("src").join("lib.rs"))
+		.output()
+	{
+		Ok(_) => {
+			log!(LogLevel::Success, "Successfully formatted bindings crate");
+		},
+		Err(e) => {
+			log!(LogLevel::Error, format!("{}", e));
+			panic!("ERROR: {}", e);
+		},
+	}
 
 	// write cargo.toml to file
 	match std::fs::write(

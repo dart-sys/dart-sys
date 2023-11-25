@@ -6,7 +6,7 @@ rand = "^0.8.5"
 libc = "^0.2.139"
 lazy_static = "^1.4.0"
 dart-sys-local = { path = "../dart-sys", package = "dart-sys" }
-dart-sys-cargo = { version = "4.0.2", package = "dart-sys" }
+dart-sys-cargo = { version = "4.1.0", package = "dart-sys" }
 dart-sys-git = { git = "https://github.com/dart-sys/dart-sys.git", package = "dart-sys" }
 
 [profile.release]

@@ -4,6 +4,10 @@
 
 ## [Unreleased] - ReleaseDate
 
+## [4.1.0] - 2023-11-25
+
+## [4.1.0] - 2023-11-25
+
 ## [4.0.2] - 2023-02-02
 
 - fixed inconsumable build.rs which caused build failure
@@ -44,7 +48,9 @@
 - earliest available release of Dart-sys
 
 <!-- next-url -->
-[Unreleased]: https://github.com/dart-sys/dart-sys/compare/v4.0.2...HEAD
+[Unreleased]: https://github.com/dart-sys/dart-sys/compare/v4.1.0...HEAD
+[4.1.0]: https://github.com/dart-sys/dart-sys/compare/v4.1.0...v4.1.0
+[4.1.0]: https://github.com/dart-sys/dart-sys/compare/v4.0.2...v4.1.0
 [4.0.2]: https://github.com/dart-sys/dart-sys/compare/v4.0.1...v4.0.2
 [4.0.1]: https://github.com/dart-sys/dart-sys/compare/v3.1.11...v4.0.1
 [3.1.11]: https://github.com/dart-sys/dart-sys/compare/v3.1.10...v3.1.11

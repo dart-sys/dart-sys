@@ -1,5 +1,5 @@
 # LICENSES
 
-> (c) 2022-2023 Dart-sys authors.
+> (c) 2022-2024 The Dart-sys Authors
 
-## Licenced under the MIT, Apache 2.0, and GNU GPL v3.0 licenses
+## Licenced under the MIT OR Apache 2.0 Licences

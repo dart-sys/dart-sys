@@ -6,7 +6,7 @@ version = "0.0.0"
 rand = { workspace = true }
 libc = { workspace = true }
 lazy_static = { workspace = true }
-dart-sys = { workspace = true }
+dart-sys-fork = { workspace = true }
 
 [lib]
 crate-type = ["cdylib"]

@@ -1,4 +1,4 @@
-extern crate dart_sys;
+extern crate dart_sys_fork;
 
 /// Returns a random number between 0 and 255 as an unsigned 8-bit integer by using an external
 /// crate.

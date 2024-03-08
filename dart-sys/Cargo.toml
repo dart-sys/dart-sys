@@ -1,5 +1,5 @@
 [package]
-name = "dart-sys"
+name = "dart-sys-fork"
 description = "Statically generated, Opt-in style bindings to the Dart SDK"
 version.workspace = true
 edition.workspace = true

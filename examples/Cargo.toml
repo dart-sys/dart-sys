@@ -5,7 +5,7 @@ members = ["primitives", "hello_world", "structs"]
 rand = "^0.8.5"
 libc = "^0.2.139"
 lazy_static = "^1.4.0"
-dart-sys = { path = "../dart-sys" }
+dart-sys-fork = { path = "../dart-sys" }
 
 [profile.release]
 codegen-units = 1

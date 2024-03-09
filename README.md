@@ -1,4 +1,4 @@
-# Fork of dart-sys before the upstream is published
+# Dart-Sys
 
 <p align="center">
   <img

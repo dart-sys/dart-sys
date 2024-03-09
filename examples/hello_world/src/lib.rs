@@ -1,4 +1,4 @@
-extern crate dart_sys_fork;
+extern crate dart_sys;
 
 #[no_mangle]
 /// Prints "Hello, world!" to the standard output.

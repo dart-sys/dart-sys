@@ -1,6 +1,6 @@
 /// Header stub for Cargo.toml
 pub const CARGO_TOML_HEADER_STUB: &str = "[package]
-name = \"dart-sys-fork\"
+name = \"dart-sys\"
 description = \"Statically generated, Opt-in style bindings to the Dart SDK\"
 version.workspace = true
 edition.workspace = true

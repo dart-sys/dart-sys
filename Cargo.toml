@@ -3,7 +3,7 @@ members = ["codegen", "dart-sys"]
 resolver = "2"
 
 [workspace.package]
-version = "4.1.0"
+version = "4.1.1"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 description = "Bindings to the dart native extensions api"

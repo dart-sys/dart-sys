@@ -4,6 +4,10 @@
 
 ## [Unreleased] - ReleaseDate
 
+## [4.1.5] - 2024-03-09
+
+## [4.1.5] - 2024-03-09
+
 ## [4.1.4] - 2024-03-09
 
 ## [4.1.4] - 2024-03-09
@@ -60,7 +64,9 @@
 - earliest available release of Dart-sys
 
 <!-- next-url -->
-[Unreleased]: https://github.com/dart-sys/dart-sys/compare/v4.1.4...HEAD
+[Unreleased]: https://github.com/dart-sys/dart-sys/compare/v4.1.5...HEAD
+[4.1.5]: https://github.com/dart-sys/dart-sys/compare/v4.1.5...v4.1.5
+[4.1.5]: https://github.com/dart-sys/dart-sys/compare/v4.1.4...v4.1.5
 [4.1.4]: https://github.com/dart-sys/dart-sys/compare/v4.1.4...v4.1.4
 [4.1.4]: https://github.com/dart-sys/dart-sys/compare/v4.1.3...v4.1.4
 [4.1.3]: https://github.com/dart-sys/dart-sys/compare/v4.1.3...v4.1.3

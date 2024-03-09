@@ -59,7 +59,7 @@ cargo add dart-sys
 Or add the following line to your Cargo.toml:
 
 ```toml
-dart-sys = "4.1.4"
+dart-sys = "4.1.5"
 ```
 
 ## Usage 💻
